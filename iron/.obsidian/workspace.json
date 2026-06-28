@@ -185,17 +185,17 @@
   },
   "active": "54d2181792f128fa",
   "lastOpenFiles": [
+    "build/a388bb3d148d06b66ae43cc13952ffda/_composite.stamp",
+    "build/a388bb3d148d06b66ae43cc13952ffda/gen_dart_plugin_registrant.stamp",
+    "build/a388bb3d148d06b66ae43cc13952ffda/gen_localizations.stamp",
+    "build/a388bb3d148d06b66ae43cc13952ffda",
+    "build",
     "Untitled.base",
     "README.md",
     "lib/presentation/widgets/glass_widgets.dart",
     "lib/presentation/widgets",
     "lib/presentation/features/programs/screens/session_builder_screen.dart",
     "lib/presentation/features/settings/screens/settings_screen.dart",
-    "lib/presentation/features/settings/screens",
-    "lib/presentation/features/settings",
-    "lib/presentation/features/dashboard/screens/home_tab.dart",
-    "lib/presentation/features/dashboard/screens/dashboard_screen.dart",
-    "lib/presentation/features/dashboard/screens",
-    "lib/presentation/features/dashboard"
+    "lib/presentation/features/settings/screens"
   ]
 }
