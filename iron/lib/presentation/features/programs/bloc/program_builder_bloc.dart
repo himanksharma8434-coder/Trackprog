@@ -3,22 +3,23 @@ import 'package:injectable/injectable.dart';
 import 'package:uuid/uuid.dart';
 import '../../../../domain/entities/program.dart';
 import '../../../../domain/usecases/program_usecases.dart';
+import '../../../../domain/repositories/workout_repository.dart';
 import 'program_builder_event.dart';
 import 'program_builder_state.dart';
 
 @injectable
 class ProgramBuilderBloc extends Bloc<ProgramBuilderEvent, ProgramBuilderState> {
   final BuildCustomProgramUseCase buildCustomProgram;
+  final WorkoutRepository workoutRepository;
 
-  ProgramBuilderBloc(this.buildCustomProgram) : super(ProgramBuilderInitial()) {
+  ProgramBuilderBloc(this.buildCustomProgram, this.workoutRepository) : super(ProgramBuilderInitial()) {
     on<StartProgramBuilder>((event, emit) {
       final newProgram = Program(
         id: const Uuid().v4(),
-        name: 'New Program',
-        totalWeeks: 4,
+        name: 'New Routine',
+        days: [],
         isCustom: true,
         isImported: false,
-        blocks: [],
         createdAt: DateTime.now(),
       );
       emit(ProgramBuilderEditing(newProgram));
@@ -28,60 +29,92 @@ class ProgramBuilderBloc extends Bloc<ProgramBuilderEvent, ProgramBuilderState> 
       if (state is ProgramBuilderEditing) {
         final current = (state as ProgramBuilderEditing).program;
         emit(ProgramBuilderEditing(
-          current.copyWith(name: event.name, totalWeeks: event.weeks),
+          current.copyWith(name: event.name),
         ));
       }
     });
 
-    on<AddBlock>((event, emit) {
+    on<AddDay>((event, emit) {
       if (state is ProgramBuilderEditing) {
         final current = (state as ProgramBuilderEditing).program;
-        final newBlock = ProgramBlock(
+        final newDay = ProgramDay(
           id: const Uuid().v4(),
+          dayNumber: current.days.length + 1,
           name: event.name,
-          weeks: event.weeks,
-          type: event.type,
-          sessions: [],
+          exercises: [],
         );
         emit(ProgramBuilderEditing(
-          current.copyWith(blocks: [...current.blocks, newBlock]),
+          current.copyWith(days: [...current.days, newDay]),
         ));
       }
     });
 
-    on<AddSessionToBlock>((event, emit) {
+    on<AddExerciseToDay>((event, emit) async {
       if (state is ProgramBuilderEditing) {
         final current = (state as ProgramBuilderEditing).program;
-        final updatedBlocks = current.blocks.map((b) {
-          if (b.id == event.blockId) {
-            final newSession = ProgramSession(
-              id: const Uuid().v4(),
-              dayOfWeek: event.dayOfWeek,
-              name: event.name,
-              exercises: [],
-              estimatedDurationMinutes: 60,
-            );
-            return b.copyWith(sessions: [...b.sessions, newSession]);
+        
+        String? historicalHint;
+        try {
+          final lastLog = await workoutRepository.getLastExerciseLog(event.exercise.exerciseId);
+          if (lastLog != null && lastLog.sets.isNotEmpty) {
+            final topSet = lastLog.sets.reduce((a, b) => a.weightKg > b.weightKg ? a : b);
+            historicalHint = 'Previous: ${topSet.weightKg}kg x ${topSet.reps}';
+            final est1Rm = topSet.weightKg * (1 + topSet.reps / 30.0);
+            historicalHint += ' (Est. 1RM: ${est1Rm.toStringAsFixed(1)}kg)';
           }
-          return b;
+        } catch (_) {}
+
+        final exerciseWithHint = event.exercise.copyWith(historicalHint: historicalHint);
+
+        final updatedDays = current.days.map((d) {
+          if (d.id == event.dayId) {
+            return d.copyWith(exercises: [...d.exercises, exerciseWithHint]);
+          }
+          return d;
         }).toList();
-        emit(ProgramBuilderEditing(current.copyWith(blocks: updatedBlocks)));
+        emit(ProgramBuilderEditing(current.copyWith(days: updatedDays)));
       }
     });
 
-    on<AddExerciseToSession>((event, emit) {
+    on<AddSetToExercise>((event, emit) {
       if (state is ProgramBuilderEditing) {
         final current = (state as ProgramBuilderEditing).program;
-        final updatedBlocks = current.blocks.map((b) {
-          final updatedSessions = b.sessions.map((s) {
-            if (s.id == event.sessionId) {
-              return s.copyWith(exercises: [...s.exercises, event.exercise]);
-            }
-            return s;
-          }).toList();
-          return b.copyWith(sessions: updatedSessions);
+        final updatedDays = current.days.map((d) {
+          if (d.id == event.dayId) {
+            final updatedExercises = d.exercises.map((e) {
+              if (e.id == event.exerciseId) {
+                return e.copyWith(sets: [...e.sets, event.programSet]);
+              }
+              return e;
+            }).toList();
+            return d.copyWith(exercises: updatedExercises);
+          }
+          return d;
         }).toList();
-        emit(ProgramBuilderEditing(current.copyWith(blocks: updatedBlocks)));
+        emit(ProgramBuilderEditing(current.copyWith(days: updatedDays)));
+      }
+    });
+
+    on<UpdateSet>((event, emit) {
+      if (state is ProgramBuilderEditing) {
+        final current = (state as ProgramBuilderEditing).program;
+        final updatedDays = current.days.map((d) {
+          if (d.id == event.dayId) {
+            final updatedExercises = d.exercises.map((e) {
+              if (e.id == event.exerciseId) {
+                final updatedSets = e.sets.map((s) {
+                  if (s.id == event.updatedSet.id) return event.updatedSet;
+                  return s;
+                }).toList();
+                return e.copyWith(sets: updatedSets);
+              }
+              return e;
+            }).toList();
+            return d.copyWith(exercises: updatedExercises);
+          }
+          return d;
+        }).toList();
+        emit(ProgramBuilderEditing(current.copyWith(days: updatedDays)));
       }
     });
 

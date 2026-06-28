@@ -8,7 +8,7 @@ import '../bloc/exercise_state.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../domain/entities/exercise.dart';
-import '../../../widgets/glass_widgets.dart';
+import '../../../widgets/precision_widgets.dart';
 
 class ExerciseLibraryScreen extends StatelessWidget {
   final bool isPicker;
@@ -46,7 +46,7 @@ class ExerciseLibraryScreen extends StatelessWidget {
                             decoration: BoxDecoration(
                               color: AppColors.surfaceGlass,
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: AppColors.borderGlass, width: 0.5),
+                              border: Border.all(color: AppColors.border, width: 0.5),
                             ),
                             child: const Icon(Icons.arrow_back_rounded, color: AppColors.textPrimary, size: 20),
                           ),
@@ -77,11 +77,11 @@ class ExerciseLibraryScreen extends StatelessWidget {
                               fillColor: AppColors.surfaceGlass,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(14),
-                                borderSide: BorderSide(color: AppColors.borderGlass, width: 0.5),
+                                borderSide: BorderSide(color: AppColors.border, width: 0.5),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(14),
-                                borderSide: BorderSide(color: AppColors.borderGlass, width: 0.5),
+                                borderSide: BorderSide(color: AppColors.border, width: 0.5),
                               ),
                               focusedBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(14),
@@ -122,7 +122,7 @@ class ExerciseLibraryScreen extends StatelessWidget {
                           separatorBuilder: (_, __) => const SizedBox(height: 8),
                           itemBuilder: (context, index) {
                             final exercise = state.exercises[index];
-                            return GlassCard(
+                            return MetricCard(
                               margin: EdgeInsets.zero,
                               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
                               onTap: () {

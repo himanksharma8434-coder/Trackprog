@@ -11,14 +11,10 @@
             "id": "54d2181792f128fa",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "README.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "README"
+              "type": "graph",
+              "state": {},
+              "icon": "lucide-git-fork",
+              "title": "Graph view"
             }
           }
         ]
@@ -94,7 +90,6 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "README.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +99,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for README"
+              "title": "Backlinks"
             }
           },
           {
@@ -113,12 +108,11 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "README.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from README"
+              "title": "Outgoing links"
             }
           },
           {
@@ -156,13 +150,12 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "README.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of README"
+              "title": "Outline"
             }
           }
         ]
@@ -185,17 +178,28 @@
   },
   "active": "54d2181792f128fa",
   "lastOpenFiles": [
-    "build/a388bb3d148d06b66ae43cc13952ffda/_composite.stamp",
-    "build/a388bb3d148d06b66ae43cc13952ffda/gen_dart_plugin_registrant.stamp",
-    "build/a388bb3d148d06b66ae43cc13952ffda/gen_localizations.stamp",
-    "build/a388bb3d148d06b66ae43cc13952ffda",
-    "build",
-    "Untitled.base",
     "README.md",
-    "lib/presentation/widgets/glass_widgets.dart",
-    "lib/presentation/widgets",
-    "lib/presentation/features/programs/screens/session_builder_screen.dart",
-    "lib/presentation/features/settings/screens/settings_screen.dart",
-    "lib/presentation/features/settings/screens"
+    "lib/presentation/widgets/precision_widgets.dart",
+    "lib/core/algorithms/strength_tracking.dart",
+    "stitch_iron_vista_pro/workout_tracker_precision_style/screen.png",
+    "stitch_iron_vista_pro/workout_tracker_precision_style/code.html",
+    "stitch_iron_vista_pro/workout_tracker_precision_style",
+    "stitch_iron_vista_pro/progress_analytics_precision_style/screen.png",
+    "stitch_iron_vista_pro/progress_analytics_precision_style/code.html",
+    "stitch_iron_vista_pro/progress_analytics_precision_style",
+    "stitch_iron_vista_pro/precision_metric_utility/DESIGN.md",
+    "stitch_iron_vista_pro/precision_metric_utility",
+    "stitch_iron_vista_pro/kinetic_glass/DESIGN.md",
+    "stitch_iron_vista_pro/kinetic_glass",
+    "stitch_iron_vista_pro/exercise_library_precision_style/screen.png",
+    "stitch_iron_vista_pro/exercise_library_precision_style/code.html",
+    "stitch_iron_vista_pro/exercise_library_precision_style",
+    "stitch_iron_vista_pro/dashboard_precision_style/screen.png",
+    "stitch_iron_vista_pro/workout_tracker/screen.png",
+    "stitch_iron_vista_pro/progress_analytics/screen.png",
+    "stitch_iron_vista_pro/exercise_library/screen.png",
+    "stitch_iron_vista_pro/dashboard/screen.png",
+    "build/app/intermediates/packaged_res/debug/packageDebugResources/mipmap-xxxhdpi-v4/ic_launcher.png",
+    "build/app/intermediates/packaged_res/debug/packageDebugResources/mipmap-xxhdpi-v4/ic_launcher.png"
   ]
 }

@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
-import '../../../widgets/glass_widgets.dart';
+import '../../../widgets/precision_widgets.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -54,9 +54,9 @@ class SettingsScreen extends StatelessWidget {
         children: [
           Padding(
             padding: const EdgeInsets.only(bottom: 12),
-            child: Text(title, style: AppTypography.labelS.copyWith(letterSpacing: 2.0)),
+            child: Text(title, style: AppTypography.labelCaps.copyWith(letterSpacing: 2.0)),
           ),
-          GlassCard(
+          MetricCard(
             padding: EdgeInsets.zero,
             margin: const EdgeInsets.only(bottom: 28),
             child: Column(
@@ -65,7 +65,7 @@ class SettingsScreen extends StatelessWidget {
                 final item = entry.value;
                 return Column(
                   children: [
-                    if (i > 0) Divider(color: AppColors.borderGlass, height: 1, indent: 56),
+                    if (i > 0) Divider(color: AppColors.border, height: 1, indent: 56),
                     Material(
                       color: Colors.transparent,
                       child: InkWell(

@@ -4,6 +4,7 @@ import '../../presentation/features/onboarding/screens/splash_screen.dart';
 import '../../presentation/features/onboarding/screens/onboarding_survey_screen.dart';
 import '../../presentation/features/onboarding/screens/gym_profile_setup_screen.dart';
 import '../../presentation/features/programs/screens/program_builder_screen.dart';
+import '../../presentation/features/programs/screens/programs_tab.dart';
 import '../../presentation/features/workout/screens/active_workout_screen.dart';
 import '../../presentation/features/analytics/screens/analytics_screen.dart';
 import '../../presentation/features/body_metrics/screens/body_weight_screen.dart';
@@ -47,7 +48,7 @@ final appRouter = GoRouter(
         ),
         GoRoute(
           path: '/dashboard/programs',
-          builder: (context, state) => const Scaffold(body: Center(child: Text('Programs Tab Placeholder'))),
+          builder: (context, state) => const ProgramsTab(),
         ),
         GoRoute(
           path: '/dashboard/analytics',

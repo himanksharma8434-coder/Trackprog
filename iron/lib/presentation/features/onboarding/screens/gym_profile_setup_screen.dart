@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
-import '../../../widgets/glass_widgets.dart';
+import '../../../widgets/precision_widgets.dart';
 
 class GymProfileSetupScreen extends StatefulWidget {
   const GymProfileSetupScreen({super.key});
@@ -42,7 +42,7 @@ class _GymProfileSetupScreenState extends State<GymProfileSetupScreen> {
               children: [
                 const SizedBox(height: 16),
                 ShaderMask(
-                  shaderCallback: (bounds) => AppColors.primaryGradient.createShader(bounds),
+                  shaderCallback: (bounds) => const LinearGradient(colors: [AppColors.primary, AppColors.primaryDim]).createShader(bounds),
                   child: Text('Your equipment', style: AppTypography.h1.copyWith(color: Colors.white)),
                 ),
                 const SizedBox(height: 8),
@@ -63,10 +63,10 @@ class _GymProfileSetupScreenState extends State<GymProfileSetupScreen> {
                           duration: const Duration(milliseconds: 200),
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            gradient: item.isSelected ? AppColors.glassGradient : null,
+                            gradient: item.isSelected ? const LinearGradient(colors: [AppColors.surfaceElevated, AppColors.surfaceElevated]) : null,
                             color: item.isSelected ? null : AppColors.surfaceGlass,
                             border: Border.all(
-                              color: item.isSelected ? AppColors.primary : AppColors.borderGlass,
+                              color: item.isSelected ? AppColors.primary : AppColors.border,
                               width: item.isSelected ? 1.5 : 0.5,
                             ),
                             borderRadius: BorderRadius.circular(16),
@@ -100,7 +100,7 @@ class _GymProfileSetupScreenState extends State<GymProfileSetupScreen> {
                                 Container(
                                   padding: const EdgeInsets.all(4),
                                   decoration: BoxDecoration(
-                                    gradient: AppColors.primaryGradient,
+                                    gradient: const LinearGradient(colors: [AppColors.primary, AppColors.primaryDim]),
                                     shape: BoxShape.circle,
                                   ),
                                   child: const Icon(Icons.check_rounded, color: Colors.white, size: 16),
@@ -112,7 +112,7 @@ class _GymProfileSetupScreenState extends State<GymProfileSetupScreen> {
                     },
                   ),
                 ),
-                GlowButton(
+                PrimaryButton(
                   label: 'Finish Setup',
                   icon: Icons.arrow_forward_rounded,
                   onPressed: () => context.go('/dashboard/home'),

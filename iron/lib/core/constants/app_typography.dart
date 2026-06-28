@@ -5,43 +5,46 @@ import 'app_colors.dart';
 class AppTypography {
   // ── Heading shortcuts (used throughout screens) ──
   static TextStyle get h1 => GoogleFonts.inter(
-    fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1.0, color: AppColors.textPrimary,
+    fontSize: 32, fontWeight: FontWeight.w700, letterSpacing: -0.64, height: 1.2, color: AppColors.textPrimary,
   );
   static TextStyle get h2 => GoogleFonts.inter(
-    fontSize: 24, fontWeight: FontWeight.w800, letterSpacing: -0.5, color: AppColors.textPrimary,
+    fontSize: 24, fontWeight: FontWeight.w700, height: 1.2, color: AppColors.textPrimary,
   );
   static TextStyle get h3 => GoogleFonts.inter(
-    fontSize: 20, fontWeight: FontWeight.w700, color: AppColors.textPrimary,
+    fontSize: 20, fontWeight: FontWeight.w600, height: 1.3, color: AppColors.textPrimary,
   );
   static TextStyle get h4 => GoogleFonts.inter(
-    fontSize: 16, fontWeight: FontWeight.w700, color: AppColors.textPrimary,
+    fontSize: 16, fontWeight: FontWeight.w600, height: 1.3, color: AppColors.textPrimary,
   );
 
   // ── Body shortcuts ──
   static TextStyle get bodyL => GoogleFonts.inter(
-    fontSize: 16, fontWeight: FontWeight.w400, color: AppColors.textPrimary,
+    fontSize: 16, fontWeight: FontWeight.w400, height: 1.5, color: AppColors.textPrimary,
   );
   static TextStyle get bodyM => GoogleFonts.inter(
-    fontSize: 14, fontWeight: FontWeight.w400, color: AppColors.textPrimary,
+    fontSize: 14, fontWeight: FontWeight.w400, height: 1.5, color: AppColors.textPrimary,
   );
   static TextStyle get bodyS => GoogleFonts.inter(
-    fontSize: 12, fontWeight: FontWeight.w400, color: AppColors.textSecondary,
+    fontSize: 12, fontWeight: FontWeight.w400, height: 1.5, color: AppColors.textSecondary,
   );
 
-  // ── Label shortcuts ──
+  // ── Special Data & Label styles ──
+  static TextStyle get dataDisplay => GoogleFonts.inter(
+    fontSize: 24, fontWeight: FontWeight.w600, height: 1.0, letterSpacing: -0.24, color: AppColors.textPrimary,
+  );
+  static TextStyle get labelCaps => GoogleFonts.inter(
+    fontSize: 11, fontWeight: FontWeight.w700, height: 1.0, letterSpacing: 0.55, color: AppColors.textSecondary,
+  );
   static TextStyle get labelL => GoogleFonts.inter(
-    fontSize: 14, fontWeight: FontWeight.w600, letterSpacing: 0.5, color: AppColors.textPrimary,
+    fontSize: 14, fontWeight: FontWeight.w600, height: 1.4, color: AppColors.textPrimary,
   );
-  static TextStyle get labelS => GoogleFonts.inter(
-    fontSize: 11, fontWeight: FontWeight.w600, letterSpacing: 1.2, color: AppColors.textSecondary,
-  );
-
+  
   // ── Monospace numeric data ──
   static TextStyle get numericData => GoogleFonts.jetBrainsMono(
-    fontSize: 16, fontWeight: FontWeight.w600, color: AppColors.textPrimary,
+    fontSize: 12, fontWeight: FontWeight.w400, height: 1.2, color: AppColors.textPrimary,
   );
   static TextStyle get numericDataLarge => GoogleFonts.jetBrainsMono(
-    fontSize: 28, fontWeight: FontWeight.w700, color: AppColors.textPrimary,
+    fontSize: 24, fontWeight: FontWeight.w700, color: AppColors.textPrimary,
   );
 
   // ── Full TextTheme for ThemeData ──
@@ -56,6 +59,6 @@ class AppTypography {
     bodyMedium: bodyM,
     bodySmall: bodyS,
     labelLarge: labelL,
-    labelSmall: labelS,
+    labelSmall: labelCaps,
   );
 }

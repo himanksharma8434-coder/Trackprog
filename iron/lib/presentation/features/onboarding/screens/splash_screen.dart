@@ -28,7 +28,12 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     _scaleUp = Tween<double>(begin: 0.8, end: 1.0).animate(
       CurvedAnimation(parent: _controller, curve: const Interval(0.0, 0.6, curve: Curves.easeOutCubic)),
     );
-    _controller.forward();
+    _controller.forward().then((_) {
+      // Bypass onboarding per user request
+      Future.delayed(const Duration(milliseconds: 500), () {
+        if (mounted) context.go('/dashboard/home');
+      });
+    });
   }
 
   @override
@@ -39,17 +44,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<OnboardingBloc>()..add(CheckOnboardingStatus()),
-      child: BlocListener<OnboardingBloc, OnboardingState>(
-        listener: (context, state) {
-          if (state is OnboardingCompleted) {
-            context.go('/dashboard/home');
-          } else if (state is OnboardingNeedsSetup) {
-            context.go('/onboarding');
-          }
-        },
-        child: Scaffold(
+    return Scaffold(
           backgroundColor: AppColors.background,
           body: Container(
             decoration: const BoxDecoration(
@@ -68,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       ShaderMask(
-                        shaderCallback: (bounds) => AppColors.primaryGradient.createShader(bounds),
+                        shaderCallback: (bounds) => const LinearGradient(colors: [AppColors.primary, AppColors.primaryDim]).createShader(bounds),
                         child: Text(
                           'IRON',
                           style: AppTypography.h1.copyWith(
@@ -81,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
                       const SizedBox(height: 8),
                       Text(
                         'TRAIN LIKE SCIENCE DESIGNED YOU TO',
-                        style: AppTypography.labelS.copyWith(letterSpacing: 3, color: AppColors.textMuted),
+                        style: AppTypography.labelCaps.copyWith(letterSpacing: 3, color: AppColors.textMuted),
                       ),
                       const SizedBox(height: 48),
                       SizedBox(
@@ -98,8 +93,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               ),
             ),
           ),
-        ),
-      ),
-    );
+        );
   }
 }

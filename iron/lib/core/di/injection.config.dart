@@ -54,13 +54,13 @@ extension GetItInjectableX on _i174.GetIt {
     gh.singleton<_i549.AppDatabase>(() => databaseModule.db);
     gh.lazySingleton<_i1073.AuthRepository>(() => _i895.AuthRepositoryImpl());
     gh.lazySingleton<_i730.WorkoutRepository>(
-      () => _i325.WorkoutRepositoryImpl(),
+      () => _i325.WorkoutRepositoryImpl(gh<_i549.AppDatabase>()),
     );
     gh.lazySingleton<_i582.GymProfileRepository>(
       () => _i92.GymProfileRepositoryImpl(),
     );
     gh.lazySingleton<_i317.ProgramRepository>(
-      () => _i537.ProgramRepositoryImpl(),
+      () => _i537.ProgramRepositoryImpl(gh<_i549.AppDatabase>()),
     );
     gh.factory<_i89.StartWorkoutSessionUseCase>(
       () => _i89.StartWorkoutSessionUseCase(gh<_i730.WorkoutRepository>()),
@@ -82,6 +82,12 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i635.BuildCustomProgramUseCase>(
       () => _i635.BuildCustomProgramUseCase(gh<_i317.ProgramRepository>()),
+    );
+    gh.factory<_i492.ProgramBuilderBloc>(
+      () => _i492.ProgramBuilderBloc(
+        gh<_i635.BuildCustomProgramUseCase>(),
+        gh<_i730.WorkoutRepository>(),
+      ),
     );
     gh.lazySingleton<_i299.ExerciseRepository>(
       () => _i715.ExerciseRepositoryImpl(gh<_i823.ExerciseDao>()),
@@ -106,9 +112,6 @@ extension GetItInjectableX on _i174.GetIt {
     );
     gh.factory<_i785.AnalyticsBloc>(
       () => _i785.AnalyticsBloc(gh<_i89.GetWorkoutHistoryUseCase>()),
-    );
-    gh.factory<_i492.ProgramBuilderBloc>(
-      () => _i492.ProgramBuilderBloc(gh<_i635.BuildCustomProgramUseCase>()),
     );
     gh.factory<_i952.ExerciseBloc>(
       () => _i952.ExerciseBloc(

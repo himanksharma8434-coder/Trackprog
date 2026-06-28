@@ -23,8 +23,8 @@ class ActiveWorkoutBloc extends Bloc<ActiveWorkoutEvent, ActiveWorkoutState> {
       
       final session = WorkoutSession(
         id: const Uuid().v4(),
-        programSessionId: event.plannedSession?.id,
-        name: event.plannedSession?.name ?? 'Freestyle Workout',
+        programSessionId: event.plannedDay?.id,
+        name: event.plannedDay?.name ?? 'Freestyle Workout',
         startedAt: _startTime!,
         exerciseLogs: const [],
         totalVolumeKg: 0.0,

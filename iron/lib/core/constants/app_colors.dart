@@ -2,55 +2,33 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // ── Background hierarchy ──
-  static const Color background = Color(0xFF050508);
-  static const Color surface = Color(0xFF0E0E14);
-  static const Color surfaceElevated = Color(0xFF16161F);
-  static const Color surfaceGlass = Color(0x1AFFFFFF); // 10% white
-  static const Color surfaceGlassHover = Color(0x26FFFFFF); // 15% white
-  static const Color border = Color(0xFF1E1E2C);
-  static const Color borderGlass = Color(0x33FFFFFF); // 20% white
-  static const Color borderSubtle = Color(0x0DFFFFFF); // 5% white
+  static const Color background = Color(0xFF0A0A0A);
+  static const Color surface = Color(0xFF121212);
+  static const Color surfaceElevated = Color(0xFF1E1E1E);
+  static const Color surfaceGlass = Color(0x1AFFFFFF); // 10% white for minimal glass
+  static const Color surfaceGlassHover = Color(0x26FFFFFF);
+  
+  static const Color border = Color(0xFF262626);
+  static const Color borderActive = Color(0xFF333333);
+  static const Color borderSubtle = Color(0xFF1A1A1A);
 
   // ── Brand ──
-  static const Color primary = Color(0xFFFF4D1A);
-  static const Color primaryLight = Color(0xFFFF7043);
-  static const Color primaryDim = Color(0x22FF4D1A);
-  static const Color primaryGlow = Color(0x44FF4D1A);
-
-  // ── Accent gradient endpoints ──
-  static const Color gradientStart = Color(0xFFFF4D1A);
-  static const Color gradientEnd = Color(0xFFFF8A50);
+  static const Color primary = Color(0xFF00A396);
+  static const Color primaryLight = Color(0xFF5DDACB);
+  static const Color primaryDim = Color(0x2200A396);
+  static const Color primaryGlow = Color(0x4400A396); // Though we avoid glows mostly
 
   // ── Semantic ──
-  static const Color success = Color(0xFF00E676);
-  static const Color successDim = Color(0x2200E676);
-  static const Color warning = Color(0xFFFFD600);
-  static const Color warningDim = Color(0x22FFD600);
-  static const Color error = Color(0xFFFF1744);
-  static const Color errorDim = Color(0x22FF1744);
+  static const Color success = Color(0xFF00A396); // Reuse primary for success in this aesthetic
+  static const Color successDim = Color(0x2200A396);
+  static const Color warning = Color(0xFF7A2F12); // Desaturated dark orange/red as per spec
+  static const Color warningDim = Color(0x227A2F12);
+  static const Color error = Color(0xFF690005); // Dark red
+  static const Color errorDim = Color(0x22690005);
 
   // ── Text ──
-  static const Color textPrimary = Color(0xFFF0F0F5);
-  static const Color textSecondary = Color(0xFF9090A8);
-  static const Color textMuted = Color(0xFF555568);
-  static const Color textOnPrimary = Color(0xFFFFFFFF);
-
-  // ── Gradients ──
-  static const LinearGradient primaryGradient = LinearGradient(
-    colors: [gradientStart, gradientEnd],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
-
-  static const LinearGradient glassGradient = LinearGradient(
-    colors: [Color(0x1AFFFFFF), Color(0x0DFFFFFF)],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
-
-  static const LinearGradient cardGradient = LinearGradient(
-    colors: [Color(0xFF12121A), Color(0xFF0A0A10)],
-    begin: Alignment.topLeft,
-    end: Alignment.bottomRight,
-  );
+  static const Color textPrimary = Color(0xFFFFFFFF);
+  static const Color textSecondary = Color(0xFFA3A3A3);
+  static const Color textMuted = Color(0xFF737373);
+  static const Color textOnPrimary = Color(0xFF000000); // Black on teal
 }

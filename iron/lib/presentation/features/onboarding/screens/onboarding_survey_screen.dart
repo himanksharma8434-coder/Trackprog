@@ -9,7 +9,7 @@ import '../bloc/onboarding_state.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../core/di/injection.dart';
-import '../../../widgets/glass_widgets.dart';
+import '../../../widgets/precision_widgets.dart';
 
 class OnboardingSurveyScreen extends StatefulWidget {
   const OnboardingSurveyScreen({super.key});
@@ -85,7 +85,7 @@ class _OnboardingSurveyScreenState extends State<OnboardingSurveyScreen> with Si
                               height: 3,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(2),
-                                gradient: i <= _currentStep ? AppColors.primaryGradient : null,
+                                gradient: i <= _currentStep ? const LinearGradient(colors: [AppColors.primary, AppColors.primaryDim]) : null,
                                 color: i <= _currentStep ? null : AppColors.border,
                               ),
                             ),
@@ -131,7 +131,7 @@ class _OnboardingSurveyScreenState extends State<OnboardingSurveyScreen> with Si
         children: [
           const SizedBox(height: 24),
           ShaderMask(
-            shaderCallback: (bounds) => AppColors.primaryGradient.createShader(bounds),
+            shaderCallback: (bounds) => const LinearGradient(colors: [AppColors.primary, AppColors.primaryDim]).createShader(bounds),
             child: Text('What drives you?', style: AppTypography.h1.copyWith(color: Colors.white)),
           ),
           const SizedBox(height: 8),
@@ -153,7 +153,7 @@ class _OnboardingSurveyScreenState extends State<OnboardingSurveyScreen> with Si
             onTap: () => setState(() => _selectedGoal = Goal.strength),
           ),
           const Spacer(),
-          GlowButton(
+          PrimaryButton(
             label: 'Continue',
             onPressed: () => _goToStep(1),
           ),
@@ -171,7 +171,7 @@ class _OnboardingSurveyScreenState extends State<OnboardingSurveyScreen> with Si
         children: [
           const SizedBox(height: 24),
           ShaderMask(
-            shaderCallback: (bounds) => AppColors.primaryGradient.createShader(bounds),
+            shaderCallback: (bounds) => const LinearGradient(colors: [AppColors.primary, AppColors.primaryDim]).createShader(bounds),
             child: Text('Your journey', style: AppTypography.h1.copyWith(color: Colors.white)),
           ),
           const SizedBox(height: 8),
@@ -201,7 +201,7 @@ class _OnboardingSurveyScreenState extends State<OnboardingSurveyScreen> with Si
             onTap: () => setState(() => _selectedExperience = ExperienceLevel.advanced),
           ),
           const Spacer(),
-          GlowButton(
+          PrimaryButton(
             label: 'Continue',
             onPressed: () => _goToStep(2),
           ),
@@ -219,13 +219,13 @@ class _OnboardingSurveyScreenState extends State<OnboardingSurveyScreen> with Si
         children: [
           const SizedBox(height: 24),
           ShaderMask(
-            shaderCallback: (bounds) => AppColors.primaryGradient.createShader(bounds),
+            shaderCallback: (bounds) => const LinearGradient(colors: [AppColors.primary, AppColors.primaryDim]).createShader(bounds),
             child: Text('Your rhythm', style: AppTypography.h1.copyWith(color: Colors.white)),
           ),
           const SizedBox(height: 8),
           Text('How do you like to train?', style: AppTypography.bodyM.copyWith(color: AppColors.textSecondary)),
           const SizedBox(height: 40),
-          GlassCard(
+          MetricCard(
             margin: const EdgeInsets.only(bottom: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -256,7 +256,7 @@ class _OnboardingSurveyScreenState extends State<OnboardingSurveyScreen> with Si
               ],
             ),
           ),
-          GlassCard(
+          MetricCard(
             margin: EdgeInsets.zero,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -288,7 +288,7 @@ class _OnboardingSurveyScreenState extends State<OnboardingSurveyScreen> with Si
             ),
           ),
           const Spacer(),
-          GlowButton(
+          PrimaryButton(
             label: 'Complete Setup',
             icon: Icons.check_rounded,
             onPressed: () {
@@ -322,10 +322,10 @@ class _OnboardingSurveyScreenState extends State<OnboardingSurveyScreen> with Si
         width: double.infinity,
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          gradient: isSelected ? AppColors.glassGradient : null,
+          gradient: isSelected ? const LinearGradient(colors: [AppColors.surfaceElevated, AppColors.surfaceElevated]) : null,
           color: isSelected ? null : AppColors.surfaceGlass,
           border: Border.all(
-            color: isSelected ? AppColors.primary : AppColors.borderGlass,
+            color: isSelected ? AppColors.primary : AppColors.border,
             width: isSelected ? 1.5 : 0.5,
           ),
           borderRadius: BorderRadius.circular(16),
@@ -363,7 +363,7 @@ class _OnboardingSurveyScreenState extends State<OnboardingSurveyScreen> with Si
               Container(
                 padding: const EdgeInsets.all(4),
                 decoration: BoxDecoration(
-                  gradient: AppColors.primaryGradient,
+                  gradient: const LinearGradient(colors: [AppColors.primary, AppColors.primaryDim]),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(Icons.check_rounded, color: Colors.white, size: 16),

@@ -9,10 +9,10 @@ abstract class ActiveWorkoutEvent extends Equatable {
 }
 
 class StartWorkout extends ActiveWorkoutEvent {
-  final ProgramSession? plannedSession;
-  const StartWorkout({this.plannedSession});
+  final ProgramDay? plannedDay;
+  const StartWorkout({this.plannedDay});
   @override
-  List<Object?> get props => [plannedSession];
+  List<Object?> get props => [plannedDay];
 }
 
 class TickWorkoutTimer extends ActiveWorkoutEvent {

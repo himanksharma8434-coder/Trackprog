@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Active Workout Tracker - Precision Metric Utility</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Montserrat:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#131313",
+                        "surface-dim": "#131313",
+                        "surface-bright": "#3a3939",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container": "#212121",
+                        "surface-container-high": "#2b2a2a",
+                        "surface-container-highest": "#363535",
+                        "on-surface": "#e6e1e1",
+                        "on-surface-variant": "#c9c5c5",
+                        "outline": "#938f8f",
+                        "outline-variant": "#484747",
+                        "primary": "#00a396",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#004b45",
+                        "on-primary-container": "#b2ece7",
+                        "secondary": "#ffffff",
+                        "on-secondary": "#131313",
+                        "secondary-container": "#333333",
+                        "on-secondary-container": "#ffffff",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "background": "#131313",
+                        "on-background": "#e6e1e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "4px",
+                        "lg": "4px",
+                        "xl": "4px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "stack-gap-sm": "12px",
+                        "base": "8px",
+                        "stack-gap-md": "24px",
+                        "container-padding-desktop": "40px",
+                        "container-padding-mobile": "20px",
+                        "stack-gap-lg": "48px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter", "sans-serif"],
+                        "label-sm": ["Inter", "sans-serif"],
+                        "label-md": ["Inter", "sans-serif"],
+                        "display-lg": ["Inter", "sans-serif"],
+                        "headline-lg-mobile": ["Inter", "sans-serif"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "headline-lg": ["Inter", "sans-serif"],
+                        "headline-md": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .progress-ring__circle {
+            transition: stroke-dashoffset 0.35s;
+            transform: rotate(-90deg);
+            transform-origin: 50% 50%;
+        }
+        
+        .timer-numerical {
+            font-variant-numeric: tabular-nums;
+            letter-spacing: -0.05em;
+        }
+
+        /* Clean utility borders */
+        .utility-border {
+            border: 1px solid #2b2a2a;
+        }
+        
+        .input-utility {
+            background-color: #1c1b1b;
+            border: 1px solid #484747;
+            transition: border-color 0.2s ease;
+        }
+        
+        .input-utility:focus-within {
+            border-color: #00a396;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface min-h-screen font-body-md overflow-x-hidden selection:bg-primary-container selection:text-on-primary-container pb-24 md:pb-0">
+<header class="w-full sticky top-0 backdrop-blur-md border-b border-outline-variant/30 flex justify-between items-center px-container-padding-mobile md:px-container-padding-desktop py-base z-50 bg-surface/80">
+<div class="flex items-center gap-base">
+<div class="w-8 h-8 rounded bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img alt="User profile photo" class="w-full h-full object-cover grayscale contrast-125" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFX0UynyXd_jS6p3fLh6EbtZ-XaD047UuHAnD6wb9jDEcbJyBan-OrL4I97scDNNxINNqqfoQrujr-G1-gRaB2BAA6E6eTegcwgua1PE4aM6AVaUo4RbtI3J1GDxJzs5QV1kiQ6DJt_AJpFSD-zLOZCGwslnJlAkhMVEC-YsfHy1xQzbE7GIsjiCe3MORT5TAAGkptz91M1bZptcRkfOwx987w4W1y7gTuzWuuwjvNxBYclBNI9c0UACa3M2i_Gs54eHlpD3liU7Yo"/>
+</div>
+<h1 class="font-display-lg text-xl font-bold tracking-tight text-white">FORGE</h1>
+</div>
+<button aria-label="Notifications" class="text-on-surface-variant hover:text-white transition-colors">
+<span class="material-symbols-outlined" style="font-size: 24px;">notifications</span>
+</button>
+</header>
+<main class="w-full max-w-2xl mx-auto px-container-padding-mobile md:px-container-padding-desktop pt-stack-gap-md pb-stack-gap-lg flex flex-col gap-stack-gap-md">
+<!-- Active Exercise Header -->
+<section class="flex flex-col items-center justify-center text-center gap-4">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-surface-container-low border border-outline-variant text-on-surface-variant">
+<span class="material-symbols-outlined text-[16px]">fitness_center</span>
+<span class="font-label-sm text-[11px] uppercase tracking-[0.1em]">Strength • Set 3 of 5</span>
+</div>
+<h2 class="font-headline-lg-mobile text-white uppercase tracking-tight">Barbell Deadlift</h2>
+<!-- Large Timer Display - Numerical Focus -->
+<div class="relative w-56 h-56 mt-4 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full" viewbox="0 0 120 120">
+<circle cx="60" cy="60" fill="none" r="58" stroke="#1c1b1b" stroke-width="2"></circle>
+<!-- Thinner stroke progress ring -->
+<circle class="progress-ring__circle" cx="60" cy="60" fill="none" r="58" stroke="#00a396" stroke-dasharray="364.42" stroke-dashoffset="145.77" stroke-linecap="square" stroke-width="2"></circle>
+</svg>
+<div class="flex flex-col items-center">
+<span class="font-display-lg text-[64px] text-white timer-numerical">01:45</span>
+<span class="font-label-md text-[10px] text-on-surface-variant uppercase tracking-[0.2em] -mt-2">Rest Timer</span>
+</div>
+</div>
+<!-- Timer Controls -->
+<div class="flex gap-2 mt-2">
+<button class="px-6 py-2 rounded bg-surface-container-high border border-outline-variant text-white hover:bg-surface-bright transition-colors active:scale-95 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+<button class="px-6 py-2 rounded bg-surface-container-high border border-outline-variant text-white hover:bg-surface-bright transition-colors active:scale-95 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">skip_next</span>
+</button>
+</div>
+</section>
+<!-- Set Tracking Utility Grid -->
+<section class="flex flex-col gap-2">
+<div class="flex justify-between items-baseline mb-2 border-b border-outline-variant/30 pb-2">
+<h3 class="font-label-md text-white uppercase tracking-wider">Working Sets</h3>
+<span class="font-label-sm text-on-surface-variant">TARGET: 315 LBS</span>
+</div>
+<!-- Set 1 (Completed) -->
+<div class="utility-border bg-surface-container-lowest rounded p-3 flex items-center justify-between opacity-50">
+<div class="flex items-center gap-4">
+<div class="font-label-sm text-on-surface-variant w-4">1</div>
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface line-through">315 lbs</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant uppercase">5 REPS</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+</div>
+<!-- Set 2 (Completed) -->
+<div class="utility-border bg-surface-container-lowest rounded p-3 flex items-center justify-between opacity-50">
+<div class="flex items-center gap-4">
+<div class="font-label-sm text-on-surface-variant w-4">2</div>
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface line-through">315 lbs</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant uppercase">5 REPS</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary text-[20px]">check_circle</span>
+</div>
+<!-- Set 3 (Active) -->
+<div class="border-2 border-primary bg-surface-container-low rounded p-4 flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+<span class="font-label-md text-primary uppercase tracking-widest text-[11px]">Active Set 3</span>
+</div>
+<span class="font-label-sm text-on-surface-variant text-[10px]">CURRENT METRIC</span>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<!-- Weight Input -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-sm text-[10px] text-on-surface-variant uppercase tracking-tighter">Weight (lbs)</label>
+<div class="input-utility rounded px-3 py-2">
+<input class="bg-transparent border-none text-white font-headline-md text-center w-full p-0 focus:ring-0" type="number" value="315"/>
+</div>
+</div>
+<!-- Reps Input -->
+<div class="flex flex-col gap-1.5">
+<label class="font-label-sm text-[10px] text-on-surface-variant uppercase tracking-tighter">Reps</label>
+<div class="input-utility rounded px-3 py-2">
+<input class="bg-transparent border-none text-white font-headline-md text-center w-full p-0 focus:ring-0" type="number" value="5"/>
+</div>
+</div>
+</div>
+<button class="w-full py-3 bg-primary text-white font-label-md uppercase tracking-[0.15em] rounded hover:brightness-110 transition-all active:scale-[0.99] flex items-center justify-center gap-2 font-bold mt-1">
+                Log Metric
+            </button>
+</div>
+<!-- Set 4 (Upcoming) -->
+<div class="utility-border bg-surface-container-lowest rounded p-3 flex items-center justify-between opacity-30">
+<div class="flex items-center gap-4">
+<div class="font-label-sm text-on-surface-variant w-4">4</div>
+<div class="flex flex-col">
+<span class="font-body-md text-on-surface-variant">315 lbs</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant uppercase">5 REPS</span>
+</div>
+</div>
+</div>
+<!-- Add Set Button -->
+<button class="w-full py-2.5 mt-1 border border-dashed border-outline-variant rounded text-on-surface-variant hover:text-white hover:border-outline transition-colors flex items-center justify-center gap-2 font-label-sm uppercase tracking-widest text-[11px]">
+<span class="material-symbols-outlined text-[18px]">add</span>
+            New Sequence
+        </button>
+</section>
+<!-- Next Exercise Preview -->
+<section class="utility-border bg-surface-container rounded p-4 flex items-center justify-between mt-2">
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-primary uppercase tracking-[0.2em] mb-1">Queue Next</span>
+<span class="font-body-lg font-bold text-white uppercase tracking-tight">Pull-ups</span>
+<span class="font-label-sm text-on-surface-variant text-[11px] mt-1">3 SETS • 8-10 REPS</span>
+</div>
+<button class="w-10 h-10 rounded bg-surface-container-high border border-outline-variant text-on-surface hover:text-white transition-colors active:scale-95 flex items-center justify-center">
+<span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+</button>
+</section>
+<!-- Global Action -->
+<div class="pt-8 pb-12 flex justify-center">
+<button class="px-10 py-3 bg-surface-container-lowest border border-error/50 text-error font-label-md rounded uppercase tracking-[0.2em] text-[11px] hover:bg-error/10 transition-colors active:scale-95 flex items-center gap-2 font-bold">
+<span class="material-symbols-outlined text-[18px]">stop_circle</span>
+            Terminate Workout
+        </button>
+</div>
+</main>
+</body></html>

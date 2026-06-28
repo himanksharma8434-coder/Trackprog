@@ -46,13 +46,13 @@ class ProgramBuilderScreen extends StatelessWidget {
               body: ListView(
                 padding: const EdgeInsets.all(16),
                 children: [
-                  ...program.blocks.map((block) => _buildBlockCard(context, block)),
+                  ...program.days.map((day) => _buildDayCard(context, day)),
                   const SizedBox(height: 16),
                   ElevatedButton.icon(
                     icon: const Icon(Icons.add),
-                    label: const Text('Add Block'),
+                    label: const Text('Add Day'),
                     onPressed: () {
-                      _showAddBlockDialog(context);
+                      _showAddDayDialog(context);
                     },
                   ),
                 ],
@@ -65,75 +65,52 @@ class ProgramBuilderScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBlockCard(BuildContext context, ProgramBlock block) {
+  Widget _buildDayCard(BuildContext context, ProgramDay day) {
     return Card(
       color: AppColors.surface,
       margin: const EdgeInsets.only(bottom: 16),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(block.name, style: AppTypography.h4),
-            Text('${block.weeks} Weeks', style: AppTypography.bodyM.copyWith(color: AppColors.textSecondary)),
-            const SizedBox(height: 16),
-            ...block.sessions.map((s) => ListTile(
-              title: Text(s.name, style: AppTypography.bodyL),
-              subtitle: Text('Day ${s.dayOfWeek}', style: AppTypography.bodyS),
-              trailing: const Icon(Icons.chevron_right, color: AppColors.textSecondary),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (ctx) => BlocProvider.value(
-                      value: context.read<ProgramBuilderBloc>(),
-                      child: SessionBuilderScreen(
-                        blockId: block.id,
-                        sessionId: s.id,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            )),
-            TextButton.icon(
-              icon: const Icon(Icons.add, color: AppColors.primary),
-              label: Text('Add Session', style: AppTypography.bodyM.copyWith(color: AppColors.primary)),
-              onPressed: () {
-                context.read<ProgramBuilderBloc>().add(
-                  AddSessionToBlock(block.id, 'New Session', block.sessions.length + 1)
-                );
-              },
-            )
-          ],
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4),
+        side: const BorderSide(color: AppColors.border, width: 1),
+      ),
+      child: ListTile(
+        contentPadding: const EdgeInsets.all(16),
+        title: Text(day.name, style: AppTypography.h3),
+        subtitle: Padding(
+          padding: const EdgeInsets.only(top: 8.0),
+          child: Text('${day.exercises.length} Exercises', style: AppTypography.bodyM.copyWith(color: AppColors.textSecondary)),
         ),
+        trailing: const Icon(Icons.chevron_right, color: AppColors.textSecondary),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (ctx) => BlocProvider.value(
+                value: context.read<ProgramBuilderBloc>(),
+                child: SessionBuilderScreen(
+                  dayId: day.id,
+                ),
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  void _showAddBlockDialog(BuildContext context) {
+  void _showAddDayDialog(BuildContext context) {
     final bloc = context.read<ProgramBuilderBloc>();
     showDialog(
       context: context,
       builder: (ctx) {
         String name = '';
-        int weeks = 4;
         return AlertDialog(
           backgroundColor: AppColors.surface,
-          title: Text('Add Block', style: AppTypography.h3),
-          content: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              TextField(
-                decoration: const InputDecoration(labelText: 'Block Name'),
-                onChanged: (v) => name = v,
-              ),
-              TextField(
-                decoration: const InputDecoration(labelText: 'Weeks'),
-                keyboardType: TextInputType.number,
-                onChanged: (v) => weeks = int.tryParse(v) ?? 4,
-              ),
-            ],
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4), side: const BorderSide(color: AppColors.border, width: 1)),
+          title: Text('Add Day', style: AppTypography.h3),
+          content: TextField(
+            decoration: const InputDecoration(labelText: 'Day Name (e.g., Push Day)'),
+            onChanged: (v) => name = v,
           ),
           actions: [
             TextButton(
@@ -143,7 +120,7 @@ class ProgramBuilderScreen extends StatelessWidget {
             TextButton(
               onPressed: () {
                 if (name.isNotEmpty) {
-                  bloc.add(AddBlock(name, BlockType.custom, weeks));
+                  bloc.add(AddDay(name));
                   Navigator.pop(ctx);
                 }
               },

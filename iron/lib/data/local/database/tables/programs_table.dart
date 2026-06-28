@@ -7,7 +7,6 @@ class ProgramsTable extends Table {
   TextColumn get id => text()();
   TextColumn get name => text()();
   TextColumn get author => text().nullable()();
-  IntColumn get totalWeeks => integer()();
   BoolColumn get isCustom => boolean()();
   BoolColumn get isImported => boolean()();
   DateTimeColumn get createdAt => dateTime()();
@@ -16,25 +15,12 @@ class ProgramsTable extends Table {
   Set<Column> get primaryKey => {id};
 }
 
-@DataClassName('ProgramBlockModel')
-class ProgramBlocksTable extends Table {
+@DataClassName('ProgramDayModel')
+class ProgramDaysTable extends Table {
   TextColumn get id => text()();
   TextColumn get programId => text().references(ProgramsTable, #id)();
+  IntColumn get dayNumber => integer()();
   TextColumn get name => text()();
-  IntColumn get weeks => integer()();
-  IntColumn get type => integer().map(const EnumIndexConverter<BlockType>(BlockType.values))();
-
-  @override
-  Set<Column> get primaryKey => {id};
-}
-
-@DataClassName('ProgramSessionModel')
-class ProgramSessionsTable extends Table {
-  TextColumn get id => text()();
-  TextColumn get blockId => text().references(ProgramBlocksTable, #id)();
-  IntColumn get dayOfWeek => integer()();
-  TextColumn get name => text()();
-  IntColumn get estimatedDurationMinutes => integer()();
 
   @override
   Set<Column> get primaryKey => {id};
@@ -43,16 +29,24 @@ class ProgramSessionsTable extends Table {
 @DataClassName('ProgramExerciseModel')
 class ProgramExercisesTable extends Table {
   TextColumn get id => text()();
-  TextColumn get sessionId => text().references(ProgramSessionsTable, #id)();
+  TextColumn get dayId => text().references(ProgramDaysTable, #id)();
   TextColumn get exerciseId => text()();
   TextColumn get exerciseName => text()();
-  IntColumn get sets => integer()();
-  IntColumn get repMin => integer()();
-  IntColumn get repMax => integer()();
-  IntColumn get rirTarget => integer().nullable()();
   IntColumn get restSeconds => integer()();
-  
-  TextColumn get allowedSetTypesStr => text().withDefault(const Constant('0'))(); 
+
+  @override
+  Set<Column> get primaryKey => {id};
+}
+
+@DataClassName('ProgramSetModel')
+class ProgramSetsTable extends Table {
+  TextColumn get id => text()();
+  TextColumn get exerciseId => text().references(ProgramExercisesTable, #id)();
+  IntColumn get setNumber => integer()();
+  IntColumn get targetReps => integer().nullable()();
+  RealColumn get targetWeight => real().nullable()();
+  RealColumn get targetRpe => real().nullable()();
+  IntColumn get setType => integer().map(const EnumIndexConverter<SetType>(SetType.values)).withDefault(const Constant(0))();
 
   @override
   Set<Column> get primaryKey => {id};

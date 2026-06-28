@@ -4,7 +4,7 @@ import '../../../../domain/entities/workout.dart';
 @DataClassName('WorkoutSessionModel')
 class WorkoutSessionsTable extends Table {
   TextColumn get id => text()();
-  TextColumn get programSessionId => text().nullable()();
+  TextColumn get programDayId => text().nullable()();
   TextColumn get name => text()();
   DateTimeColumn get startedAt => dateTime()();
   DateTimeColumn get finishedAt => dateTime().nullable()();

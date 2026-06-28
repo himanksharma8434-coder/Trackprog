@@ -278,12 +278,12 @@ class $WorkoutSessionsTableTable extends WorkoutSessionsTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _programSessionIdMeta = const VerificationMeta(
-    'programSessionId',
+  static const VerificationMeta _programDayIdMeta = const VerificationMeta(
+    'programDayId',
   );
   @override
-  late final GeneratedColumn<String> programSessionId = GeneratedColumn<String>(
-    'program_session_id',
+  late final GeneratedColumn<String> programDayId = GeneratedColumn<String>(
+    'program_day_id',
     aliasedName,
     true,
     type: DriftSqlType.string,
@@ -367,7 +367,7 @@ class $WorkoutSessionsTableTable extends WorkoutSessionsTable
   @override
   List<GeneratedColumn> get $columns => [
     id,
-    programSessionId,
+    programDayId,
     name,
     startedAt,
     finishedAt,
@@ -393,12 +393,12 @@ class $WorkoutSessionsTableTable extends WorkoutSessionsTable
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    if (data.containsKey('program_session_id')) {
+    if (data.containsKey('program_day_id')) {
       context.handle(
-        _programSessionIdMeta,
-        programSessionId.isAcceptableOrUnknown(
-          data['program_session_id']!,
-          _programSessionIdMeta,
+        _programDayIdMeta,
+        programDayId.isAcceptableOrUnknown(
+          data['program_day_id']!,
+          _programDayIdMeta,
         ),
       );
     }
@@ -467,9 +467,9 @@ class $WorkoutSessionsTableTable extends WorkoutSessionsTable
         DriftSqlType.string,
         data['${effectivePrefix}id'],
       )!,
-      programSessionId: attachedDatabase.typeMapping.read(
+      programDayId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}program_session_id'],
+        data['${effectivePrefix}program_day_id'],
       ),
       name: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -511,7 +511,7 @@ class $WorkoutSessionsTableTable extends WorkoutSessionsTable
 class WorkoutSessionModel extends DataClass
     implements Insertable<WorkoutSessionModel> {
   final String id;
-  final String? programSessionId;
+  final String? programDayId;
   final String name;
   final DateTime startedAt;
   final DateTime? finishedAt;
@@ -521,7 +521,7 @@ class WorkoutSessionModel extends DataClass
   final String? note;
   const WorkoutSessionModel({
     required this.id,
-    this.programSessionId,
+    this.programDayId,
     required this.name,
     required this.startedAt,
     this.finishedAt,
@@ -534,8 +534,8 @@ class WorkoutSessionModel extends DataClass
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    if (!nullToAbsent || programSessionId != null) {
-      map['program_session_id'] = Variable<String>(programSessionId);
+    if (!nullToAbsent || programDayId != null) {
+      map['program_day_id'] = Variable<String>(programDayId);
     }
     map['name'] = Variable<String>(name);
     map['started_at'] = Variable<DateTime>(startedAt);
@@ -556,9 +556,9 @@ class WorkoutSessionModel extends DataClass
   WorkoutSessionsTableCompanion toCompanion(bool nullToAbsent) {
     return WorkoutSessionsTableCompanion(
       id: Value(id),
-      programSessionId: programSessionId == null && nullToAbsent
+      programDayId: programDayId == null && nullToAbsent
           ? const Value.absent()
-          : Value(programSessionId),
+          : Value(programDayId),
       name: Value(name),
       startedAt: Value(startedAt),
       finishedAt: finishedAt == null && nullToAbsent
@@ -580,7 +580,7 @@ class WorkoutSessionModel extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return WorkoutSessionModel(
       id: serializer.fromJson<String>(json['id']),
-      programSessionId: serializer.fromJson<String?>(json['programSessionId']),
+      programDayId: serializer.fromJson<String?>(json['programDayId']),
       name: serializer.fromJson<String>(json['name']),
       startedAt: serializer.fromJson<DateTime>(json['startedAt']),
       finishedAt: serializer.fromJson<DateTime?>(json['finishedAt']),
@@ -595,7 +595,7 @@ class WorkoutSessionModel extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'programSessionId': serializer.toJson<String?>(programSessionId),
+      'programDayId': serializer.toJson<String?>(programDayId),
       'name': serializer.toJson<String>(name),
       'startedAt': serializer.toJson<DateTime>(startedAt),
       'finishedAt': serializer.toJson<DateTime?>(finishedAt),
@@ -608,7 +608,7 @@ class WorkoutSessionModel extends DataClass
 
   WorkoutSessionModel copyWith({
     String? id,
-    Value<String?> programSessionId = const Value.absent(),
+    Value<String?> programDayId = const Value.absent(),
     String? name,
     DateTime? startedAt,
     Value<DateTime?> finishedAt = const Value.absent(),
@@ -618,9 +618,7 @@ class WorkoutSessionModel extends DataClass
     Value<String?> note = const Value.absent(),
   }) => WorkoutSessionModel(
     id: id ?? this.id,
-    programSessionId: programSessionId.present
-        ? programSessionId.value
-        : this.programSessionId,
+    programDayId: programDayId.present ? programDayId.value : this.programDayId,
     name: name ?? this.name,
     startedAt: startedAt ?? this.startedAt,
     finishedAt: finishedAt.present ? finishedAt.value : this.finishedAt,
@@ -632,9 +630,9 @@ class WorkoutSessionModel extends DataClass
   WorkoutSessionModel copyWithCompanion(WorkoutSessionsTableCompanion data) {
     return WorkoutSessionModel(
       id: data.id.present ? data.id.value : this.id,
-      programSessionId: data.programSessionId.present
-          ? data.programSessionId.value
-          : this.programSessionId,
+      programDayId: data.programDayId.present
+          ? data.programDayId.value
+          : this.programDayId,
       name: data.name.present ? data.name.value : this.name,
       startedAt: data.startedAt.present ? data.startedAt.value : this.startedAt,
       finishedAt: data.finishedAt.present
@@ -657,7 +655,7 @@ class WorkoutSessionModel extends DataClass
   String toString() {
     return (StringBuffer('WorkoutSessionModel(')
           ..write('id: $id, ')
-          ..write('programSessionId: $programSessionId, ')
+          ..write('programDayId: $programDayId, ')
           ..write('name: $name, ')
           ..write('startedAt: $startedAt, ')
           ..write('finishedAt: $finishedAt, ')
@@ -672,7 +670,7 @@ class WorkoutSessionModel extends DataClass
   @override
   int get hashCode => Object.hash(
     id,
-    programSessionId,
+    programDayId,
     name,
     startedAt,
     finishedAt,
@@ -686,7 +684,7 @@ class WorkoutSessionModel extends DataClass
       identical(this, other) ||
       (other is WorkoutSessionModel &&
           other.id == this.id &&
-          other.programSessionId == this.programSessionId &&
+          other.programDayId == this.programDayId &&
           other.name == this.name &&
           other.startedAt == this.startedAt &&
           other.finishedAt == this.finishedAt &&
@@ -699,7 +697,7 @@ class WorkoutSessionModel extends DataClass
 class WorkoutSessionsTableCompanion
     extends UpdateCompanion<WorkoutSessionModel> {
   final Value<String> id;
-  final Value<String?> programSessionId;
+  final Value<String?> programDayId;
   final Value<String> name;
   final Value<DateTime> startedAt;
   final Value<DateTime?> finishedAt;
@@ -710,7 +708,7 @@ class WorkoutSessionsTableCompanion
   final Value<int> rowid;
   const WorkoutSessionsTableCompanion({
     this.id = const Value.absent(),
-    this.programSessionId = const Value.absent(),
+    this.programDayId = const Value.absent(),
     this.name = const Value.absent(),
     this.startedAt = const Value.absent(),
     this.finishedAt = const Value.absent(),
@@ -722,7 +720,7 @@ class WorkoutSessionsTableCompanion
   });
   WorkoutSessionsTableCompanion.insert({
     required String id,
-    this.programSessionId = const Value.absent(),
+    this.programDayId = const Value.absent(),
     required String name,
     required DateTime startedAt,
     this.finishedAt = const Value.absent(),
@@ -736,7 +734,7 @@ class WorkoutSessionsTableCompanion
        startedAt = Value(startedAt);
   static Insertable<WorkoutSessionModel> custom({
     Expression<String>? id,
-    Expression<String>? programSessionId,
+    Expression<String>? programDayId,
     Expression<String>? name,
     Expression<DateTime>? startedAt,
     Expression<DateTime>? finishedAt,
@@ -748,7 +746,7 @@ class WorkoutSessionsTableCompanion
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (programSessionId != null) 'program_session_id': programSessionId,
+      if (programDayId != null) 'program_day_id': programDayId,
       if (name != null) 'name': name,
       if (startedAt != null) 'started_at': startedAt,
       if (finishedAt != null) 'finished_at': finishedAt,
@@ -762,7 +760,7 @@ class WorkoutSessionsTableCompanion
 
   WorkoutSessionsTableCompanion copyWith({
     Value<String>? id,
-    Value<String?>? programSessionId,
+    Value<String?>? programDayId,
     Value<String>? name,
     Value<DateTime>? startedAt,
     Value<DateTime?>? finishedAt,
@@ -774,7 +772,7 @@ class WorkoutSessionsTableCompanion
   }) {
     return WorkoutSessionsTableCompanion(
       id: id ?? this.id,
-      programSessionId: programSessionId ?? this.programSessionId,
+      programDayId: programDayId ?? this.programDayId,
       name: name ?? this.name,
       startedAt: startedAt ?? this.startedAt,
       finishedAt: finishedAt ?? this.finishedAt,
@@ -792,8 +790,8 @@ class WorkoutSessionsTableCompanion
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
-    if (programSessionId.present) {
-      map['program_session_id'] = Variable<String>(programSessionId.value);
+    if (programDayId.present) {
+      map['program_day_id'] = Variable<String>(programDayId.value);
     }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
@@ -826,7 +824,7 @@ class WorkoutSessionsTableCompanion
   String toString() {
     return (StringBuffer('WorkoutSessionsTableCompanion(')
           ..write('id: $id, ')
-          ..write('programSessionId: $programSessionId, ')
+          ..write('programDayId: $programDayId, ')
           ..write('name: $name, ')
           ..write('startedAt: $startedAt, ')
           ..write('finishedAt: $finishedAt, ')
@@ -1938,17 +1936,6 @@ class $ProgramsTableTable extends ProgramsTable
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
-  static const VerificationMeta _totalWeeksMeta = const VerificationMeta(
-    'totalWeeks',
-  );
-  @override
-  late final GeneratedColumn<int> totalWeeks = GeneratedColumn<int>(
-    'total_weeks',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
   static const VerificationMeta _isCustomMeta = const VerificationMeta(
     'isCustom',
   );
@@ -1993,7 +1980,6 @@ class $ProgramsTableTable extends ProgramsTable
     id,
     name,
     author,
-    totalWeeks,
     isCustom,
     isImported,
     createdAt,
@@ -2028,14 +2014,6 @@ class $ProgramsTableTable extends ProgramsTable
         _authorMeta,
         author.isAcceptableOrUnknown(data['author']!, _authorMeta),
       );
-    }
-    if (data.containsKey('total_weeks')) {
-      context.handle(
-        _totalWeeksMeta,
-        totalWeeks.isAcceptableOrUnknown(data['total_weeks']!, _totalWeeksMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_totalWeeksMeta);
     }
     if (data.containsKey('is_custom')) {
       context.handle(
@@ -2082,10 +2060,6 @@ class $ProgramsTableTable extends ProgramsTable
         DriftSqlType.string,
         data['${effectivePrefix}author'],
       ),
-      totalWeeks: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}total_weeks'],
-      )!,
       isCustom: attachedDatabase.typeMapping.read(
         DriftSqlType.bool,
         data['${effectivePrefix}is_custom'],
@@ -2111,7 +2085,6 @@ class ProgramModel extends DataClass implements Insertable<ProgramModel> {
   final String id;
   final String name;
   final String? author;
-  final int totalWeeks;
   final bool isCustom;
   final bool isImported;
   final DateTime createdAt;
@@ -2119,7 +2092,6 @@ class ProgramModel extends DataClass implements Insertable<ProgramModel> {
     required this.id,
     required this.name,
     this.author,
-    required this.totalWeeks,
     required this.isCustom,
     required this.isImported,
     required this.createdAt,
@@ -2132,7 +2104,6 @@ class ProgramModel extends DataClass implements Insertable<ProgramModel> {
     if (!nullToAbsent || author != null) {
       map['author'] = Variable<String>(author);
     }
-    map['total_weeks'] = Variable<int>(totalWeeks);
     map['is_custom'] = Variable<bool>(isCustom);
     map['is_imported'] = Variable<bool>(isImported);
     map['created_at'] = Variable<DateTime>(createdAt);
@@ -2146,7 +2117,6 @@ class ProgramModel extends DataClass implements Insertable<ProgramModel> {
       author: author == null && nullToAbsent
           ? const Value.absent()
           : Value(author),
-      totalWeeks: Value(totalWeeks),
       isCustom: Value(isCustom),
       isImported: Value(isImported),
       createdAt: Value(createdAt),
@@ -2162,7 +2132,6 @@ class ProgramModel extends DataClass implements Insertable<ProgramModel> {
       id: serializer.fromJson<String>(json['id']),
       name: serializer.fromJson<String>(json['name']),
       author: serializer.fromJson<String?>(json['author']),
-      totalWeeks: serializer.fromJson<int>(json['totalWeeks']),
       isCustom: serializer.fromJson<bool>(json['isCustom']),
       isImported: serializer.fromJson<bool>(json['isImported']),
       createdAt: serializer.fromJson<DateTime>(json['createdAt']),
@@ -2175,7 +2144,6 @@ class ProgramModel extends DataClass implements Insertable<ProgramModel> {
       'id': serializer.toJson<String>(id),
       'name': serializer.toJson<String>(name),
       'author': serializer.toJson<String?>(author),
-      'totalWeeks': serializer.toJson<int>(totalWeeks),
       'isCustom': serializer.toJson<bool>(isCustom),
       'isImported': serializer.toJson<bool>(isImported),
       'createdAt': serializer.toJson<DateTime>(createdAt),
@@ -2186,7 +2154,6 @@ class ProgramModel extends DataClass implements Insertable<ProgramModel> {
     String? id,
     String? name,
     Value<String?> author = const Value.absent(),
-    int? totalWeeks,
     bool? isCustom,
     bool? isImported,
     DateTime? createdAt,
@@ -2194,7 +2161,6 @@ class ProgramModel extends DataClass implements Insertable<ProgramModel> {
     id: id ?? this.id,
     name: name ?? this.name,
     author: author.present ? author.value : this.author,
-    totalWeeks: totalWeeks ?? this.totalWeeks,
     isCustom: isCustom ?? this.isCustom,
     isImported: isImported ?? this.isImported,
     createdAt: createdAt ?? this.createdAt,
@@ -2204,9 +2170,6 @@ class ProgramModel extends DataClass implements Insertable<ProgramModel> {
       id: data.id.present ? data.id.value : this.id,
       name: data.name.present ? data.name.value : this.name,
       author: data.author.present ? data.author.value : this.author,
-      totalWeeks: data.totalWeeks.present
-          ? data.totalWeeks.value
-          : this.totalWeeks,
       isCustom: data.isCustom.present ? data.isCustom.value : this.isCustom,
       isImported: data.isImported.present
           ? data.isImported.value
@@ -2221,7 +2184,6 @@ class ProgramModel extends DataClass implements Insertable<ProgramModel> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('author: $author, ')
-          ..write('totalWeeks: $totalWeeks, ')
           ..write('isCustom: $isCustom, ')
           ..write('isImported: $isImported, ')
           ..write('createdAt: $createdAt')
@@ -2230,15 +2192,8 @@ class ProgramModel extends DataClass implements Insertable<ProgramModel> {
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    name,
-    author,
-    totalWeeks,
-    isCustom,
-    isImported,
-    createdAt,
-  );
+  int get hashCode =>
+      Object.hash(id, name, author, isCustom, isImported, createdAt);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -2246,7 +2201,6 @@ class ProgramModel extends DataClass implements Insertable<ProgramModel> {
           other.id == this.id &&
           other.name == this.name &&
           other.author == this.author &&
-          other.totalWeeks == this.totalWeeks &&
           other.isCustom == this.isCustom &&
           other.isImported == this.isImported &&
           other.createdAt == this.createdAt);
@@ -2256,7 +2210,6 @@ class ProgramsTableCompanion extends UpdateCompanion<ProgramModel> {
   final Value<String> id;
   final Value<String> name;
   final Value<String?> author;
-  final Value<int> totalWeeks;
   final Value<bool> isCustom;
   final Value<bool> isImported;
   final Value<DateTime> createdAt;
@@ -2265,7 +2218,6 @@ class ProgramsTableCompanion extends UpdateCompanion<ProgramModel> {
     this.id = const Value.absent(),
     this.name = const Value.absent(),
     this.author = const Value.absent(),
-    this.totalWeeks = const Value.absent(),
     this.isCustom = const Value.absent(),
     this.isImported = const Value.absent(),
     this.createdAt = const Value.absent(),
@@ -2275,14 +2227,12 @@ class ProgramsTableCompanion extends UpdateCompanion<ProgramModel> {
     required String id,
     required String name,
     this.author = const Value.absent(),
-    required int totalWeeks,
     required bool isCustom,
     required bool isImported,
     required DateTime createdAt,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        name = Value(name),
-       totalWeeks = Value(totalWeeks),
        isCustom = Value(isCustom),
        isImported = Value(isImported),
        createdAt = Value(createdAt);
@@ -2290,7 +2240,6 @@ class ProgramsTableCompanion extends UpdateCompanion<ProgramModel> {
     Expression<String>? id,
     Expression<String>? name,
     Expression<String>? author,
-    Expression<int>? totalWeeks,
     Expression<bool>? isCustom,
     Expression<bool>? isImported,
     Expression<DateTime>? createdAt,
@@ -2300,7 +2249,6 @@ class ProgramsTableCompanion extends UpdateCompanion<ProgramModel> {
       if (id != null) 'id': id,
       if (name != null) 'name': name,
       if (author != null) 'author': author,
-      if (totalWeeks != null) 'total_weeks': totalWeeks,
       if (isCustom != null) 'is_custom': isCustom,
       if (isImported != null) 'is_imported': isImported,
       if (createdAt != null) 'created_at': createdAt,
@@ -2312,7 +2260,6 @@ class ProgramsTableCompanion extends UpdateCompanion<ProgramModel> {
     Value<String>? id,
     Value<String>? name,
     Value<String?>? author,
-    Value<int>? totalWeeks,
     Value<bool>? isCustom,
     Value<bool>? isImported,
     Value<DateTime>? createdAt,
@@ -2322,7 +2269,6 @@ class ProgramsTableCompanion extends UpdateCompanion<ProgramModel> {
       id: id ?? this.id,
       name: name ?? this.name,
       author: author ?? this.author,
-      totalWeeks: totalWeeks ?? this.totalWeeks,
       isCustom: isCustom ?? this.isCustom,
       isImported: isImported ?? this.isImported,
       createdAt: createdAt ?? this.createdAt,
@@ -2341,9 +2287,6 @@ class ProgramsTableCompanion extends UpdateCompanion<ProgramModel> {
     }
     if (author.present) {
       map['author'] = Variable<String>(author.value);
-    }
-    if (totalWeeks.present) {
-      map['total_weeks'] = Variable<int>(totalWeeks.value);
     }
     if (isCustom.present) {
       map['is_custom'] = Variable<bool>(isCustom.value);
@@ -2366,7 +2309,6 @@ class ProgramsTableCompanion extends UpdateCompanion<ProgramModel> {
           ..write('id: $id, ')
           ..write('name: $name, ')
           ..write('author: $author, ')
-          ..write('totalWeeks: $totalWeeks, ')
           ..write('isCustom: $isCustom, ')
           ..write('isImported: $isImported, ')
           ..write('createdAt: $createdAt, ')
@@ -2376,12 +2318,12 @@ class ProgramsTableCompanion extends UpdateCompanion<ProgramModel> {
   }
 }
 
-class $ProgramBlocksTableTable extends ProgramBlocksTable
-    with TableInfo<$ProgramBlocksTableTable, ProgramBlockModel> {
+class $ProgramDaysTableTable extends ProgramDaysTable
+    with TableInfo<$ProgramDaysTableTable, ProgramDayModel> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $ProgramBlocksTableTable(this.attachedDatabase, [this._alias]);
+  $ProgramDaysTableTable(this.attachedDatabase, [this._alias]);
   static const VerificationMeta _idMeta = const VerificationMeta('id');
   @override
   late final GeneratedColumn<String> id = GeneratedColumn<String>(
@@ -2405,6 +2347,17 @@ class $ProgramBlocksTableTable extends ProgramBlocksTable
       'REFERENCES programs_table (id)',
     ),
   );
+  static const VerificationMeta _dayNumberMeta = const VerificationMeta(
+    'dayNumber',
+  );
+  @override
+  late final GeneratedColumn<int> dayNumber = GeneratedColumn<int>(
+    'day_number',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
   static const VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
   late final GeneratedColumn<String> name = GeneratedColumn<String>(
@@ -2414,34 +2367,16 @@ class $ProgramBlocksTableTable extends ProgramBlocksTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _weeksMeta = const VerificationMeta('weeks');
   @override
-  late final GeneratedColumn<int> weeks = GeneratedColumn<int>(
-    'weeks',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
-  @override
-  late final GeneratedColumnWithTypeConverter<BlockType, int> type =
-      GeneratedColumn<int>(
-        'type',
-        aliasedName,
-        false,
-        type: DriftSqlType.int,
-        requiredDuringInsert: true,
-      ).withConverter<BlockType>($ProgramBlocksTableTable.$convertertype);
-  @override
-  List<GeneratedColumn> get $columns => [id, programId, name, weeks, type];
+  List<GeneratedColumn> get $columns => [id, programId, dayNumber, name];
   @override
   String get aliasedName => _alias ?? actualTableName;
   @override
   String get actualTableName => $name;
-  static const String $name = 'program_blocks_table';
+  static const String $name = 'program_days_table';
   @override
   VerificationContext validateIntegrity(
-    Insertable<ProgramBlockModel> instance, {
+    Insertable<ProgramDayModel> instance, {
     bool isInserting = false,
   }) {
     final context = VerificationContext();
@@ -2459,6 +2394,14 @@ class $ProgramBlocksTableTable extends ProgramBlocksTable
     } else if (isInserting) {
       context.missing(_programIdMeta);
     }
+    if (data.containsKey('day_number')) {
+      context.handle(
+        _dayNumberMeta,
+        dayNumber.isAcceptableOrUnknown(data['day_number']!, _dayNumberMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_dayNumberMeta);
+    }
     if (data.containsKey('name')) {
       context.handle(
         _nameMeta,
@@ -2467,23 +2410,15 @@ class $ProgramBlocksTableTable extends ProgramBlocksTable
     } else if (isInserting) {
       context.missing(_nameMeta);
     }
-    if (data.containsKey('weeks')) {
-      context.handle(
-        _weeksMeta,
-        weeks.isAcceptableOrUnknown(data['weeks']!, _weeksMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_weeksMeta);
-    }
     return context;
   }
 
   @override
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
-  ProgramBlockModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+  ProgramDayModel map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return ProgramBlockModel(
+    return ProgramDayModel(
       id: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}id'],
@@ -2492,84 +2427,63 @@ class $ProgramBlocksTableTable extends ProgramBlocksTable
         DriftSqlType.string,
         data['${effectivePrefix}program_id'],
       )!,
+      dayNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}day_number'],
+      )!,
       name: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
         data['${effectivePrefix}name'],
       )!,
-      weeks: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}weeks'],
-      )!,
-      type: $ProgramBlocksTableTable.$convertertype.fromSql(
-        attachedDatabase.typeMapping.read(
-          DriftSqlType.int,
-          data['${effectivePrefix}type'],
-        )!,
-      ),
     );
   }
 
   @override
-  $ProgramBlocksTableTable createAlias(String alias) {
-    return $ProgramBlocksTableTable(attachedDatabase, alias);
+  $ProgramDaysTableTable createAlias(String alias) {
+    return $ProgramDaysTableTable(attachedDatabase, alias);
   }
-
-  static JsonTypeConverter2<BlockType, int, int> $convertertype =
-      const EnumIndexConverter<BlockType>(BlockType.values);
 }
 
-class ProgramBlockModel extends DataClass
-    implements Insertable<ProgramBlockModel> {
+class ProgramDayModel extends DataClass implements Insertable<ProgramDayModel> {
   final String id;
   final String programId;
+  final int dayNumber;
   final String name;
-  final int weeks;
-  final BlockType type;
-  const ProgramBlockModel({
+  const ProgramDayModel({
     required this.id,
     required this.programId,
+    required this.dayNumber,
     required this.name,
-    required this.weeks,
-    required this.type,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
     map['program_id'] = Variable<String>(programId);
+    map['day_number'] = Variable<int>(dayNumber);
     map['name'] = Variable<String>(name);
-    map['weeks'] = Variable<int>(weeks);
-    {
-      map['type'] = Variable<int>(
-        $ProgramBlocksTableTable.$convertertype.toSql(type),
-      );
-    }
     return map;
   }
 
-  ProgramBlocksTableCompanion toCompanion(bool nullToAbsent) {
-    return ProgramBlocksTableCompanion(
+  ProgramDaysTableCompanion toCompanion(bool nullToAbsent) {
+    return ProgramDaysTableCompanion(
       id: Value(id),
       programId: Value(programId),
+      dayNumber: Value(dayNumber),
       name: Value(name),
-      weeks: Value(weeks),
-      type: Value(type),
     );
   }
 
-  factory ProgramBlockModel.fromJson(
+  factory ProgramDayModel.fromJson(
     Map<String, dynamic> json, {
     ValueSerializer? serializer,
   }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return ProgramBlockModel(
+    return ProgramDayModel(
       id: serializer.fromJson<String>(json['id']),
       programId: serializer.fromJson<String>(json['programId']),
+      dayNumber: serializer.fromJson<int>(json['dayNumber']),
       name: serializer.fromJson<String>(json['name']),
-      weeks: serializer.fromJson<int>(json['weeks']),
-      type: $ProgramBlocksTableTable.$convertertype.fromJson(
-        serializer.fromJson<int>(json['type']),
-      ),
     );
   }
   @override
@@ -2578,121 +2492,105 @@ class ProgramBlockModel extends DataClass
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
       'programId': serializer.toJson<String>(programId),
+      'dayNumber': serializer.toJson<int>(dayNumber),
       'name': serializer.toJson<String>(name),
-      'weeks': serializer.toJson<int>(weeks),
-      'type': serializer.toJson<int>(
-        $ProgramBlocksTableTable.$convertertype.toJson(type),
-      ),
     };
   }
 
-  ProgramBlockModel copyWith({
+  ProgramDayModel copyWith({
     String? id,
     String? programId,
+    int? dayNumber,
     String? name,
-    int? weeks,
-    BlockType? type,
-  }) => ProgramBlockModel(
+  }) => ProgramDayModel(
     id: id ?? this.id,
     programId: programId ?? this.programId,
+    dayNumber: dayNumber ?? this.dayNumber,
     name: name ?? this.name,
-    weeks: weeks ?? this.weeks,
-    type: type ?? this.type,
   );
-  ProgramBlockModel copyWithCompanion(ProgramBlocksTableCompanion data) {
-    return ProgramBlockModel(
+  ProgramDayModel copyWithCompanion(ProgramDaysTableCompanion data) {
+    return ProgramDayModel(
       id: data.id.present ? data.id.value : this.id,
       programId: data.programId.present ? data.programId.value : this.programId,
+      dayNumber: data.dayNumber.present ? data.dayNumber.value : this.dayNumber,
       name: data.name.present ? data.name.value : this.name,
-      weeks: data.weeks.present ? data.weeks.value : this.weeks,
-      type: data.type.present ? data.type.value : this.type,
     );
   }
 
   @override
   String toString() {
-    return (StringBuffer('ProgramBlockModel(')
+    return (StringBuffer('ProgramDayModel(')
           ..write('id: $id, ')
           ..write('programId: $programId, ')
-          ..write('name: $name, ')
-          ..write('weeks: $weeks, ')
-          ..write('type: $type')
+          ..write('dayNumber: $dayNumber, ')
+          ..write('name: $name')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(id, programId, name, weeks, type);
+  int get hashCode => Object.hash(id, programId, dayNumber, name);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is ProgramBlockModel &&
+      (other is ProgramDayModel &&
           other.id == this.id &&
           other.programId == this.programId &&
-          other.name == this.name &&
-          other.weeks == this.weeks &&
-          other.type == this.type);
+          other.dayNumber == this.dayNumber &&
+          other.name == this.name);
 }
 
-class ProgramBlocksTableCompanion extends UpdateCompanion<ProgramBlockModel> {
+class ProgramDaysTableCompanion extends UpdateCompanion<ProgramDayModel> {
   final Value<String> id;
   final Value<String> programId;
+  final Value<int> dayNumber;
   final Value<String> name;
-  final Value<int> weeks;
-  final Value<BlockType> type;
   final Value<int> rowid;
-  const ProgramBlocksTableCompanion({
+  const ProgramDaysTableCompanion({
     this.id = const Value.absent(),
     this.programId = const Value.absent(),
+    this.dayNumber = const Value.absent(),
     this.name = const Value.absent(),
-    this.weeks = const Value.absent(),
-    this.type = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  ProgramBlocksTableCompanion.insert({
+  ProgramDaysTableCompanion.insert({
     required String id,
     required String programId,
+    required int dayNumber,
     required String name,
-    required int weeks,
-    required BlockType type,
     this.rowid = const Value.absent(),
   }) : id = Value(id),
        programId = Value(programId),
-       name = Value(name),
-       weeks = Value(weeks),
-       type = Value(type);
-  static Insertable<ProgramBlockModel> custom({
+       dayNumber = Value(dayNumber),
+       name = Value(name);
+  static Insertable<ProgramDayModel> custom({
     Expression<String>? id,
     Expression<String>? programId,
+    Expression<int>? dayNumber,
     Expression<String>? name,
-    Expression<int>? weeks,
-    Expression<int>? type,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
       if (programId != null) 'program_id': programId,
+      if (dayNumber != null) 'day_number': dayNumber,
       if (name != null) 'name': name,
-      if (weeks != null) 'weeks': weeks,
-      if (type != null) 'type': type,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
-  ProgramBlocksTableCompanion copyWith({
+  ProgramDaysTableCompanion copyWith({
     Value<String>? id,
     Value<String>? programId,
+    Value<int>? dayNumber,
     Value<String>? name,
-    Value<int>? weeks,
-    Value<BlockType>? type,
     Value<int>? rowid,
   }) {
-    return ProgramBlocksTableCompanion(
+    return ProgramDaysTableCompanion(
       id: id ?? this.id,
       programId: programId ?? this.programId,
+      dayNumber: dayNumber ?? this.dayNumber,
       name: name ?? this.name,
-      weeks: weeks ?? this.weeks,
-      type: type ?? this.type,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -2706,16 +2604,11 @@ class ProgramBlocksTableCompanion extends UpdateCompanion<ProgramBlockModel> {
     if (programId.present) {
       map['program_id'] = Variable<String>(programId.value);
     }
+    if (dayNumber.present) {
+      map['day_number'] = Variable<int>(dayNumber.value);
+    }
     if (name.present) {
       map['name'] = Variable<String>(name.value);
-    }
-    if (weeks.present) {
-      map['weeks'] = Variable<int>(weeks.value);
-    }
-    if (type.present) {
-      map['type'] = Variable<int>(
-        $ProgramBlocksTableTable.$convertertype.toSql(type.value),
-      );
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -2725,392 +2618,11 @@ class ProgramBlocksTableCompanion extends UpdateCompanion<ProgramBlockModel> {
 
   @override
   String toString() {
-    return (StringBuffer('ProgramBlocksTableCompanion(')
+    return (StringBuffer('ProgramDaysTableCompanion(')
           ..write('id: $id, ')
           ..write('programId: $programId, ')
+          ..write('dayNumber: $dayNumber, ')
           ..write('name: $name, ')
-          ..write('weeks: $weeks, ')
-          ..write('type: $type, ')
-          ..write('rowid: $rowid')
-          ..write(')'))
-        .toString();
-  }
-}
-
-class $ProgramSessionsTableTable extends ProgramSessionsTable
-    with TableInfo<$ProgramSessionsTableTable, ProgramSessionModel> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $ProgramSessionsTableTable(this.attachedDatabase, [this._alias]);
-  static const VerificationMeta _idMeta = const VerificationMeta('id');
-  @override
-  late final GeneratedColumn<String> id = GeneratedColumn<String>(
-    'id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _blockIdMeta = const VerificationMeta(
-    'blockId',
-  );
-  @override
-  late final GeneratedColumn<String> blockId = GeneratedColumn<String>(
-    'block_id',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-    defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES program_blocks_table (id)',
-    ),
-  );
-  static const VerificationMeta _dayOfWeekMeta = const VerificationMeta(
-    'dayOfWeek',
-  );
-  @override
-  late final GeneratedColumn<int> dayOfWeek = GeneratedColumn<int>(
-    'day_of_week',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _nameMeta = const VerificationMeta('name');
-  @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-    'name',
-    aliasedName,
-    false,
-    type: DriftSqlType.string,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _estimatedDurationMinutesMeta =
-      const VerificationMeta('estimatedDurationMinutes');
-  @override
-  late final GeneratedColumn<int> estimatedDurationMinutes =
-      GeneratedColumn<int>(
-        'estimated_duration_minutes',
-        aliasedName,
-        false,
-        type: DriftSqlType.int,
-        requiredDuringInsert: true,
-      );
-  @override
-  List<GeneratedColumn> get $columns => [
-    id,
-    blockId,
-    dayOfWeek,
-    name,
-    estimatedDurationMinutes,
-  ];
-  @override
-  String get aliasedName => _alias ?? actualTableName;
-  @override
-  String get actualTableName => $name;
-  static const String $name = 'program_sessions_table';
-  @override
-  VerificationContext validateIntegrity(
-    Insertable<ProgramSessionModel> instance, {
-    bool isInserting = false,
-  }) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    } else if (isInserting) {
-      context.missing(_idMeta);
-    }
-    if (data.containsKey('block_id')) {
-      context.handle(
-        _blockIdMeta,
-        blockId.isAcceptableOrUnknown(data['block_id']!, _blockIdMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_blockIdMeta);
-    }
-    if (data.containsKey('day_of_week')) {
-      context.handle(
-        _dayOfWeekMeta,
-        dayOfWeek.isAcceptableOrUnknown(data['day_of_week']!, _dayOfWeekMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_dayOfWeekMeta);
-    }
-    if (data.containsKey('name')) {
-      context.handle(
-        _nameMeta,
-        name.isAcceptableOrUnknown(data['name']!, _nameMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_nameMeta);
-    }
-    if (data.containsKey('estimated_duration_minutes')) {
-      context.handle(
-        _estimatedDurationMinutesMeta,
-        estimatedDurationMinutes.isAcceptableOrUnknown(
-          data['estimated_duration_minutes']!,
-          _estimatedDurationMinutesMeta,
-        ),
-      );
-    } else if (isInserting) {
-      context.missing(_estimatedDurationMinutesMeta);
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {id};
-  @override
-  ProgramSessionModel map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return ProgramSessionModel(
-      id: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}id'],
-      )!,
-      blockId: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}block_id'],
-      )!,
-      dayOfWeek: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}day_of_week'],
-      )!,
-      name: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}name'],
-      )!,
-      estimatedDurationMinutes: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}estimated_duration_minutes'],
-      )!,
-    );
-  }
-
-  @override
-  $ProgramSessionsTableTable createAlias(String alias) {
-    return $ProgramSessionsTableTable(attachedDatabase, alias);
-  }
-}
-
-class ProgramSessionModel extends DataClass
-    implements Insertable<ProgramSessionModel> {
-  final String id;
-  final String blockId;
-  final int dayOfWeek;
-  final String name;
-  final int estimatedDurationMinutes;
-  const ProgramSessionModel({
-    required this.id,
-    required this.blockId,
-    required this.dayOfWeek,
-    required this.name,
-    required this.estimatedDurationMinutes,
-  });
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    map['id'] = Variable<String>(id);
-    map['block_id'] = Variable<String>(blockId);
-    map['day_of_week'] = Variable<int>(dayOfWeek);
-    map['name'] = Variable<String>(name);
-    map['estimated_duration_minutes'] = Variable<int>(estimatedDurationMinutes);
-    return map;
-  }
-
-  ProgramSessionsTableCompanion toCompanion(bool nullToAbsent) {
-    return ProgramSessionsTableCompanion(
-      id: Value(id),
-      blockId: Value(blockId),
-      dayOfWeek: Value(dayOfWeek),
-      name: Value(name),
-      estimatedDurationMinutes: Value(estimatedDurationMinutes),
-    );
-  }
-
-  factory ProgramSessionModel.fromJson(
-    Map<String, dynamic> json, {
-    ValueSerializer? serializer,
-  }) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return ProgramSessionModel(
-      id: serializer.fromJson<String>(json['id']),
-      blockId: serializer.fromJson<String>(json['blockId']),
-      dayOfWeek: serializer.fromJson<int>(json['dayOfWeek']),
-      name: serializer.fromJson<String>(json['name']),
-      estimatedDurationMinutes: serializer.fromJson<int>(
-        json['estimatedDurationMinutes'],
-      ),
-    );
-  }
-  @override
-  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
-    serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{
-      'id': serializer.toJson<String>(id),
-      'blockId': serializer.toJson<String>(blockId),
-      'dayOfWeek': serializer.toJson<int>(dayOfWeek),
-      'name': serializer.toJson<String>(name),
-      'estimatedDurationMinutes': serializer.toJson<int>(
-        estimatedDurationMinutes,
-      ),
-    };
-  }
-
-  ProgramSessionModel copyWith({
-    String? id,
-    String? blockId,
-    int? dayOfWeek,
-    String? name,
-    int? estimatedDurationMinutes,
-  }) => ProgramSessionModel(
-    id: id ?? this.id,
-    blockId: blockId ?? this.blockId,
-    dayOfWeek: dayOfWeek ?? this.dayOfWeek,
-    name: name ?? this.name,
-    estimatedDurationMinutes:
-        estimatedDurationMinutes ?? this.estimatedDurationMinutes,
-  );
-  ProgramSessionModel copyWithCompanion(ProgramSessionsTableCompanion data) {
-    return ProgramSessionModel(
-      id: data.id.present ? data.id.value : this.id,
-      blockId: data.blockId.present ? data.blockId.value : this.blockId,
-      dayOfWeek: data.dayOfWeek.present ? data.dayOfWeek.value : this.dayOfWeek,
-      name: data.name.present ? data.name.value : this.name,
-      estimatedDurationMinutes: data.estimatedDurationMinutes.present
-          ? data.estimatedDurationMinutes.value
-          : this.estimatedDurationMinutes,
-    );
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('ProgramSessionModel(')
-          ..write('id: $id, ')
-          ..write('blockId: $blockId, ')
-          ..write('dayOfWeek: $dayOfWeek, ')
-          ..write('name: $name, ')
-          ..write('estimatedDurationMinutes: $estimatedDurationMinutes')
-          ..write(')'))
-        .toString();
-  }
-
-  @override
-  int get hashCode =>
-      Object.hash(id, blockId, dayOfWeek, name, estimatedDurationMinutes);
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is ProgramSessionModel &&
-          other.id == this.id &&
-          other.blockId == this.blockId &&
-          other.dayOfWeek == this.dayOfWeek &&
-          other.name == this.name &&
-          other.estimatedDurationMinutes == this.estimatedDurationMinutes);
-}
-
-class ProgramSessionsTableCompanion
-    extends UpdateCompanion<ProgramSessionModel> {
-  final Value<String> id;
-  final Value<String> blockId;
-  final Value<int> dayOfWeek;
-  final Value<String> name;
-  final Value<int> estimatedDurationMinutes;
-  final Value<int> rowid;
-  const ProgramSessionsTableCompanion({
-    this.id = const Value.absent(),
-    this.blockId = const Value.absent(),
-    this.dayOfWeek = const Value.absent(),
-    this.name = const Value.absent(),
-    this.estimatedDurationMinutes = const Value.absent(),
-    this.rowid = const Value.absent(),
-  });
-  ProgramSessionsTableCompanion.insert({
-    required String id,
-    required String blockId,
-    required int dayOfWeek,
-    required String name,
-    required int estimatedDurationMinutes,
-    this.rowid = const Value.absent(),
-  }) : id = Value(id),
-       blockId = Value(blockId),
-       dayOfWeek = Value(dayOfWeek),
-       name = Value(name),
-       estimatedDurationMinutes = Value(estimatedDurationMinutes);
-  static Insertable<ProgramSessionModel> custom({
-    Expression<String>? id,
-    Expression<String>? blockId,
-    Expression<int>? dayOfWeek,
-    Expression<String>? name,
-    Expression<int>? estimatedDurationMinutes,
-    Expression<int>? rowid,
-  }) {
-    return RawValuesInsertable({
-      if (id != null) 'id': id,
-      if (blockId != null) 'block_id': blockId,
-      if (dayOfWeek != null) 'day_of_week': dayOfWeek,
-      if (name != null) 'name': name,
-      if (estimatedDurationMinutes != null)
-        'estimated_duration_minutes': estimatedDurationMinutes,
-      if (rowid != null) 'rowid': rowid,
-    });
-  }
-
-  ProgramSessionsTableCompanion copyWith({
-    Value<String>? id,
-    Value<String>? blockId,
-    Value<int>? dayOfWeek,
-    Value<String>? name,
-    Value<int>? estimatedDurationMinutes,
-    Value<int>? rowid,
-  }) {
-    return ProgramSessionsTableCompanion(
-      id: id ?? this.id,
-      blockId: blockId ?? this.blockId,
-      dayOfWeek: dayOfWeek ?? this.dayOfWeek,
-      name: name ?? this.name,
-      estimatedDurationMinutes:
-          estimatedDurationMinutes ?? this.estimatedDurationMinutes,
-      rowid: rowid ?? this.rowid,
-    );
-  }
-
-  @override
-  Map<String, Expression> toColumns(bool nullToAbsent) {
-    final map = <String, Expression>{};
-    if (id.present) {
-      map['id'] = Variable<String>(id.value);
-    }
-    if (blockId.present) {
-      map['block_id'] = Variable<String>(blockId.value);
-    }
-    if (dayOfWeek.present) {
-      map['day_of_week'] = Variable<int>(dayOfWeek.value);
-    }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
-    }
-    if (estimatedDurationMinutes.present) {
-      map['estimated_duration_minutes'] = Variable<int>(
-        estimatedDurationMinutes.value,
-      );
-    }
-    if (rowid.present) {
-      map['rowid'] = Variable<int>(rowid.value);
-    }
-    return map;
-  }
-
-  @override
-  String toString() {
-    return (StringBuffer('ProgramSessionsTableCompanion(')
-          ..write('id: $id, ')
-          ..write('blockId: $blockId, ')
-          ..write('dayOfWeek: $dayOfWeek, ')
-          ..write('name: $name, ')
-          ..write('estimatedDurationMinutes: $estimatedDurationMinutes, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -3132,18 +2644,16 @@ class $ProgramExercisesTableTable extends ProgramExercisesTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _sessionIdMeta = const VerificationMeta(
-    'sessionId',
-  );
+  static const VerificationMeta _dayIdMeta = const VerificationMeta('dayId');
   @override
-  late final GeneratedColumn<String> sessionId = GeneratedColumn<String>(
-    'session_id',
+  late final GeneratedColumn<String> dayId = GeneratedColumn<String>(
+    'day_id',
     aliasedName,
     false,
     type: DriftSqlType.string,
     requiredDuringInsert: true,
     defaultConstraints: GeneratedColumn.constraintIsAlways(
-      'REFERENCES program_sessions_table (id)',
+      'REFERENCES program_days_table (id)',
     ),
   );
   static const VerificationMeta _exerciseIdMeta = const VerificationMeta(
@@ -3168,44 +2678,6 @@ class $ProgramExercisesTableTable extends ProgramExercisesTable
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _setsMeta = const VerificationMeta('sets');
-  @override
-  late final GeneratedColumn<int> sets = GeneratedColumn<int>(
-    'sets',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _repMinMeta = const VerificationMeta('repMin');
-  @override
-  late final GeneratedColumn<int> repMin = GeneratedColumn<int>(
-    'rep_min',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _repMaxMeta = const VerificationMeta('repMax');
-  @override
-  late final GeneratedColumn<int> repMax = GeneratedColumn<int>(
-    'rep_max',
-    aliasedName,
-    false,
-    type: DriftSqlType.int,
-    requiredDuringInsert: true,
-  );
-  static const VerificationMeta _rirTargetMeta = const VerificationMeta(
-    'rirTarget',
-  );
-  @override
-  late final GeneratedColumn<int> rirTarget = GeneratedColumn<int>(
-    'rir_target',
-    aliasedName,
-    true,
-    type: DriftSqlType.int,
-    requiredDuringInsert: false,
-  );
   static const VerificationMeta _restSecondsMeta = const VerificationMeta(
     'restSeconds',
   );
@@ -3217,30 +2689,13 @@ class $ProgramExercisesTableTable extends ProgramExercisesTable
     type: DriftSqlType.int,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _allowedSetTypesStrMeta =
-      const VerificationMeta('allowedSetTypesStr');
-  @override
-  late final GeneratedColumn<String> allowedSetTypesStr =
-      GeneratedColumn<String>(
-        'allowed_set_types_str',
-        aliasedName,
-        false,
-        type: DriftSqlType.string,
-        requiredDuringInsert: false,
-        defaultValue: const Constant('0'),
-      );
   @override
   List<GeneratedColumn> get $columns => [
     id,
-    sessionId,
+    dayId,
     exerciseId,
     exerciseName,
-    sets,
-    repMin,
-    repMax,
-    rirTarget,
     restSeconds,
-    allowedSetTypesStr,
   ];
   @override
   String get aliasedName => _alias ?? actualTableName;
@@ -3259,13 +2714,13 @@ class $ProgramExercisesTableTable extends ProgramExercisesTable
     } else if (isInserting) {
       context.missing(_idMeta);
     }
-    if (data.containsKey('session_id')) {
+    if (data.containsKey('day_id')) {
       context.handle(
-        _sessionIdMeta,
-        sessionId.isAcceptableOrUnknown(data['session_id']!, _sessionIdMeta),
+        _dayIdMeta,
+        dayId.isAcceptableOrUnknown(data['day_id']!, _dayIdMeta),
       );
     } else if (isInserting) {
-      context.missing(_sessionIdMeta);
+      context.missing(_dayIdMeta);
     }
     if (data.containsKey('exercise_id')) {
       context.handle(
@@ -3286,36 +2741,6 @@ class $ProgramExercisesTableTable extends ProgramExercisesTable
     } else if (isInserting) {
       context.missing(_exerciseNameMeta);
     }
-    if (data.containsKey('sets')) {
-      context.handle(
-        _setsMeta,
-        sets.isAcceptableOrUnknown(data['sets']!, _setsMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_setsMeta);
-    }
-    if (data.containsKey('rep_min')) {
-      context.handle(
-        _repMinMeta,
-        repMin.isAcceptableOrUnknown(data['rep_min']!, _repMinMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_repMinMeta);
-    }
-    if (data.containsKey('rep_max')) {
-      context.handle(
-        _repMaxMeta,
-        repMax.isAcceptableOrUnknown(data['rep_max']!, _repMaxMeta),
-      );
-    } else if (isInserting) {
-      context.missing(_repMaxMeta);
-    }
-    if (data.containsKey('rir_target')) {
-      context.handle(
-        _rirTargetMeta,
-        rirTarget.isAcceptableOrUnknown(data['rir_target']!, _rirTargetMeta),
-      );
-    }
     if (data.containsKey('rest_seconds')) {
       context.handle(
         _restSecondsMeta,
@@ -3326,15 +2751,6 @@ class $ProgramExercisesTableTable extends ProgramExercisesTable
       );
     } else if (isInserting) {
       context.missing(_restSecondsMeta);
-    }
-    if (data.containsKey('allowed_set_types_str')) {
-      context.handle(
-        _allowedSetTypesStrMeta,
-        allowedSetTypesStr.isAcceptableOrUnknown(
-          data['allowed_set_types_str']!,
-          _allowedSetTypesStrMeta,
-        ),
-      );
     }
     return context;
   }
@@ -3349,9 +2765,9 @@ class $ProgramExercisesTableTable extends ProgramExercisesTable
         DriftSqlType.string,
         data['${effectivePrefix}id'],
       )!,
-      sessionId: attachedDatabase.typeMapping.read(
+      dayId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
-        data['${effectivePrefix}session_id'],
+        data['${effectivePrefix}day_id'],
       )!,
       exerciseId: attachedDatabase.typeMapping.read(
         DriftSqlType.string,
@@ -3361,29 +2777,9 @@ class $ProgramExercisesTableTable extends ProgramExercisesTable
         DriftSqlType.string,
         data['${effectivePrefix}exercise_name'],
       )!,
-      sets: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}sets'],
-      )!,
-      repMin: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}rep_min'],
-      )!,
-      repMax: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}rep_max'],
-      )!,
-      rirTarget: attachedDatabase.typeMapping.read(
-        DriftSqlType.int,
-        data['${effectivePrefix}rir_target'],
-      ),
       restSeconds: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}rest_seconds'],
-      )!,
-      allowedSetTypesStr: attachedDatabase.typeMapping.read(
-        DriftSqlType.string,
-        data['${effectivePrefix}allowed_set_types_str'],
       )!,
     );
   }
@@ -3397,59 +2793,35 @@ class $ProgramExercisesTableTable extends ProgramExercisesTable
 class ProgramExerciseModel extends DataClass
     implements Insertable<ProgramExerciseModel> {
   final String id;
-  final String sessionId;
+  final String dayId;
   final String exerciseId;
   final String exerciseName;
-  final int sets;
-  final int repMin;
-  final int repMax;
-  final int? rirTarget;
   final int restSeconds;
-  final String allowedSetTypesStr;
   const ProgramExerciseModel({
     required this.id,
-    required this.sessionId,
+    required this.dayId,
     required this.exerciseId,
     required this.exerciseName,
-    required this.sets,
-    required this.repMin,
-    required this.repMax,
-    this.rirTarget,
     required this.restSeconds,
-    required this.allowedSetTypesStr,
   });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['id'] = Variable<String>(id);
-    map['session_id'] = Variable<String>(sessionId);
+    map['day_id'] = Variable<String>(dayId);
     map['exercise_id'] = Variable<String>(exerciseId);
     map['exercise_name'] = Variable<String>(exerciseName);
-    map['sets'] = Variable<int>(sets);
-    map['rep_min'] = Variable<int>(repMin);
-    map['rep_max'] = Variable<int>(repMax);
-    if (!nullToAbsent || rirTarget != null) {
-      map['rir_target'] = Variable<int>(rirTarget);
-    }
     map['rest_seconds'] = Variable<int>(restSeconds);
-    map['allowed_set_types_str'] = Variable<String>(allowedSetTypesStr);
     return map;
   }
 
   ProgramExercisesTableCompanion toCompanion(bool nullToAbsent) {
     return ProgramExercisesTableCompanion(
       id: Value(id),
-      sessionId: Value(sessionId),
+      dayId: Value(dayId),
       exerciseId: Value(exerciseId),
       exerciseName: Value(exerciseName),
-      sets: Value(sets),
-      repMin: Value(repMin),
-      repMax: Value(repMax),
-      rirTarget: rirTarget == null && nullToAbsent
-          ? const Value.absent()
-          : Value(rirTarget),
       restSeconds: Value(restSeconds),
-      allowedSetTypesStr: Value(allowedSetTypesStr),
     );
   }
 
@@ -3460,17 +2832,10 @@ class ProgramExerciseModel extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return ProgramExerciseModel(
       id: serializer.fromJson<String>(json['id']),
-      sessionId: serializer.fromJson<String>(json['sessionId']),
+      dayId: serializer.fromJson<String>(json['dayId']),
       exerciseId: serializer.fromJson<String>(json['exerciseId']),
       exerciseName: serializer.fromJson<String>(json['exerciseName']),
-      sets: serializer.fromJson<int>(json['sets']),
-      repMin: serializer.fromJson<int>(json['repMin']),
-      repMax: serializer.fromJson<int>(json['repMax']),
-      rirTarget: serializer.fromJson<int?>(json['rirTarget']),
       restSeconds: serializer.fromJson<int>(json['restSeconds']),
-      allowedSetTypesStr: serializer.fromJson<String>(
-        json['allowedSetTypesStr'],
-      ),
     );
   }
   @override
@@ -3478,61 +2843,39 @@ class ProgramExerciseModel extends DataClass
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
       'id': serializer.toJson<String>(id),
-      'sessionId': serializer.toJson<String>(sessionId),
+      'dayId': serializer.toJson<String>(dayId),
       'exerciseId': serializer.toJson<String>(exerciseId),
       'exerciseName': serializer.toJson<String>(exerciseName),
-      'sets': serializer.toJson<int>(sets),
-      'repMin': serializer.toJson<int>(repMin),
-      'repMax': serializer.toJson<int>(repMax),
-      'rirTarget': serializer.toJson<int?>(rirTarget),
       'restSeconds': serializer.toJson<int>(restSeconds),
-      'allowedSetTypesStr': serializer.toJson<String>(allowedSetTypesStr),
     };
   }
 
   ProgramExerciseModel copyWith({
     String? id,
-    String? sessionId,
+    String? dayId,
     String? exerciseId,
     String? exerciseName,
-    int? sets,
-    int? repMin,
-    int? repMax,
-    Value<int?> rirTarget = const Value.absent(),
     int? restSeconds,
-    String? allowedSetTypesStr,
   }) => ProgramExerciseModel(
     id: id ?? this.id,
-    sessionId: sessionId ?? this.sessionId,
+    dayId: dayId ?? this.dayId,
     exerciseId: exerciseId ?? this.exerciseId,
     exerciseName: exerciseName ?? this.exerciseName,
-    sets: sets ?? this.sets,
-    repMin: repMin ?? this.repMin,
-    repMax: repMax ?? this.repMax,
-    rirTarget: rirTarget.present ? rirTarget.value : this.rirTarget,
     restSeconds: restSeconds ?? this.restSeconds,
-    allowedSetTypesStr: allowedSetTypesStr ?? this.allowedSetTypesStr,
   );
   ProgramExerciseModel copyWithCompanion(ProgramExercisesTableCompanion data) {
     return ProgramExerciseModel(
       id: data.id.present ? data.id.value : this.id,
-      sessionId: data.sessionId.present ? data.sessionId.value : this.sessionId,
+      dayId: data.dayId.present ? data.dayId.value : this.dayId,
       exerciseId: data.exerciseId.present
           ? data.exerciseId.value
           : this.exerciseId,
       exerciseName: data.exerciseName.present
           ? data.exerciseName.value
           : this.exerciseName,
-      sets: data.sets.present ? data.sets.value : this.sets,
-      repMin: data.repMin.present ? data.repMin.value : this.repMin,
-      repMax: data.repMax.present ? data.repMax.value : this.repMax,
-      rirTarget: data.rirTarget.present ? data.rirTarget.value : this.rirTarget,
       restSeconds: data.restSeconds.present
           ? data.restSeconds.value
           : this.restSeconds,
-      allowedSetTypesStr: data.allowedSetTypesStr.present
-          ? data.allowedSetTypesStr.value
-          : this.allowedSetTypesStr,
     );
   }
 
@@ -3540,147 +2883,88 @@ class ProgramExerciseModel extends DataClass
   String toString() {
     return (StringBuffer('ProgramExerciseModel(')
           ..write('id: $id, ')
-          ..write('sessionId: $sessionId, ')
+          ..write('dayId: $dayId, ')
           ..write('exerciseId: $exerciseId, ')
           ..write('exerciseName: $exerciseName, ')
-          ..write('sets: $sets, ')
-          ..write('repMin: $repMin, ')
-          ..write('repMax: $repMax, ')
-          ..write('rirTarget: $rirTarget, ')
-          ..write('restSeconds: $restSeconds, ')
-          ..write('allowedSetTypesStr: $allowedSetTypesStr')
+          ..write('restSeconds: $restSeconds')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(
-    id,
-    sessionId,
-    exerciseId,
-    exerciseName,
-    sets,
-    repMin,
-    repMax,
-    rirTarget,
-    restSeconds,
-    allowedSetTypesStr,
-  );
+  int get hashCode =>
+      Object.hash(id, dayId, exerciseId, exerciseName, restSeconds);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is ProgramExerciseModel &&
           other.id == this.id &&
-          other.sessionId == this.sessionId &&
+          other.dayId == this.dayId &&
           other.exerciseId == this.exerciseId &&
           other.exerciseName == this.exerciseName &&
-          other.sets == this.sets &&
-          other.repMin == this.repMin &&
-          other.repMax == this.repMax &&
-          other.rirTarget == this.rirTarget &&
-          other.restSeconds == this.restSeconds &&
-          other.allowedSetTypesStr == this.allowedSetTypesStr);
+          other.restSeconds == this.restSeconds);
 }
 
 class ProgramExercisesTableCompanion
     extends UpdateCompanion<ProgramExerciseModel> {
   final Value<String> id;
-  final Value<String> sessionId;
+  final Value<String> dayId;
   final Value<String> exerciseId;
   final Value<String> exerciseName;
-  final Value<int> sets;
-  final Value<int> repMin;
-  final Value<int> repMax;
-  final Value<int?> rirTarget;
   final Value<int> restSeconds;
-  final Value<String> allowedSetTypesStr;
   final Value<int> rowid;
   const ProgramExercisesTableCompanion({
     this.id = const Value.absent(),
-    this.sessionId = const Value.absent(),
+    this.dayId = const Value.absent(),
     this.exerciseId = const Value.absent(),
     this.exerciseName = const Value.absent(),
-    this.sets = const Value.absent(),
-    this.repMin = const Value.absent(),
-    this.repMax = const Value.absent(),
-    this.rirTarget = const Value.absent(),
     this.restSeconds = const Value.absent(),
-    this.allowedSetTypesStr = const Value.absent(),
     this.rowid = const Value.absent(),
   });
   ProgramExercisesTableCompanion.insert({
     required String id,
-    required String sessionId,
+    required String dayId,
     required String exerciseId,
     required String exerciseName,
-    required int sets,
-    required int repMin,
-    required int repMax,
-    this.rirTarget = const Value.absent(),
     required int restSeconds,
-    this.allowedSetTypesStr = const Value.absent(),
     this.rowid = const Value.absent(),
   }) : id = Value(id),
-       sessionId = Value(sessionId),
+       dayId = Value(dayId),
        exerciseId = Value(exerciseId),
        exerciseName = Value(exerciseName),
-       sets = Value(sets),
-       repMin = Value(repMin),
-       repMax = Value(repMax),
        restSeconds = Value(restSeconds);
   static Insertable<ProgramExerciseModel> custom({
     Expression<String>? id,
-    Expression<String>? sessionId,
+    Expression<String>? dayId,
     Expression<String>? exerciseId,
     Expression<String>? exerciseName,
-    Expression<int>? sets,
-    Expression<int>? repMin,
-    Expression<int>? repMax,
-    Expression<int>? rirTarget,
     Expression<int>? restSeconds,
-    Expression<String>? allowedSetTypesStr,
     Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
-      if (sessionId != null) 'session_id': sessionId,
+      if (dayId != null) 'day_id': dayId,
       if (exerciseId != null) 'exercise_id': exerciseId,
       if (exerciseName != null) 'exercise_name': exerciseName,
-      if (sets != null) 'sets': sets,
-      if (repMin != null) 'rep_min': repMin,
-      if (repMax != null) 'rep_max': repMax,
-      if (rirTarget != null) 'rir_target': rirTarget,
       if (restSeconds != null) 'rest_seconds': restSeconds,
-      if (allowedSetTypesStr != null)
-        'allowed_set_types_str': allowedSetTypesStr,
       if (rowid != null) 'rowid': rowid,
     });
   }
 
   ProgramExercisesTableCompanion copyWith({
     Value<String>? id,
-    Value<String>? sessionId,
+    Value<String>? dayId,
     Value<String>? exerciseId,
     Value<String>? exerciseName,
-    Value<int>? sets,
-    Value<int>? repMin,
-    Value<int>? repMax,
-    Value<int?>? rirTarget,
     Value<int>? restSeconds,
-    Value<String>? allowedSetTypesStr,
     Value<int>? rowid,
   }) {
     return ProgramExercisesTableCompanion(
       id: id ?? this.id,
-      sessionId: sessionId ?? this.sessionId,
+      dayId: dayId ?? this.dayId,
       exerciseId: exerciseId ?? this.exerciseId,
       exerciseName: exerciseName ?? this.exerciseName,
-      sets: sets ?? this.sets,
-      repMin: repMin ?? this.repMin,
-      repMax: repMax ?? this.repMax,
-      rirTarget: rirTarget ?? this.rirTarget,
       restSeconds: restSeconds ?? this.restSeconds,
-      allowedSetTypesStr: allowedSetTypesStr ?? this.allowedSetTypesStr,
       rowid: rowid ?? this.rowid,
     );
   }
@@ -3691,8 +2975,8 @@ class ProgramExercisesTableCompanion
     if (id.present) {
       map['id'] = Variable<String>(id.value);
     }
-    if (sessionId.present) {
-      map['session_id'] = Variable<String>(sessionId.value);
+    if (dayId.present) {
+      map['day_id'] = Variable<String>(dayId.value);
     }
     if (exerciseId.present) {
       map['exercise_id'] = Variable<String>(exerciseId.value);
@@ -3700,23 +2984,8 @@ class ProgramExercisesTableCompanion
     if (exerciseName.present) {
       map['exercise_name'] = Variable<String>(exerciseName.value);
     }
-    if (sets.present) {
-      map['sets'] = Variable<int>(sets.value);
-    }
-    if (repMin.present) {
-      map['rep_min'] = Variable<int>(repMin.value);
-    }
-    if (repMax.present) {
-      map['rep_max'] = Variable<int>(repMax.value);
-    }
-    if (rirTarget.present) {
-      map['rir_target'] = Variable<int>(rirTarget.value);
-    }
     if (restSeconds.present) {
       map['rest_seconds'] = Variable<int>(restSeconds.value);
-    }
-    if (allowedSetTypesStr.present) {
-      map['allowed_set_types_str'] = Variable<String>(allowedSetTypesStr.value);
     }
     if (rowid.present) {
       map['rowid'] = Variable<int>(rowid.value);
@@ -3728,15 +2997,494 @@ class ProgramExercisesTableCompanion
   String toString() {
     return (StringBuffer('ProgramExercisesTableCompanion(')
           ..write('id: $id, ')
-          ..write('sessionId: $sessionId, ')
+          ..write('dayId: $dayId, ')
           ..write('exerciseId: $exerciseId, ')
           ..write('exerciseName: $exerciseName, ')
-          ..write('sets: $sets, ')
-          ..write('repMin: $repMin, ')
-          ..write('repMax: $repMax, ')
-          ..write('rirTarget: $rirTarget, ')
           ..write('restSeconds: $restSeconds, ')
-          ..write('allowedSetTypesStr: $allowedSetTypesStr, ')
+          ..write('rowid: $rowid')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $ProgramSetsTableTable extends ProgramSetsTable
+    with TableInfo<$ProgramSetsTableTable, ProgramSetModel> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ProgramSetsTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<String> id = GeneratedColumn<String>(
+    'id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _exerciseIdMeta = const VerificationMeta(
+    'exerciseId',
+  );
+  @override
+  late final GeneratedColumn<String> exerciseId = GeneratedColumn<String>(
+    'exercise_id',
+    aliasedName,
+    false,
+    type: DriftSqlType.string,
+    requiredDuringInsert: true,
+    defaultConstraints: GeneratedColumn.constraintIsAlways(
+      'REFERENCES program_exercises_table (id)',
+    ),
+  );
+  static const VerificationMeta _setNumberMeta = const VerificationMeta(
+    'setNumber',
+  );
+  @override
+  late final GeneratedColumn<int> setNumber = GeneratedColumn<int>(
+    'set_number',
+    aliasedName,
+    false,
+    type: DriftSqlType.int,
+    requiredDuringInsert: true,
+  );
+  static const VerificationMeta _targetRepsMeta = const VerificationMeta(
+    'targetReps',
+  );
+  @override
+  late final GeneratedColumn<int> targetReps = GeneratedColumn<int>(
+    'target_reps',
+    aliasedName,
+    true,
+    type: DriftSqlType.int,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _targetWeightMeta = const VerificationMeta(
+    'targetWeight',
+  );
+  @override
+  late final GeneratedColumn<double> targetWeight = GeneratedColumn<double>(
+    'target_weight',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  static const VerificationMeta _targetRpeMeta = const VerificationMeta(
+    'targetRpe',
+  );
+  @override
+  late final GeneratedColumn<double> targetRpe = GeneratedColumn<double>(
+    'target_rpe',
+    aliasedName,
+    true,
+    type: DriftSqlType.double,
+    requiredDuringInsert: false,
+  );
+  @override
+  late final GeneratedColumnWithTypeConverter<SetType, int> setType =
+      GeneratedColumn<int>(
+        'set_type',
+        aliasedName,
+        false,
+        type: DriftSqlType.int,
+        requiredDuringInsert: false,
+        defaultValue: const Constant(0),
+      ).withConverter<SetType>($ProgramSetsTableTable.$convertersetType);
+  @override
+  List<GeneratedColumn> get $columns => [
+    id,
+    exerciseId,
+    setNumber,
+    targetReps,
+    targetWeight,
+    targetRpe,
+    setType,
+  ];
+  @override
+  String get aliasedName => _alias ?? actualTableName;
+  @override
+  String get actualTableName => $name;
+  static const String $name = 'program_sets_table';
+  @override
+  VerificationContext validateIntegrity(
+    Insertable<ProgramSetModel> instance, {
+    bool isInserting = false,
+  }) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    } else if (isInserting) {
+      context.missing(_idMeta);
+    }
+    if (data.containsKey('exercise_id')) {
+      context.handle(
+        _exerciseIdMeta,
+        exerciseId.isAcceptableOrUnknown(data['exercise_id']!, _exerciseIdMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_exerciseIdMeta);
+    }
+    if (data.containsKey('set_number')) {
+      context.handle(
+        _setNumberMeta,
+        setNumber.isAcceptableOrUnknown(data['set_number']!, _setNumberMeta),
+      );
+    } else if (isInserting) {
+      context.missing(_setNumberMeta);
+    }
+    if (data.containsKey('target_reps')) {
+      context.handle(
+        _targetRepsMeta,
+        targetReps.isAcceptableOrUnknown(data['target_reps']!, _targetRepsMeta),
+      );
+    }
+    if (data.containsKey('target_weight')) {
+      context.handle(
+        _targetWeightMeta,
+        targetWeight.isAcceptableOrUnknown(
+          data['target_weight']!,
+          _targetWeightMeta,
+        ),
+      );
+    }
+    if (data.containsKey('target_rpe')) {
+      context.handle(
+        _targetRpeMeta,
+        targetRpe.isAcceptableOrUnknown(data['target_rpe']!, _targetRpeMeta),
+      );
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ProgramSetModel map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ProgramSetModel(
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      exerciseId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}exercise_id'],
+      )!,
+      setNumber: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}set_number'],
+      )!,
+      targetReps: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}target_reps'],
+      ),
+      targetWeight: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}target_weight'],
+      ),
+      targetRpe: attachedDatabase.typeMapping.read(
+        DriftSqlType.double,
+        data['${effectivePrefix}target_rpe'],
+      ),
+      setType: $ProgramSetsTableTable.$convertersetType.fromSql(
+        attachedDatabase.typeMapping.read(
+          DriftSqlType.int,
+          data['${effectivePrefix}set_type'],
+        )!,
+      ),
+    );
+  }
+
+  @override
+  $ProgramSetsTableTable createAlias(String alias) {
+    return $ProgramSetsTableTable(attachedDatabase, alias);
+  }
+
+  static JsonTypeConverter2<SetType, int, int> $convertersetType =
+      const EnumIndexConverter<SetType>(SetType.values);
+}
+
+class ProgramSetModel extends DataClass implements Insertable<ProgramSetModel> {
+  final String id;
+  final String exerciseId;
+  final int setNumber;
+  final int? targetReps;
+  final double? targetWeight;
+  final double? targetRpe;
+  final SetType setType;
+  const ProgramSetModel({
+    required this.id,
+    required this.exerciseId,
+    required this.setNumber,
+    this.targetReps,
+    this.targetWeight,
+    this.targetRpe,
+    required this.setType,
+  });
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['id'] = Variable<String>(id);
+    map['exercise_id'] = Variable<String>(exerciseId);
+    map['set_number'] = Variable<int>(setNumber);
+    if (!nullToAbsent || targetReps != null) {
+      map['target_reps'] = Variable<int>(targetReps);
+    }
+    if (!nullToAbsent || targetWeight != null) {
+      map['target_weight'] = Variable<double>(targetWeight);
+    }
+    if (!nullToAbsent || targetRpe != null) {
+      map['target_rpe'] = Variable<double>(targetRpe);
+    }
+    {
+      map['set_type'] = Variable<int>(
+        $ProgramSetsTableTable.$convertersetType.toSql(setType),
+      );
+    }
+    return map;
+  }
+
+  ProgramSetsTableCompanion toCompanion(bool nullToAbsent) {
+    return ProgramSetsTableCompanion(
+      id: Value(id),
+      exerciseId: Value(exerciseId),
+      setNumber: Value(setNumber),
+      targetReps: targetReps == null && nullToAbsent
+          ? const Value.absent()
+          : Value(targetReps),
+      targetWeight: targetWeight == null && nullToAbsent
+          ? const Value.absent()
+          : Value(targetWeight),
+      targetRpe: targetRpe == null && nullToAbsent
+          ? const Value.absent()
+          : Value(targetRpe),
+      setType: Value(setType),
+    );
+  }
+
+  factory ProgramSetModel.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return ProgramSetModel(
+      id: serializer.fromJson<String>(json['id']),
+      exerciseId: serializer.fromJson<String>(json['exerciseId']),
+      setNumber: serializer.fromJson<int>(json['setNumber']),
+      targetReps: serializer.fromJson<int?>(json['targetReps']),
+      targetWeight: serializer.fromJson<double?>(json['targetWeight']),
+      targetRpe: serializer.fromJson<double?>(json['targetRpe']),
+      setType: $ProgramSetsTableTable.$convertersetType.fromJson(
+        serializer.fromJson<int>(json['setType']),
+      ),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'id': serializer.toJson<String>(id),
+      'exerciseId': serializer.toJson<String>(exerciseId),
+      'setNumber': serializer.toJson<int>(setNumber),
+      'targetReps': serializer.toJson<int?>(targetReps),
+      'targetWeight': serializer.toJson<double?>(targetWeight),
+      'targetRpe': serializer.toJson<double?>(targetRpe),
+      'setType': serializer.toJson<int>(
+        $ProgramSetsTableTable.$convertersetType.toJson(setType),
+      ),
+    };
+  }
+
+  ProgramSetModel copyWith({
+    String? id,
+    String? exerciseId,
+    int? setNumber,
+    Value<int?> targetReps = const Value.absent(),
+    Value<double?> targetWeight = const Value.absent(),
+    Value<double?> targetRpe = const Value.absent(),
+    SetType? setType,
+  }) => ProgramSetModel(
+    id: id ?? this.id,
+    exerciseId: exerciseId ?? this.exerciseId,
+    setNumber: setNumber ?? this.setNumber,
+    targetReps: targetReps.present ? targetReps.value : this.targetReps,
+    targetWeight: targetWeight.present ? targetWeight.value : this.targetWeight,
+    targetRpe: targetRpe.present ? targetRpe.value : this.targetRpe,
+    setType: setType ?? this.setType,
+  );
+  ProgramSetModel copyWithCompanion(ProgramSetsTableCompanion data) {
+    return ProgramSetModel(
+      id: data.id.present ? data.id.value : this.id,
+      exerciseId: data.exerciseId.present
+          ? data.exerciseId.value
+          : this.exerciseId,
+      setNumber: data.setNumber.present ? data.setNumber.value : this.setNumber,
+      targetReps: data.targetReps.present
+          ? data.targetReps.value
+          : this.targetReps,
+      targetWeight: data.targetWeight.present
+          ? data.targetWeight.value
+          : this.targetWeight,
+      targetRpe: data.targetRpe.present ? data.targetRpe.value : this.targetRpe,
+      setType: data.setType.present ? data.setType.value : this.setType,
+    );
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProgramSetModel(')
+          ..write('id: $id, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('setNumber: $setNumber, ')
+          ..write('targetReps: $targetReps, ')
+          ..write('targetWeight: $targetWeight, ')
+          ..write('targetRpe: $targetRpe, ')
+          ..write('setType: $setType')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(
+    id,
+    exerciseId,
+    setNumber,
+    targetReps,
+    targetWeight,
+    targetRpe,
+    setType,
+  );
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is ProgramSetModel &&
+          other.id == this.id &&
+          other.exerciseId == this.exerciseId &&
+          other.setNumber == this.setNumber &&
+          other.targetReps == this.targetReps &&
+          other.targetWeight == this.targetWeight &&
+          other.targetRpe == this.targetRpe &&
+          other.setType == this.setType);
+}
+
+class ProgramSetsTableCompanion extends UpdateCompanion<ProgramSetModel> {
+  final Value<String> id;
+  final Value<String> exerciseId;
+  final Value<int> setNumber;
+  final Value<int?> targetReps;
+  final Value<double?> targetWeight;
+  final Value<double?> targetRpe;
+  final Value<SetType> setType;
+  final Value<int> rowid;
+  const ProgramSetsTableCompanion({
+    this.id = const Value.absent(),
+    this.exerciseId = const Value.absent(),
+    this.setNumber = const Value.absent(),
+    this.targetReps = const Value.absent(),
+    this.targetWeight = const Value.absent(),
+    this.targetRpe = const Value.absent(),
+    this.setType = const Value.absent(),
+    this.rowid = const Value.absent(),
+  });
+  ProgramSetsTableCompanion.insert({
+    required String id,
+    required String exerciseId,
+    required int setNumber,
+    this.targetReps = const Value.absent(),
+    this.targetWeight = const Value.absent(),
+    this.targetRpe = const Value.absent(),
+    this.setType = const Value.absent(),
+    this.rowid = const Value.absent(),
+  }) : id = Value(id),
+       exerciseId = Value(exerciseId),
+       setNumber = Value(setNumber);
+  static Insertable<ProgramSetModel> custom({
+    Expression<String>? id,
+    Expression<String>? exerciseId,
+    Expression<int>? setNumber,
+    Expression<int>? targetReps,
+    Expression<double>? targetWeight,
+    Expression<double>? targetRpe,
+    Expression<int>? setType,
+    Expression<int>? rowid,
+  }) {
+    return RawValuesInsertable({
+      if (id != null) 'id': id,
+      if (exerciseId != null) 'exercise_id': exerciseId,
+      if (setNumber != null) 'set_number': setNumber,
+      if (targetReps != null) 'target_reps': targetReps,
+      if (targetWeight != null) 'target_weight': targetWeight,
+      if (targetRpe != null) 'target_rpe': targetRpe,
+      if (setType != null) 'set_type': setType,
+      if (rowid != null) 'rowid': rowid,
+    });
+  }
+
+  ProgramSetsTableCompanion copyWith({
+    Value<String>? id,
+    Value<String>? exerciseId,
+    Value<int>? setNumber,
+    Value<int?>? targetReps,
+    Value<double?>? targetWeight,
+    Value<double?>? targetRpe,
+    Value<SetType>? setType,
+    Value<int>? rowid,
+  }) {
+    return ProgramSetsTableCompanion(
+      id: id ?? this.id,
+      exerciseId: exerciseId ?? this.exerciseId,
+      setNumber: setNumber ?? this.setNumber,
+      targetReps: targetReps ?? this.targetReps,
+      targetWeight: targetWeight ?? this.targetWeight,
+      targetRpe: targetRpe ?? this.targetRpe,
+      setType: setType ?? this.setType,
+      rowid: rowid ?? this.rowid,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (id.present) {
+      map['id'] = Variable<String>(id.value);
+    }
+    if (exerciseId.present) {
+      map['exercise_id'] = Variable<String>(exerciseId.value);
+    }
+    if (setNumber.present) {
+      map['set_number'] = Variable<int>(setNumber.value);
+    }
+    if (targetReps.present) {
+      map['target_reps'] = Variable<int>(targetReps.value);
+    }
+    if (targetWeight.present) {
+      map['target_weight'] = Variable<double>(targetWeight.value);
+    }
+    if (targetRpe.present) {
+      map['target_rpe'] = Variable<double>(targetRpe.value);
+    }
+    if (setType.present) {
+      map['set_type'] = Variable<int>(
+        $ProgramSetsTableTable.$convertersetType.toSql(setType.value),
+      );
+    }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('ProgramSetsTableCompanion(')
+          ..write('id: $id, ')
+          ..write('exerciseId: $exerciseId, ')
+          ..write('setNumber: $setNumber, ')
+          ..write('targetReps: $targetReps, ')
+          ..write('targetWeight: $targetWeight, ')
+          ..write('targetRpe: $targetRpe, ')
+          ..write('setType: $setType, ')
           ..write('rowid: $rowid')
           ..write(')'))
         .toString();
@@ -5264,12 +5012,14 @@ abstract class _$AppDatabase extends GeneratedDatabase {
       $ExerciseLogsTableTable(this);
   late final $SetLogsTableTable setLogsTable = $SetLogsTableTable(this);
   late final $ProgramsTableTable programsTable = $ProgramsTableTable(this);
-  late final $ProgramBlocksTableTable programBlocksTable =
-      $ProgramBlocksTableTable(this);
-  late final $ProgramSessionsTableTable programSessionsTable =
-      $ProgramSessionsTableTable(this);
+  late final $ProgramDaysTableTable programDaysTable = $ProgramDaysTableTable(
+    this,
+  );
   late final $ProgramExercisesTableTable programExercisesTable =
       $ProgramExercisesTableTable(this);
+  late final $ProgramSetsTableTable programSetsTable = $ProgramSetsTableTable(
+    this,
+  );
   late final $BodyWeightEntriesTableTable bodyWeightEntriesTable =
       $BodyWeightEntriesTableTable(this);
   late final $BodyMeasurementsTableTable bodyMeasurementsTable =
@@ -5289,9 +5039,9 @@ abstract class _$AppDatabase extends GeneratedDatabase {
     exerciseLogsTable,
     setLogsTable,
     programsTable,
-    programBlocksTable,
-    programSessionsTable,
+    programDaysTable,
     programExercisesTable,
+    programSetsTable,
     bodyWeightEntriesTable,
     bodyMeasurementsTable,
     gymProfilesTable,
@@ -5466,7 +5216,7 @@ typedef $$ExercisesTableTableProcessedTableManager =
 typedef $$WorkoutSessionsTableTableCreateCompanionBuilder =
     WorkoutSessionsTableCompanion Function({
       required String id,
-      Value<String?> programSessionId,
+      Value<String?> programDayId,
       required String name,
       required DateTime startedAt,
       Value<DateTime?> finishedAt,
@@ -5479,7 +5229,7 @@ typedef $$WorkoutSessionsTableTableCreateCompanionBuilder =
 typedef $$WorkoutSessionsTableTableUpdateCompanionBuilder =
     WorkoutSessionsTableCompanion Function({
       Value<String> id,
-      Value<String?> programSessionId,
+      Value<String?> programDayId,
       Value<String> name,
       Value<DateTime> startedAt,
       Value<DateTime?> finishedAt,
@@ -5544,8 +5294,8 @@ class $$WorkoutSessionsTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get programSessionId => $composableBuilder(
-    column: $table.programSessionId,
+  ColumnFilters<String> get programDayId => $composableBuilder(
+    column: $table.programDayId,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -5624,8 +5374,8 @@ class $$WorkoutSessionsTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get programSessionId => $composableBuilder(
-    column: $table.programSessionId,
+  ColumnOrderings<String> get programDayId => $composableBuilder(
+    column: $table.programDayId,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -5677,8 +5427,8 @@ class $$WorkoutSessionsTableTableAnnotationComposer
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get programSessionId => $composableBuilder(
-    column: $table.programSessionId,
+  GeneratedColumn<String> get programDayId => $composableBuilder(
+    column: $table.programDayId,
     builder: (column) => column,
   );
 
@@ -5775,7 +5525,7 @@ class $$WorkoutSessionsTableTableTableManager
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
-                Value<String?> programSessionId = const Value.absent(),
+                Value<String?> programDayId = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<DateTime> startedAt = const Value.absent(),
                 Value<DateTime?> finishedAt = const Value.absent(),
@@ -5786,7 +5536,7 @@ class $$WorkoutSessionsTableTableTableManager
                 Value<int> rowid = const Value.absent(),
               }) => WorkoutSessionsTableCompanion(
                 id: id,
-                programSessionId: programSessionId,
+                programDayId: programDayId,
                 name: name,
                 startedAt: startedAt,
                 finishedAt: finishedAt,
@@ -5799,7 +5549,7 @@ class $$WorkoutSessionsTableTableTableManager
           createCompanionCallback:
               ({
                 required String id,
-                Value<String?> programSessionId = const Value.absent(),
+                Value<String?> programDayId = const Value.absent(),
                 required String name,
                 required DateTime startedAt,
                 Value<DateTime?> finishedAt = const Value.absent(),
@@ -5810,7 +5560,7 @@ class $$WorkoutSessionsTableTableTableManager
                 Value<int> rowid = const Value.absent(),
               }) => WorkoutSessionsTableCompanion.insert(
                 id: id,
-                programSessionId: programSessionId,
+                programDayId: programDayId,
                 name: name,
                 startedAt: startedAt,
                 finishedAt: finishedAt,
@@ -6757,7 +6507,6 @@ typedef $$ProgramsTableTableCreateCompanionBuilder =
       required String id,
       required String name,
       Value<String?> author,
-      required int totalWeeks,
       required bool isCustom,
       required bool isImported,
       required DateTime createdAt,
@@ -6768,7 +6517,6 @@ typedef $$ProgramsTableTableUpdateCompanionBuilder =
       Value<String> id,
       Value<String> name,
       Value<String?> author,
-      Value<int> totalWeeks,
       Value<bool> isCustom,
       Value<bool> isImported,
       Value<DateTime> createdAt,
@@ -6783,21 +6531,20 @@ final class $$ProgramsTableTableReferences
     super.$_typedResult,
   );
 
-  static MultiTypedResultKey<$ProgramBlocksTableTable, List<ProgramBlockModel>>
-  _programBlocksTableRefsTable(_$AppDatabase db) =>
-      MultiTypedResultKey.fromTable(
-        db.programBlocksTable,
-        aliasName: 'programs_table__id__program_blocks_table__program_id',
-      );
+  static MultiTypedResultKey<$ProgramDaysTableTable, List<ProgramDayModel>>
+  _programDaysTableRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.programDaysTable,
+    aliasName: 'programs_table__id__program_days_table__program_id',
+  );
 
-  $$ProgramBlocksTableTableProcessedTableManager get programBlocksTableRefs {
-    final manager = $$ProgramBlocksTableTableTableManager(
+  $$ProgramDaysTableTableProcessedTableManager get programDaysTableRefs {
+    final manager = $$ProgramDaysTableTableTableManager(
       $_db,
-      $_db.programBlocksTable,
+      $_db.programDaysTable,
     ).filter((f) => f.programId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(
-      _programBlocksTableRefsTable($_db),
+      _programDaysTableRefsTable($_db),
     );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
@@ -6829,11 +6576,6 @@ class $$ProgramsTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get totalWeeks => $composableBuilder(
-    column: $table.totalWeeks,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<bool> get isCustom => $composableBuilder(
     column: $table.isCustom,
     builder: (column) => ColumnFilters(column),
@@ -6849,22 +6591,22 @@ class $$ProgramsTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  Expression<bool> programBlocksTableRefs(
-    Expression<bool> Function($$ProgramBlocksTableTableFilterComposer f) f,
+  Expression<bool> programDaysTableRefs(
+    Expression<bool> Function($$ProgramDaysTableTableFilterComposer f) f,
   ) {
-    final $$ProgramBlocksTableTableFilterComposer composer = $composerBuilder(
+    final $$ProgramDaysTableTableFilterComposer composer = $composerBuilder(
       composer: this,
       getCurrentColumn: (t) => t.id,
-      referencedTable: $db.programBlocksTable,
+      referencedTable: $db.programDaysTable,
       getReferencedColumn: (t) => t.programId,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$ProgramBlocksTableTableFilterComposer(
+          }) => $$ProgramDaysTableTableFilterComposer(
             $db: $db,
-            $table: $db.programBlocksTable,
+            $table: $db.programDaysTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -6896,11 +6638,6 @@ class $$ProgramsTableTableOrderingComposer
 
   ColumnOrderings<String> get author => $composableBuilder(
     column: $table.author,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get totalWeeks => $composableBuilder(
-    column: $table.totalWeeks,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -6938,11 +6675,6 @@ class $$ProgramsTableTableAnnotationComposer
   GeneratedColumn<String> get author =>
       $composableBuilder(column: $table.author, builder: (column) => column);
 
-  GeneratedColumn<int> get totalWeeks => $composableBuilder(
-    column: $table.totalWeeks,
-    builder: (column) => column,
-  );
-
   GeneratedColumn<bool> get isCustom =>
       $composableBuilder(column: $table.isCustom, builder: (column) => column);
 
@@ -6954,29 +6686,28 @@ class $$ProgramsTableTableAnnotationComposer
   GeneratedColumn<DateTime> get createdAt =>
       $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  Expression<T> programBlocksTableRefs<T extends Object>(
-    Expression<T> Function($$ProgramBlocksTableTableAnnotationComposer a) f,
+  Expression<T> programDaysTableRefs<T extends Object>(
+    Expression<T> Function($$ProgramDaysTableTableAnnotationComposer a) f,
   ) {
-    final $$ProgramBlocksTableTableAnnotationComposer composer =
-        $composerBuilder(
-          composer: this,
-          getCurrentColumn: (t) => t.id,
-          referencedTable: $db.programBlocksTable,
-          getReferencedColumn: (t) => t.programId,
-          builder:
-              (
-                joinBuilder, {
-                $addJoinBuilderToRootComposer,
+    final $$ProgramDaysTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.programDaysTable,
+      getReferencedColumn: (t) => t.programId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProgramDaysTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.programDaysTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
                 $removeJoinBuilderFromRootComposer,
-              }) => $$ProgramBlocksTableTableAnnotationComposer(
-                $db: $db,
-                $table: $db.programBlocksTable,
-                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                joinBuilder: joinBuilder,
-                $removeJoinBuilderFromRootComposer:
-                    $removeJoinBuilderFromRootComposer,
-              ),
-        );
+          ),
+    );
     return f(composer);
   }
 }
@@ -6994,7 +6725,7 @@ class $$ProgramsTableTableTableManager
           $$ProgramsTableTableUpdateCompanionBuilder,
           (ProgramModel, $$ProgramsTableTableReferences),
           ProgramModel,
-          PrefetchHooks Function({bool programBlocksTableRefs})
+          PrefetchHooks Function({bool programDaysTableRefs})
         > {
   $$ProgramsTableTableTableManager(_$AppDatabase db, $ProgramsTableTable table)
     : super(
@@ -7012,7 +6743,6 @@ class $$ProgramsTableTableTableManager
                 Value<String> id = const Value.absent(),
                 Value<String> name = const Value.absent(),
                 Value<String?> author = const Value.absent(),
-                Value<int> totalWeeks = const Value.absent(),
                 Value<bool> isCustom = const Value.absent(),
                 Value<bool> isImported = const Value.absent(),
                 Value<DateTime> createdAt = const Value.absent(),
@@ -7021,7 +6751,6 @@ class $$ProgramsTableTableTableManager
                 id: id,
                 name: name,
                 author: author,
-                totalWeeks: totalWeeks,
                 isCustom: isCustom,
                 isImported: isImported,
                 createdAt: createdAt,
@@ -7032,7 +6761,6 @@ class $$ProgramsTableTableTableManager
                 required String id,
                 required String name,
                 Value<String?> author = const Value.absent(),
-                required int totalWeeks,
                 required bool isCustom,
                 required bool isImported,
                 required DateTime createdAt,
@@ -7041,7 +6769,6 @@ class $$ProgramsTableTableTableManager
                 id: id,
                 name: name,
                 author: author,
-                totalWeeks: totalWeeks,
                 isCustom: isCustom,
                 isImported: isImported,
                 createdAt: createdAt,
@@ -7055,30 +6782,30 @@ class $$ProgramsTableTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({programBlocksTableRefs = false}) {
+          prefetchHooksCallback: ({programDaysTableRefs = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [
-                if (programBlocksTableRefs) db.programBlocksTable,
+                if (programDaysTableRefs) db.programDaysTable,
               ],
               addJoins: null,
               getPrefetchedDataCallback: (items) async {
                 return [
-                  if (programBlocksTableRefs)
+                  if (programDaysTableRefs)
                     await $_getPrefetchedData<
                       ProgramModel,
                       $ProgramsTableTable,
-                      ProgramBlockModel
+                      ProgramDayModel
                     >(
                       currentTable: table,
                       referencedTable: $$ProgramsTableTableReferences
-                          ._programBlocksTableRefsTable(db),
+                          ._programDaysTableRefsTable(db),
                       managerFromTypedResult: (p0) =>
                           $$ProgramsTableTableReferences(
                             db,
                             table,
                             p0,
-                          ).programBlocksTableRefs,
+                          ).programDaysTableRefs,
                       referencedItemsForCurrentItem: (item, referencedItems) =>
                           referencedItems.where((e) => e.programId == item.id),
                       typedResults: items,
@@ -7103,35 +6830,29 @@ typedef $$ProgramsTableTableProcessedTableManager =
       $$ProgramsTableTableUpdateCompanionBuilder,
       (ProgramModel, $$ProgramsTableTableReferences),
       ProgramModel,
-      PrefetchHooks Function({bool programBlocksTableRefs})
+      PrefetchHooks Function({bool programDaysTableRefs})
     >;
-typedef $$ProgramBlocksTableTableCreateCompanionBuilder =
-    ProgramBlocksTableCompanion Function({
+typedef $$ProgramDaysTableTableCreateCompanionBuilder =
+    ProgramDaysTableCompanion Function({
       required String id,
       required String programId,
+      required int dayNumber,
       required String name,
-      required int weeks,
-      required BlockType type,
       Value<int> rowid,
     });
-typedef $$ProgramBlocksTableTableUpdateCompanionBuilder =
-    ProgramBlocksTableCompanion Function({
+typedef $$ProgramDaysTableTableUpdateCompanionBuilder =
+    ProgramDaysTableCompanion Function({
       Value<String> id,
       Value<String> programId,
+      Value<int> dayNumber,
       Value<String> name,
-      Value<int> weeks,
-      Value<BlockType> type,
       Value<int> rowid,
     });
 
-final class $$ProgramBlocksTableTableReferences
+final class $$ProgramDaysTableTableReferences
     extends
-        BaseReferences<
-          _$AppDatabase,
-          $ProgramBlocksTableTable,
-          ProgramBlockModel
-        > {
-  $$ProgramBlocksTableTableReferences(
+        BaseReferences<_$AppDatabase, $ProgramDaysTableTable, ProgramDayModel> {
+  $$ProgramDaysTableTableReferences(
     super.$_db,
     super.$_table,
     super.$_typedResult,
@@ -7139,7 +6860,7 @@ final class $$ProgramBlocksTableTableReferences
 
   static $ProgramsTableTable _programIdTable(_$AppDatabase db) => db
       .programsTable
-      .createAlias('program_blocks_table__program_id__programs_table__id');
+      .createAlias('program_days_table__program_id__programs_table__id');
 
   $$ProgramsTableTableProcessedTableManager get programId {
     final $_column = $_itemColumn<String>('program_id')!;
@@ -7156,24 +6877,24 @@ final class $$ProgramBlocksTableTableReferences
   }
 
   static MultiTypedResultKey<
-    $ProgramSessionsTableTable,
-    List<ProgramSessionModel>
+    $ProgramExercisesTableTable,
+    List<ProgramExerciseModel>
   >
-  _programSessionsTableRefsTable(_$AppDatabase db) =>
+  _programExercisesTableRefsTable(_$AppDatabase db) =>
       MultiTypedResultKey.fromTable(
-        db.programSessionsTable,
-        aliasName: 'program_blocks_table__id__program_sessions_table__block_id',
+        db.programExercisesTable,
+        aliasName: 'program_days_table__id__program_exercises_table__day_id',
       );
 
-  $$ProgramSessionsTableTableProcessedTableManager
-  get programSessionsTableRefs {
-    final manager = $$ProgramSessionsTableTableTableManager(
+  $$ProgramExercisesTableTableProcessedTableManager
+  get programExercisesTableRefs {
+    final manager = $$ProgramExercisesTableTableTableManager(
       $_db,
-      $_db.programSessionsTable,
-    ).filter((f) => f.blockId.id.sqlEquals($_itemColumn<String>('id')!));
+      $_db.programExercisesTable,
+    ).filter((f) => f.dayId.id.sqlEquals($_itemColumn<String>('id')!));
 
     final cache = $_typedResult.readTableOrNull(
-      _programSessionsTableRefsTable($_db),
+      _programExercisesTableRefsTable($_db),
     );
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: cache),
@@ -7181,9 +6902,9 @@ final class $$ProgramBlocksTableTableReferences
   }
 }
 
-class $$ProgramBlocksTableTableFilterComposer
-    extends Composer<_$AppDatabase, $ProgramBlocksTableTable> {
-  $$ProgramBlocksTableTableFilterComposer({
+class $$ProgramDaysTableTableFilterComposer
+    extends Composer<_$AppDatabase, $ProgramDaysTableTable> {
+  $$ProgramDaysTableTableFilterComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -7195,21 +6916,15 @@ class $$ProgramBlocksTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
+  ColumnFilters<int> get dayNumber => $composableBuilder(
+    column: $table.dayNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
   ColumnFilters<String> get name => $composableBuilder(
     column: $table.name,
     builder: (column) => ColumnFilters(column),
   );
-
-  ColumnFilters<int> get weeks => $composableBuilder(
-    column: $table.weeks,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnWithTypeConverterFilters<BlockType, BlockType, int> get type =>
-      $composableBuilder(
-        column: $table.type,
-        builder: (column) => ColumnWithTypeConverterFilters(column),
-      );
 
   $$ProgramsTableTableFilterComposer get programId {
     final $$ProgramsTableTableFilterComposer composer = $composerBuilder(
@@ -7234,35 +6949,36 @@ class $$ProgramBlocksTableTableFilterComposer
     return composer;
   }
 
-  Expression<bool> programSessionsTableRefs(
-    Expression<bool> Function($$ProgramSessionsTableTableFilterComposer f) f,
+  Expression<bool> programExercisesTableRefs(
+    Expression<bool> Function($$ProgramExercisesTableTableFilterComposer f) f,
   ) {
-    final $$ProgramSessionsTableTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.id,
-      referencedTable: $db.programSessionsTable,
-      getReferencedColumn: (t) => t.blockId,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$ProgramSessionsTableTableFilterComposer(
-            $db: $db,
-            $table: $db.programSessionsTable,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
+    final $$ProgramExercisesTableTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.id,
+          referencedTable: $db.programExercisesTable,
+          getReferencedColumn: (t) => t.dayId,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
                 $removeJoinBuilderFromRootComposer,
-          ),
-    );
+              }) => $$ProgramExercisesTableTableFilterComposer(
+                $db: $db,
+                $table: $db.programExercisesTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
     return f(composer);
   }
 }
 
-class $$ProgramBlocksTableTableOrderingComposer
-    extends Composer<_$AppDatabase, $ProgramBlocksTableTable> {
-  $$ProgramBlocksTableTableOrderingComposer({
+class $$ProgramDaysTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $ProgramDaysTableTable> {
+  $$ProgramDaysTableTableOrderingComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -7274,18 +6990,13 @@ class $$ProgramBlocksTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<int> get dayNumber => $composableBuilder(
+    column: $table.dayNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<String> get name => $composableBuilder(
     column: $table.name,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get weeks => $composableBuilder(
-    column: $table.weeks,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get type => $composableBuilder(
-    column: $table.type,
     builder: (column) => ColumnOrderings(column),
   );
 
@@ -7313,9 +7024,9 @@ class $$ProgramBlocksTableTableOrderingComposer
   }
 }
 
-class $$ProgramBlocksTableTableAnnotationComposer
-    extends Composer<_$AppDatabase, $ProgramBlocksTableTable> {
-  $$ProgramBlocksTableTableAnnotationComposer({
+class $$ProgramDaysTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ProgramDaysTableTable> {
+  $$ProgramDaysTableTableAnnotationComposer({
     required super.$db,
     required super.$table,
     super.joinBuilder,
@@ -7325,14 +7036,11 @@ class $$ProgramBlocksTableTableAnnotationComposer
   GeneratedColumn<String> get id =>
       $composableBuilder(column: $table.id, builder: (column) => column);
 
+  GeneratedColumn<int> get dayNumber =>
+      $composableBuilder(column: $table.dayNumber, builder: (column) => column);
+
   GeneratedColumn<String> get name =>
       $composableBuilder(column: $table.name, builder: (column) => column);
-
-  GeneratedColumn<int> get weeks =>
-      $composableBuilder(column: $table.weeks, builder: (column) => column);
-
-  GeneratedColumnWithTypeConverter<BlockType, int> get type =>
-      $composableBuilder(column: $table.type, builder: (column) => column);
 
   $$ProgramsTableTableAnnotationComposer get programId {
     final $$ProgramsTableTableAnnotationComposer composer = $composerBuilder(
@@ -7357,23 +7065,23 @@ class $$ProgramBlocksTableTableAnnotationComposer
     return composer;
   }
 
-  Expression<T> programSessionsTableRefs<T extends Object>(
-    Expression<T> Function($$ProgramSessionsTableTableAnnotationComposer a) f,
+  Expression<T> programExercisesTableRefs<T extends Object>(
+    Expression<T> Function($$ProgramExercisesTableTableAnnotationComposer a) f,
   ) {
-    final $$ProgramSessionsTableTableAnnotationComposer composer =
+    final $$ProgramExercisesTableTableAnnotationComposer composer =
         $composerBuilder(
           composer: this,
           getCurrentColumn: (t) => t.id,
-          referencedTable: $db.programSessionsTable,
-          getReferencedColumn: (t) => t.blockId,
+          referencedTable: $db.programExercisesTable,
+          getReferencedColumn: (t) => t.dayId,
           builder:
               (
                 joinBuilder, {
                 $addJoinBuilderToRootComposer,
                 $removeJoinBuilderFromRootComposer,
-              }) => $$ProgramSessionsTableTableAnnotationComposer(
+              }) => $$ProgramExercisesTableTableAnnotationComposer(
                 $db: $db,
-                $table: $db.programSessionsTable,
+                $table: $db.programExercisesTable,
                 $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
                 joinBuilder: joinBuilder,
                 $removeJoinBuilderFromRootComposer:
@@ -7384,86 +7092,79 @@ class $$ProgramBlocksTableTableAnnotationComposer
   }
 }
 
-class $$ProgramBlocksTableTableTableManager
+class $$ProgramDaysTableTableTableManager
     extends
         RootTableManager<
           _$AppDatabase,
-          $ProgramBlocksTableTable,
-          ProgramBlockModel,
-          $$ProgramBlocksTableTableFilterComposer,
-          $$ProgramBlocksTableTableOrderingComposer,
-          $$ProgramBlocksTableTableAnnotationComposer,
-          $$ProgramBlocksTableTableCreateCompanionBuilder,
-          $$ProgramBlocksTableTableUpdateCompanionBuilder,
-          (ProgramBlockModel, $$ProgramBlocksTableTableReferences),
-          ProgramBlockModel,
+          $ProgramDaysTableTable,
+          ProgramDayModel,
+          $$ProgramDaysTableTableFilterComposer,
+          $$ProgramDaysTableTableOrderingComposer,
+          $$ProgramDaysTableTableAnnotationComposer,
+          $$ProgramDaysTableTableCreateCompanionBuilder,
+          $$ProgramDaysTableTableUpdateCompanionBuilder,
+          (ProgramDayModel, $$ProgramDaysTableTableReferences),
+          ProgramDayModel,
           PrefetchHooks Function({
             bool programId,
-            bool programSessionsTableRefs,
+            bool programExercisesTableRefs,
           })
         > {
-  $$ProgramBlocksTableTableTableManager(
+  $$ProgramDaysTableTableTableManager(
     _$AppDatabase db,
-    $ProgramBlocksTableTable table,
+    $ProgramDaysTableTable table,
   ) : super(
         TableManagerState(
           db: db,
           table: table,
           createFilteringComposer: () =>
-              $$ProgramBlocksTableTableFilterComposer($db: db, $table: table),
+              $$ProgramDaysTableTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () =>
-              $$ProgramBlocksTableTableOrderingComposer($db: db, $table: table),
+              $$ProgramDaysTableTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () =>
-              $$ProgramBlocksTableTableAnnotationComposer(
-                $db: db,
-                $table: table,
-              ),
+              $$ProgramDaysTableTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
                 Value<String> programId = const Value.absent(),
+                Value<int> dayNumber = const Value.absent(),
                 Value<String> name = const Value.absent(),
-                Value<int> weeks = const Value.absent(),
-                Value<BlockType> type = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => ProgramBlocksTableCompanion(
+              }) => ProgramDaysTableCompanion(
                 id: id,
                 programId: programId,
+                dayNumber: dayNumber,
                 name: name,
-                weeks: weeks,
-                type: type,
                 rowid: rowid,
               ),
           createCompanionCallback:
               ({
                 required String id,
                 required String programId,
+                required int dayNumber,
                 required String name,
-                required int weeks,
-                required BlockType type,
                 Value<int> rowid = const Value.absent(),
-              }) => ProgramBlocksTableCompanion.insert(
+              }) => ProgramDaysTableCompanion.insert(
                 id: id,
                 programId: programId,
+                dayNumber: dayNumber,
                 name: name,
-                weeks: weeks,
-                type: type,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
               .map(
                 (e) => (
                   e.readTable(table),
-                  $$ProgramBlocksTableTableReferences(db, table, e),
+                  $$ProgramDaysTableTableReferences(db, table, e),
                 ),
               )
               .toList(),
           prefetchHooksCallback:
-              ({programId = false, programSessionsTableRefs = false}) {
+              ({programId = false, programExercisesTableRefs = false}) {
                 return PrefetchHooks(
                   db: db,
                   explicitlyWatchedTables: [
-                    if (programSessionsTableRefs) db.programSessionsTable,
+                    if (programExercisesTableRefs) db.programExercisesTable,
                   ],
                   addJoins:
                       <
@@ -7487,455 +7188,11 @@ class $$ProgramBlocksTableTableTableManager
                                     currentTable: table,
                                     currentColumn: table.programId,
                                     referencedTable:
-                                        $$ProgramBlocksTableTableReferences
+                                        $$ProgramDaysTableTableReferences
                                             ._programIdTable(db),
                                     referencedColumn:
-                                        $$ProgramBlocksTableTableReferences
+                                        $$ProgramDaysTableTableReferences
                                             ._programIdTable(db)
-                                            .id,
-                                  )
-                                  as T;
-                        }
-
-                        return state;
-                      },
-                  getPrefetchedDataCallback: (items) async {
-                    return [
-                      if (programSessionsTableRefs)
-                        await $_getPrefetchedData<
-                          ProgramBlockModel,
-                          $ProgramBlocksTableTable,
-                          ProgramSessionModel
-                        >(
-                          currentTable: table,
-                          referencedTable: $$ProgramBlocksTableTableReferences
-                              ._programSessionsTableRefsTable(db),
-                          managerFromTypedResult: (p0) =>
-                              $$ProgramBlocksTableTableReferences(
-                                db,
-                                table,
-                                p0,
-                              ).programSessionsTableRefs,
-                          referencedItemsForCurrentItem:
-                              (item, referencedItems) => referencedItems.where(
-                                (e) => e.blockId == item.id,
-                              ),
-                          typedResults: items,
-                        ),
-                    ];
-                  },
-                );
-              },
-        ),
-      );
-}
-
-typedef $$ProgramBlocksTableTableProcessedTableManager =
-    ProcessedTableManager<
-      _$AppDatabase,
-      $ProgramBlocksTableTable,
-      ProgramBlockModel,
-      $$ProgramBlocksTableTableFilterComposer,
-      $$ProgramBlocksTableTableOrderingComposer,
-      $$ProgramBlocksTableTableAnnotationComposer,
-      $$ProgramBlocksTableTableCreateCompanionBuilder,
-      $$ProgramBlocksTableTableUpdateCompanionBuilder,
-      (ProgramBlockModel, $$ProgramBlocksTableTableReferences),
-      ProgramBlockModel,
-      PrefetchHooks Function({bool programId, bool programSessionsTableRefs})
-    >;
-typedef $$ProgramSessionsTableTableCreateCompanionBuilder =
-    ProgramSessionsTableCompanion Function({
-      required String id,
-      required String blockId,
-      required int dayOfWeek,
-      required String name,
-      required int estimatedDurationMinutes,
-      Value<int> rowid,
-    });
-typedef $$ProgramSessionsTableTableUpdateCompanionBuilder =
-    ProgramSessionsTableCompanion Function({
-      Value<String> id,
-      Value<String> blockId,
-      Value<int> dayOfWeek,
-      Value<String> name,
-      Value<int> estimatedDurationMinutes,
-      Value<int> rowid,
-    });
-
-final class $$ProgramSessionsTableTableReferences
-    extends
-        BaseReferences<
-          _$AppDatabase,
-          $ProgramSessionsTableTable,
-          ProgramSessionModel
-        > {
-  $$ProgramSessionsTableTableReferences(
-    super.$_db,
-    super.$_table,
-    super.$_typedResult,
-  );
-
-  static $ProgramBlocksTableTable _blockIdTable(_$AppDatabase db) =>
-      db.programBlocksTable.createAlias(
-        'program_sessions_table__block_id__program_blocks_table__id',
-      );
-
-  $$ProgramBlocksTableTableProcessedTableManager get blockId {
-    final $_column = $_itemColumn<String>('block_id')!;
-
-    final manager = $$ProgramBlocksTableTableTableManager(
-      $_db,
-      $_db.programBlocksTable,
-    ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_blockIdTable($_db));
-    if (item == null) return manager;
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: [item]),
-    );
-  }
-
-  static MultiTypedResultKey<
-    $ProgramExercisesTableTable,
-    List<ProgramExerciseModel>
-  >
-  _programExercisesTableRefsTable(_$AppDatabase db) =>
-      MultiTypedResultKey.fromTable(
-        db.programExercisesTable,
-        aliasName:
-            'program_sessions_table__id__program_exercises_table__session_id',
-      );
-
-  $$ProgramExercisesTableTableProcessedTableManager
-  get programExercisesTableRefs {
-    final manager = $$ProgramExercisesTableTableTableManager(
-      $_db,
-      $_db.programExercisesTable,
-    ).filter((f) => f.sessionId.id.sqlEquals($_itemColumn<String>('id')!));
-
-    final cache = $_typedResult.readTableOrNull(
-      _programExercisesTableRefsTable($_db),
-    );
-    return ProcessedTableManager(
-      manager.$state.copyWith(prefetchedData: cache),
-    );
-  }
-}
-
-class $$ProgramSessionsTableTableFilterComposer
-    extends Composer<_$AppDatabase, $ProgramSessionsTableTable> {
-  $$ProgramSessionsTableTableFilterComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnFilters<String> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get dayOfWeek => $composableBuilder(
-    column: $table.dayOfWeek,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<String> get name => $composableBuilder(
-    column: $table.name,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get estimatedDurationMinutes => $composableBuilder(
-    column: $table.estimatedDurationMinutes,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  $$ProgramBlocksTableTableFilterComposer get blockId {
-    final $$ProgramBlocksTableTableFilterComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.blockId,
-      referencedTable: $db.programBlocksTable,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$ProgramBlocksTableTableFilterComposer(
-            $db: $db,
-            $table: $db.programBlocksTable,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-
-  Expression<bool> programExercisesTableRefs(
-    Expression<bool> Function($$ProgramExercisesTableTableFilterComposer f) f,
-  ) {
-    final $$ProgramExercisesTableTableFilterComposer composer =
-        $composerBuilder(
-          composer: this,
-          getCurrentColumn: (t) => t.id,
-          referencedTable: $db.programExercisesTable,
-          getReferencedColumn: (t) => t.sessionId,
-          builder:
-              (
-                joinBuilder, {
-                $addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer,
-              }) => $$ProgramExercisesTableTableFilterComposer(
-                $db: $db,
-                $table: $db.programExercisesTable,
-                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                joinBuilder: joinBuilder,
-                $removeJoinBuilderFromRootComposer:
-                    $removeJoinBuilderFromRootComposer,
-              ),
-        );
-    return f(composer);
-  }
-}
-
-class $$ProgramSessionsTableTableOrderingComposer
-    extends Composer<_$AppDatabase, $ProgramSessionsTableTable> {
-  $$ProgramSessionsTableTableOrderingComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  ColumnOrderings<String> get id => $composableBuilder(
-    column: $table.id,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get dayOfWeek => $composableBuilder(
-    column: $table.dayOfWeek,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<String> get name => $composableBuilder(
-    column: $table.name,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get estimatedDurationMinutes => $composableBuilder(
-    column: $table.estimatedDurationMinutes,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  $$ProgramBlocksTableTableOrderingComposer get blockId {
-    final $$ProgramBlocksTableTableOrderingComposer composer = $composerBuilder(
-      composer: this,
-      getCurrentColumn: (t) => t.blockId,
-      referencedTable: $db.programBlocksTable,
-      getReferencedColumn: (t) => t.id,
-      builder:
-          (
-            joinBuilder, {
-            $addJoinBuilderToRootComposer,
-            $removeJoinBuilderFromRootComposer,
-          }) => $$ProgramBlocksTableTableOrderingComposer(
-            $db: $db,
-            $table: $db.programBlocksTable,
-            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-            joinBuilder: joinBuilder,
-            $removeJoinBuilderFromRootComposer:
-                $removeJoinBuilderFromRootComposer,
-          ),
-    );
-    return composer;
-  }
-}
-
-class $$ProgramSessionsTableTableAnnotationComposer
-    extends Composer<_$AppDatabase, $ProgramSessionsTableTable> {
-  $$ProgramSessionsTableTableAnnotationComposer({
-    required super.$db,
-    required super.$table,
-    super.joinBuilder,
-    super.$addJoinBuilderToRootComposer,
-    super.$removeJoinBuilderFromRootComposer,
-  });
-  GeneratedColumn<String> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
-
-  GeneratedColumn<int> get dayOfWeek =>
-      $composableBuilder(column: $table.dayOfWeek, builder: (column) => column);
-
-  GeneratedColumn<String> get name =>
-      $composableBuilder(column: $table.name, builder: (column) => column);
-
-  GeneratedColumn<int> get estimatedDurationMinutes => $composableBuilder(
-    column: $table.estimatedDurationMinutes,
-    builder: (column) => column,
-  );
-
-  $$ProgramBlocksTableTableAnnotationComposer get blockId {
-    final $$ProgramBlocksTableTableAnnotationComposer composer =
-        $composerBuilder(
-          composer: this,
-          getCurrentColumn: (t) => t.blockId,
-          referencedTable: $db.programBlocksTable,
-          getReferencedColumn: (t) => t.id,
-          builder:
-              (
-                joinBuilder, {
-                $addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer,
-              }) => $$ProgramBlocksTableTableAnnotationComposer(
-                $db: $db,
-                $table: $db.programBlocksTable,
-                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                joinBuilder: joinBuilder,
-                $removeJoinBuilderFromRootComposer:
-                    $removeJoinBuilderFromRootComposer,
-              ),
-        );
-    return composer;
-  }
-
-  Expression<T> programExercisesTableRefs<T extends Object>(
-    Expression<T> Function($$ProgramExercisesTableTableAnnotationComposer a) f,
-  ) {
-    final $$ProgramExercisesTableTableAnnotationComposer composer =
-        $composerBuilder(
-          composer: this,
-          getCurrentColumn: (t) => t.id,
-          referencedTable: $db.programExercisesTable,
-          getReferencedColumn: (t) => t.sessionId,
-          builder:
-              (
-                joinBuilder, {
-                $addJoinBuilderToRootComposer,
-                $removeJoinBuilderFromRootComposer,
-              }) => $$ProgramExercisesTableTableAnnotationComposer(
-                $db: $db,
-                $table: $db.programExercisesTable,
-                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                joinBuilder: joinBuilder,
-                $removeJoinBuilderFromRootComposer:
-                    $removeJoinBuilderFromRootComposer,
-              ),
-        );
-    return f(composer);
-  }
-}
-
-class $$ProgramSessionsTableTableTableManager
-    extends
-        RootTableManager<
-          _$AppDatabase,
-          $ProgramSessionsTableTable,
-          ProgramSessionModel,
-          $$ProgramSessionsTableTableFilterComposer,
-          $$ProgramSessionsTableTableOrderingComposer,
-          $$ProgramSessionsTableTableAnnotationComposer,
-          $$ProgramSessionsTableTableCreateCompanionBuilder,
-          $$ProgramSessionsTableTableUpdateCompanionBuilder,
-          (ProgramSessionModel, $$ProgramSessionsTableTableReferences),
-          ProgramSessionModel,
-          PrefetchHooks Function({bool blockId, bool programExercisesTableRefs})
-        > {
-  $$ProgramSessionsTableTableTableManager(
-    _$AppDatabase db,
-    $ProgramSessionsTableTable table,
-  ) : super(
-        TableManagerState(
-          db: db,
-          table: table,
-          createFilteringComposer: () =>
-              $$ProgramSessionsTableTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$ProgramSessionsTableTableOrderingComposer(
-                $db: db,
-                $table: table,
-              ),
-          createComputedFieldComposer: () =>
-              $$ProgramSessionsTableTableAnnotationComposer(
-                $db: db,
-                $table: table,
-              ),
-          updateCompanionCallback:
-              ({
-                Value<String> id = const Value.absent(),
-                Value<String> blockId = const Value.absent(),
-                Value<int> dayOfWeek = const Value.absent(),
-                Value<String> name = const Value.absent(),
-                Value<int> estimatedDurationMinutes = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => ProgramSessionsTableCompanion(
-                id: id,
-                blockId: blockId,
-                dayOfWeek: dayOfWeek,
-                name: name,
-                estimatedDurationMinutes: estimatedDurationMinutes,
-                rowid: rowid,
-              ),
-          createCompanionCallback:
-              ({
-                required String id,
-                required String blockId,
-                required int dayOfWeek,
-                required String name,
-                required int estimatedDurationMinutes,
-                Value<int> rowid = const Value.absent(),
-              }) => ProgramSessionsTableCompanion.insert(
-                id: id,
-                blockId: blockId,
-                dayOfWeek: dayOfWeek,
-                name: name,
-                estimatedDurationMinutes: estimatedDurationMinutes,
-                rowid: rowid,
-              ),
-          withReferenceMapper: (p0) => p0
-              .map(
-                (e) => (
-                  e.readTable(table),
-                  $$ProgramSessionsTableTableReferences(db, table, e),
-                ),
-              )
-              .toList(),
-          prefetchHooksCallback:
-              ({blockId = false, programExercisesTableRefs = false}) {
-                return PrefetchHooks(
-                  db: db,
-                  explicitlyWatchedTables: [
-                    if (programExercisesTableRefs) db.programExercisesTable,
-                  ],
-                  addJoins:
-                      <
-                        T extends TableManagerState<
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic,
-                          dynamic
-                        >
-                      >(state) {
-                        if (blockId) {
-                          state =
-                              state.withJoin(
-                                    currentTable: table,
-                                    currentColumn: table.blockId,
-                                    referencedTable:
-                                        $$ProgramSessionsTableTableReferences
-                                            ._blockIdTable(db),
-                                    referencedColumn:
-                                        $$ProgramSessionsTableTableReferences
-                                            ._blockIdTable(db)
                                             .id,
                                   )
                                   as T;
@@ -7947,22 +7204,22 @@ class $$ProgramSessionsTableTableTableManager
                     return [
                       if (programExercisesTableRefs)
                         await $_getPrefetchedData<
-                          ProgramSessionModel,
-                          $ProgramSessionsTableTable,
+                          ProgramDayModel,
+                          $ProgramDaysTableTable,
                           ProgramExerciseModel
                         >(
                           currentTable: table,
-                          referencedTable: $$ProgramSessionsTableTableReferences
+                          referencedTable: $$ProgramDaysTableTableReferences
                               ._programExercisesTableRefsTable(db),
                           managerFromTypedResult: (p0) =>
-                              $$ProgramSessionsTableTableReferences(
+                              $$ProgramDaysTableTableReferences(
                                 db,
                                 table,
                                 p0,
                               ).programExercisesTableRefs,
                           referencedItemsForCurrentItem:
                               (item, referencedItems) => referencedItems.where(
-                                (e) => e.sessionId == item.id,
+                                (e) => e.dayId == item.id,
                               ),
                           typedResults: items,
                         ),
@@ -7974,46 +7231,36 @@ class $$ProgramSessionsTableTableTableManager
       );
 }
 
-typedef $$ProgramSessionsTableTableProcessedTableManager =
+typedef $$ProgramDaysTableTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $ProgramSessionsTableTable,
-      ProgramSessionModel,
-      $$ProgramSessionsTableTableFilterComposer,
-      $$ProgramSessionsTableTableOrderingComposer,
-      $$ProgramSessionsTableTableAnnotationComposer,
-      $$ProgramSessionsTableTableCreateCompanionBuilder,
-      $$ProgramSessionsTableTableUpdateCompanionBuilder,
-      (ProgramSessionModel, $$ProgramSessionsTableTableReferences),
-      ProgramSessionModel,
-      PrefetchHooks Function({bool blockId, bool programExercisesTableRefs})
+      $ProgramDaysTableTable,
+      ProgramDayModel,
+      $$ProgramDaysTableTableFilterComposer,
+      $$ProgramDaysTableTableOrderingComposer,
+      $$ProgramDaysTableTableAnnotationComposer,
+      $$ProgramDaysTableTableCreateCompanionBuilder,
+      $$ProgramDaysTableTableUpdateCompanionBuilder,
+      (ProgramDayModel, $$ProgramDaysTableTableReferences),
+      ProgramDayModel,
+      PrefetchHooks Function({bool programId, bool programExercisesTableRefs})
     >;
 typedef $$ProgramExercisesTableTableCreateCompanionBuilder =
     ProgramExercisesTableCompanion Function({
       required String id,
-      required String sessionId,
+      required String dayId,
       required String exerciseId,
       required String exerciseName,
-      required int sets,
-      required int repMin,
-      required int repMax,
-      Value<int?> rirTarget,
       required int restSeconds,
-      Value<String> allowedSetTypesStr,
       Value<int> rowid,
     });
 typedef $$ProgramExercisesTableTableUpdateCompanionBuilder =
     ProgramExercisesTableCompanion Function({
       Value<String> id,
-      Value<String> sessionId,
+      Value<String> dayId,
       Value<String> exerciseId,
       Value<String> exerciseName,
-      Value<int> sets,
-      Value<int> repMin,
-      Value<int> repMax,
-      Value<int?> rirTarget,
       Value<int> restSeconds,
-      Value<String> allowedSetTypesStr,
       Value<int> rowid,
     });
 
@@ -8030,22 +7277,41 @@ final class $$ProgramExercisesTableTableReferences
     super.$_typedResult,
   );
 
-  static $ProgramSessionsTableTable _sessionIdTable(_$AppDatabase db) =>
-      db.programSessionsTable.createAlias(
-        'program_exercises_table__session_id__program_sessions_table__id',
-      );
+  static $ProgramDaysTableTable _dayIdTable(_$AppDatabase db) => db
+      .programDaysTable
+      .createAlias('program_exercises_table__day_id__program_days_table__id');
 
-  $$ProgramSessionsTableTableProcessedTableManager get sessionId {
-    final $_column = $_itemColumn<String>('session_id')!;
+  $$ProgramDaysTableTableProcessedTableManager get dayId {
+    final $_column = $_itemColumn<String>('day_id')!;
 
-    final manager = $$ProgramSessionsTableTableTableManager(
+    final manager = $$ProgramDaysTableTableTableManager(
       $_db,
-      $_db.programSessionsTable,
+      $_db.programDaysTable,
     ).filter((f) => f.id.sqlEquals($_column));
-    final item = $_typedResult.readTableOrNull(_sessionIdTable($_db));
+    final item = $_typedResult.readTableOrNull(_dayIdTable($_db));
     if (item == null) return manager;
     return ProcessedTableManager(
       manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+
+  static MultiTypedResultKey<$ProgramSetsTableTable, List<ProgramSetModel>>
+  _programSetsTableRefsTable(_$AppDatabase db) => MultiTypedResultKey.fromTable(
+    db.programSetsTable,
+    aliasName: 'program_exercises_table__id__program_sets_table__exercise_id',
+  );
+
+  $$ProgramSetsTableTableProcessedTableManager get programSetsTableRefs {
+    final manager = $$ProgramSetsTableTableTableManager(
+      $_db,
+      $_db.programSetsTable,
+    ).filter((f) => f.exerciseId.id.sqlEquals($_itemColumn<String>('id')!));
+
+    final cache = $_typedResult.readTableOrNull(
+      _programSetsTableRefsTable($_db),
+    );
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: cache),
     );
   }
 }
@@ -8074,50 +7340,25 @@ class $$ProgramExercisesTableTableFilterComposer
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<int> get sets => $composableBuilder(
-    column: $table.sets,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get repMin => $composableBuilder(
-    column: $table.repMin,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get repMax => $composableBuilder(
-    column: $table.repMax,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  ColumnFilters<int> get rirTarget => $composableBuilder(
-    column: $table.rirTarget,
-    builder: (column) => ColumnFilters(column),
-  );
-
   ColumnFilters<int> get restSeconds => $composableBuilder(
     column: $table.restSeconds,
     builder: (column) => ColumnFilters(column),
   );
 
-  ColumnFilters<String> get allowedSetTypesStr => $composableBuilder(
-    column: $table.allowedSetTypesStr,
-    builder: (column) => ColumnFilters(column),
-  );
-
-  $$ProgramSessionsTableTableFilterComposer get sessionId {
-    final $$ProgramSessionsTableTableFilterComposer composer = $composerBuilder(
+  $$ProgramDaysTableTableFilterComposer get dayId {
+    final $$ProgramDaysTableTableFilterComposer composer = $composerBuilder(
       composer: this,
-      getCurrentColumn: (t) => t.sessionId,
-      referencedTable: $db.programSessionsTable,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.programDaysTable,
       getReferencedColumn: (t) => t.id,
       builder:
           (
             joinBuilder, {
             $addJoinBuilderToRootComposer,
             $removeJoinBuilderFromRootComposer,
-          }) => $$ProgramSessionsTableTableFilterComposer(
+          }) => $$ProgramDaysTableTableFilterComposer(
             $db: $db,
-            $table: $db.programSessionsTable,
+            $table: $db.programDaysTable,
             $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
             joinBuilder: joinBuilder,
             $removeJoinBuilderFromRootComposer:
@@ -8125,6 +7366,31 @@ class $$ProgramExercisesTableTableFilterComposer
           ),
     );
     return composer;
+  }
+
+  Expression<bool> programSetsTableRefs(
+    Expression<bool> Function($$ProgramSetsTableTableFilterComposer f) f,
+  ) {
+    final $$ProgramSetsTableTableFilterComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.programSetsTable,
+      getReferencedColumn: (t) => t.exerciseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProgramSetsTableTableFilterComposer(
+            $db: $db,
+            $table: $db.programSetsTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
   }
 }
 
@@ -8152,57 +7418,31 @@ class $$ProgramExercisesTableTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<int> get sets => $composableBuilder(
-    column: $table.sets,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get repMin => $composableBuilder(
-    column: $table.repMin,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get repMax => $composableBuilder(
-    column: $table.repMax,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  ColumnOrderings<int> get rirTarget => $composableBuilder(
-    column: $table.rirTarget,
-    builder: (column) => ColumnOrderings(column),
-  );
-
   ColumnOrderings<int> get restSeconds => $composableBuilder(
     column: $table.restSeconds,
     builder: (column) => ColumnOrderings(column),
   );
 
-  ColumnOrderings<String> get allowedSetTypesStr => $composableBuilder(
-    column: $table.allowedSetTypesStr,
-    builder: (column) => ColumnOrderings(column),
-  );
-
-  $$ProgramSessionsTableTableOrderingComposer get sessionId {
-    final $$ProgramSessionsTableTableOrderingComposer composer =
-        $composerBuilder(
-          composer: this,
-          getCurrentColumn: (t) => t.sessionId,
-          referencedTable: $db.programSessionsTable,
-          getReferencedColumn: (t) => t.id,
-          builder:
-              (
-                joinBuilder, {
-                $addJoinBuilderToRootComposer,
+  $$ProgramDaysTableTableOrderingComposer get dayId {
+    final $$ProgramDaysTableTableOrderingComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.programDaysTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProgramDaysTableTableOrderingComposer(
+            $db: $db,
+            $table: $db.programDaysTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
                 $removeJoinBuilderFromRootComposer,
-              }) => $$ProgramSessionsTableTableOrderingComposer(
-                $db: $db,
-                $table: $db.programSessionsTable,
-                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                joinBuilder: joinBuilder,
-                $removeJoinBuilderFromRootComposer:
-                    $removeJoinBuilderFromRootComposer,
-              ),
-        );
+          ),
+    );
     return composer;
   }
 }
@@ -8229,50 +7469,57 @@ class $$ProgramExercisesTableTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<int> get sets =>
-      $composableBuilder(column: $table.sets, builder: (column) => column);
-
-  GeneratedColumn<int> get repMin =>
-      $composableBuilder(column: $table.repMin, builder: (column) => column);
-
-  GeneratedColumn<int> get repMax =>
-      $composableBuilder(column: $table.repMax, builder: (column) => column);
-
-  GeneratedColumn<int> get rirTarget =>
-      $composableBuilder(column: $table.rirTarget, builder: (column) => column);
-
   GeneratedColumn<int> get restSeconds => $composableBuilder(
     column: $table.restSeconds,
     builder: (column) => column,
   );
 
-  GeneratedColumn<String> get allowedSetTypesStr => $composableBuilder(
-    column: $table.allowedSetTypesStr,
-    builder: (column) => column,
-  );
-
-  $$ProgramSessionsTableTableAnnotationComposer get sessionId {
-    final $$ProgramSessionsTableTableAnnotationComposer composer =
-        $composerBuilder(
-          composer: this,
-          getCurrentColumn: (t) => t.sessionId,
-          referencedTable: $db.programSessionsTable,
-          getReferencedColumn: (t) => t.id,
-          builder:
-              (
-                joinBuilder, {
-                $addJoinBuilderToRootComposer,
+  $$ProgramDaysTableTableAnnotationComposer get dayId {
+    final $$ProgramDaysTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.dayId,
+      referencedTable: $db.programDaysTable,
+      getReferencedColumn: (t) => t.id,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProgramDaysTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.programDaysTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
                 $removeJoinBuilderFromRootComposer,
-              }) => $$ProgramSessionsTableTableAnnotationComposer(
-                $db: $db,
-                $table: $db.programSessionsTable,
-                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
-                joinBuilder: joinBuilder,
-                $removeJoinBuilderFromRootComposer:
-                    $removeJoinBuilderFromRootComposer,
-              ),
-        );
+          ),
+    );
     return composer;
+  }
+
+  Expression<T> programSetsTableRefs<T extends Object>(
+    Expression<T> Function($$ProgramSetsTableTableAnnotationComposer a) f,
+  ) {
+    final $$ProgramSetsTableTableAnnotationComposer composer = $composerBuilder(
+      composer: this,
+      getCurrentColumn: (t) => t.id,
+      referencedTable: $db.programSetsTable,
+      getReferencedColumn: (t) => t.exerciseId,
+      builder:
+          (
+            joinBuilder, {
+            $addJoinBuilderToRootComposer,
+            $removeJoinBuilderFromRootComposer,
+          }) => $$ProgramSetsTableTableAnnotationComposer(
+            $db: $db,
+            $table: $db.programSetsTable,
+            $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+            joinBuilder: joinBuilder,
+            $removeJoinBuilderFromRootComposer:
+                $removeJoinBuilderFromRootComposer,
+          ),
+    );
+    return f(composer);
   }
 }
 
@@ -8289,7 +7536,7 @@ class $$ProgramExercisesTableTableTableManager
           $$ProgramExercisesTableTableUpdateCompanionBuilder,
           (ProgramExerciseModel, $$ProgramExercisesTableTableReferences),
           ProgramExerciseModel,
-          PrefetchHooks Function({bool sessionId})
+          PrefetchHooks Function({bool dayId, bool programSetsTableRefs})
         > {
   $$ProgramExercisesTableTableTableManager(
     _$AppDatabase db,
@@ -8316,53 +7563,33 @@ class $$ProgramExercisesTableTableTableManager
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
-                Value<String> sessionId = const Value.absent(),
+                Value<String> dayId = const Value.absent(),
                 Value<String> exerciseId = const Value.absent(),
                 Value<String> exerciseName = const Value.absent(),
-                Value<int> sets = const Value.absent(),
-                Value<int> repMin = const Value.absent(),
-                Value<int> repMax = const Value.absent(),
-                Value<int?> rirTarget = const Value.absent(),
                 Value<int> restSeconds = const Value.absent(),
-                Value<String> allowedSetTypesStr = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ProgramExercisesTableCompanion(
                 id: id,
-                sessionId: sessionId,
+                dayId: dayId,
                 exerciseId: exerciseId,
                 exerciseName: exerciseName,
-                sets: sets,
-                repMin: repMin,
-                repMax: repMax,
-                rirTarget: rirTarget,
                 restSeconds: restSeconds,
-                allowedSetTypesStr: allowedSetTypesStr,
                 rowid: rowid,
               ),
           createCompanionCallback:
               ({
                 required String id,
-                required String sessionId,
+                required String dayId,
                 required String exerciseId,
                 required String exerciseName,
-                required int sets,
-                required int repMin,
-                required int repMax,
-                Value<int?> rirTarget = const Value.absent(),
                 required int restSeconds,
-                Value<String> allowedSetTypesStr = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
               }) => ProgramExercisesTableCompanion.insert(
                 id: id,
-                sessionId: sessionId,
+                dayId: dayId,
                 exerciseId: exerciseId,
                 exerciseName: exerciseName,
-                sets: sets,
-                repMin: repMin,
-                repMax: repMax,
-                rirTarget: rirTarget,
                 restSeconds: restSeconds,
-                allowedSetTypesStr: allowedSetTypesStr,
                 rowid: rowid,
               ),
           withReferenceMapper: (p0) => p0
@@ -8373,7 +7600,407 @@ class $$ProgramExercisesTableTableTableManager
                 ),
               )
               .toList(),
-          prefetchHooksCallback: ({sessionId = false}) {
+          prefetchHooksCallback:
+              ({dayId = false, programSetsTableRefs = false}) {
+                return PrefetchHooks(
+                  db: db,
+                  explicitlyWatchedTables: [
+                    if (programSetsTableRefs) db.programSetsTable,
+                  ],
+                  addJoins:
+                      <
+                        T extends TableManagerState<
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic,
+                          dynamic
+                        >
+                      >(state) {
+                        if (dayId) {
+                          state =
+                              state.withJoin(
+                                    currentTable: table,
+                                    currentColumn: table.dayId,
+                                    referencedTable:
+                                        $$ProgramExercisesTableTableReferences
+                                            ._dayIdTable(db),
+                                    referencedColumn:
+                                        $$ProgramExercisesTableTableReferences
+                                            ._dayIdTable(db)
+                                            .id,
+                                  )
+                                  as T;
+                        }
+
+                        return state;
+                      },
+                  getPrefetchedDataCallback: (items) async {
+                    return [
+                      if (programSetsTableRefs)
+                        await $_getPrefetchedData<
+                          ProgramExerciseModel,
+                          $ProgramExercisesTableTable,
+                          ProgramSetModel
+                        >(
+                          currentTable: table,
+                          referencedTable:
+                              $$ProgramExercisesTableTableReferences
+                                  ._programSetsTableRefsTable(db),
+                          managerFromTypedResult: (p0) =>
+                              $$ProgramExercisesTableTableReferences(
+                                db,
+                                table,
+                                p0,
+                              ).programSetsTableRefs,
+                          referencedItemsForCurrentItem:
+                              (item, referencedItems) => referencedItems.where(
+                                (e) => e.exerciseId == item.id,
+                              ),
+                          typedResults: items,
+                        ),
+                    ];
+                  },
+                );
+              },
+        ),
+      );
+}
+
+typedef $$ProgramExercisesTableTableProcessedTableManager =
+    ProcessedTableManager<
+      _$AppDatabase,
+      $ProgramExercisesTableTable,
+      ProgramExerciseModel,
+      $$ProgramExercisesTableTableFilterComposer,
+      $$ProgramExercisesTableTableOrderingComposer,
+      $$ProgramExercisesTableTableAnnotationComposer,
+      $$ProgramExercisesTableTableCreateCompanionBuilder,
+      $$ProgramExercisesTableTableUpdateCompanionBuilder,
+      (ProgramExerciseModel, $$ProgramExercisesTableTableReferences),
+      ProgramExerciseModel,
+      PrefetchHooks Function({bool dayId, bool programSetsTableRefs})
+    >;
+typedef $$ProgramSetsTableTableCreateCompanionBuilder =
+    ProgramSetsTableCompanion Function({
+      required String id,
+      required String exerciseId,
+      required int setNumber,
+      Value<int?> targetReps,
+      Value<double?> targetWeight,
+      Value<double?> targetRpe,
+      Value<SetType> setType,
+      Value<int> rowid,
+    });
+typedef $$ProgramSetsTableTableUpdateCompanionBuilder =
+    ProgramSetsTableCompanion Function({
+      Value<String> id,
+      Value<String> exerciseId,
+      Value<int> setNumber,
+      Value<int?> targetReps,
+      Value<double?> targetWeight,
+      Value<double?> targetRpe,
+      Value<SetType> setType,
+      Value<int> rowid,
+    });
+
+final class $$ProgramSetsTableTableReferences
+    extends
+        BaseReferences<_$AppDatabase, $ProgramSetsTableTable, ProgramSetModel> {
+  $$ProgramSetsTableTableReferences(
+    super.$_db,
+    super.$_table,
+    super.$_typedResult,
+  );
+
+  static $ProgramExercisesTableTable _exerciseIdTable(_$AppDatabase db) =>
+      db.programExercisesTable.createAlias(
+        'program_sets_table__exercise_id__program_exercises_table__id',
+      );
+
+  $$ProgramExercisesTableTableProcessedTableManager get exerciseId {
+    final $_column = $_itemColumn<String>('exercise_id')!;
+
+    final manager = $$ProgramExercisesTableTableTableManager(
+      $_db,
+      $_db.programExercisesTable,
+    ).filter((f) => f.id.sqlEquals($_column));
+    final item = $_typedResult.readTableOrNull(_exerciseIdTable($_db));
+    if (item == null) return manager;
+    return ProcessedTableManager(
+      manager.$state.copyWith(prefetchedData: [item]),
+    );
+  }
+}
+
+class $$ProgramSetsTableTableFilterComposer
+    extends Composer<_$AppDatabase, $ProgramSetsTableTable> {
+  $$ProgramSetsTableTableFilterComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get setNumber => $composableBuilder(
+    column: $table.setNumber,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<int> get targetReps => $composableBuilder(
+    column: $table.targetReps,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get targetWeight => $composableBuilder(
+    column: $table.targetWeight,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<double> get targetRpe => $composableBuilder(
+    column: $table.targetRpe,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnWithTypeConverterFilters<SetType, SetType, int> get setType =>
+      $composableBuilder(
+        column: $table.setType,
+        builder: (column) => ColumnWithTypeConverterFilters(column),
+      );
+
+  $$ProgramExercisesTableTableFilterComposer get exerciseId {
+    final $$ProgramExercisesTableTableFilterComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.exerciseId,
+          referencedTable: $db.programExercisesTable,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$ProgramExercisesTableTableFilterComposer(
+                $db: $db,
+                $table: $db.programExercisesTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$ProgramSetsTableTableOrderingComposer
+    extends Composer<_$AppDatabase, $ProgramSetsTableTable> {
+  $$ProgramSetsTableTableOrderingComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get setNumber => $composableBuilder(
+    column: $table.setNumber,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get targetReps => $composableBuilder(
+    column: $table.targetReps,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get targetWeight => $composableBuilder(
+    column: $table.targetWeight,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<double> get targetRpe => $composableBuilder(
+    column: $table.targetRpe,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  ColumnOrderings<int> get setType => $composableBuilder(
+    column: $table.setType,
+    builder: (column) => ColumnOrderings(column),
+  );
+
+  $$ProgramExercisesTableTableOrderingComposer get exerciseId {
+    final $$ProgramExercisesTableTableOrderingComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.exerciseId,
+          referencedTable: $db.programExercisesTable,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$ProgramExercisesTableTableOrderingComposer(
+                $db: $db,
+                $table: $db.programExercisesTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$ProgramSetsTableTableAnnotationComposer
+    extends Composer<_$AppDatabase, $ProgramSetsTableTable> {
+  $$ProgramSetsTableTableAnnotationComposer({
+    required super.$db,
+    required super.$table,
+    super.joinBuilder,
+    super.$addJoinBuilderToRootComposer,
+    super.$removeJoinBuilderFromRootComposer,
+  });
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
+
+  GeneratedColumn<int> get setNumber =>
+      $composableBuilder(column: $table.setNumber, builder: (column) => column);
+
+  GeneratedColumn<int> get targetReps => $composableBuilder(
+    column: $table.targetReps,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get targetWeight => $composableBuilder(
+    column: $table.targetWeight,
+    builder: (column) => column,
+  );
+
+  GeneratedColumn<double> get targetRpe =>
+      $composableBuilder(column: $table.targetRpe, builder: (column) => column);
+
+  GeneratedColumnWithTypeConverter<SetType, int> get setType =>
+      $composableBuilder(column: $table.setType, builder: (column) => column);
+
+  $$ProgramExercisesTableTableAnnotationComposer get exerciseId {
+    final $$ProgramExercisesTableTableAnnotationComposer composer =
+        $composerBuilder(
+          composer: this,
+          getCurrentColumn: (t) => t.exerciseId,
+          referencedTable: $db.programExercisesTable,
+          getReferencedColumn: (t) => t.id,
+          builder:
+              (
+                joinBuilder, {
+                $addJoinBuilderToRootComposer,
+                $removeJoinBuilderFromRootComposer,
+              }) => $$ProgramExercisesTableTableAnnotationComposer(
+                $db: $db,
+                $table: $db.programExercisesTable,
+                $addJoinBuilderToRootComposer: $addJoinBuilderToRootComposer,
+                joinBuilder: joinBuilder,
+                $removeJoinBuilderFromRootComposer:
+                    $removeJoinBuilderFromRootComposer,
+              ),
+        );
+    return composer;
+  }
+}
+
+class $$ProgramSetsTableTableTableManager
+    extends
+        RootTableManager<
+          _$AppDatabase,
+          $ProgramSetsTableTable,
+          ProgramSetModel,
+          $$ProgramSetsTableTableFilterComposer,
+          $$ProgramSetsTableTableOrderingComposer,
+          $$ProgramSetsTableTableAnnotationComposer,
+          $$ProgramSetsTableTableCreateCompanionBuilder,
+          $$ProgramSetsTableTableUpdateCompanionBuilder,
+          (ProgramSetModel, $$ProgramSetsTableTableReferences),
+          ProgramSetModel,
+          PrefetchHooks Function({bool exerciseId})
+        > {
+  $$ProgramSetsTableTableTableManager(
+    _$AppDatabase db,
+    $ProgramSetsTableTable table,
+  ) : super(
+        TableManagerState(
+          db: db,
+          table: table,
+          createFilteringComposer: () =>
+              $$ProgramSetsTableTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$ProgramSetsTableTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$ProgramSetsTableTableAnnotationComposer($db: db, $table: table),
+          updateCompanionCallback:
+              ({
+                Value<String> id = const Value.absent(),
+                Value<String> exerciseId = const Value.absent(),
+                Value<int> setNumber = const Value.absent(),
+                Value<int?> targetReps = const Value.absent(),
+                Value<double?> targetWeight = const Value.absent(),
+                Value<double?> targetRpe = const Value.absent(),
+                Value<SetType> setType = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ProgramSetsTableCompanion(
+                id: id,
+                exerciseId: exerciseId,
+                setNumber: setNumber,
+                targetReps: targetReps,
+                targetWeight: targetWeight,
+                targetRpe: targetRpe,
+                setType: setType,
+                rowid: rowid,
+              ),
+          createCompanionCallback:
+              ({
+                required String id,
+                required String exerciseId,
+                required int setNumber,
+                Value<int?> targetReps = const Value.absent(),
+                Value<double?> targetWeight = const Value.absent(),
+                Value<double?> targetRpe = const Value.absent(),
+                Value<SetType> setType = const Value.absent(),
+                Value<int> rowid = const Value.absent(),
+              }) => ProgramSetsTableCompanion.insert(
+                id: id,
+                exerciseId: exerciseId,
+                setNumber: setNumber,
+                targetReps: targetReps,
+                targetWeight: targetWeight,
+                targetRpe: targetRpe,
+                setType: setType,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable(table),
+                  $$ProgramSetsTableTableReferences(db, table, e),
+                ),
+              )
+              .toList(),
+          prefetchHooksCallback: ({exerciseId = false}) {
             return PrefetchHooks(
               db: db,
               explicitlyWatchedTables: [],
@@ -8393,17 +8020,17 @@ class $$ProgramExercisesTableTableTableManager
                       dynamic
                     >
                   >(state) {
-                    if (sessionId) {
+                    if (exerciseId) {
                       state =
                           state.withJoin(
                                 currentTable: table,
-                                currentColumn: table.sessionId,
+                                currentColumn: table.exerciseId,
                                 referencedTable:
-                                    $$ProgramExercisesTableTableReferences
-                                        ._sessionIdTable(db),
+                                    $$ProgramSetsTableTableReferences
+                                        ._exerciseIdTable(db),
                                 referencedColumn:
-                                    $$ProgramExercisesTableTableReferences
-                                        ._sessionIdTable(db)
+                                    $$ProgramSetsTableTableReferences
+                                        ._exerciseIdTable(db)
                                         .id,
                               )
                               as T;
@@ -8420,19 +8047,19 @@ class $$ProgramExercisesTableTableTableManager
       );
 }
 
-typedef $$ProgramExercisesTableTableProcessedTableManager =
+typedef $$ProgramSetsTableTableProcessedTableManager =
     ProcessedTableManager<
       _$AppDatabase,
-      $ProgramExercisesTableTable,
-      ProgramExerciseModel,
-      $$ProgramExercisesTableTableFilterComposer,
-      $$ProgramExercisesTableTableOrderingComposer,
-      $$ProgramExercisesTableTableAnnotationComposer,
-      $$ProgramExercisesTableTableCreateCompanionBuilder,
-      $$ProgramExercisesTableTableUpdateCompanionBuilder,
-      (ProgramExerciseModel, $$ProgramExercisesTableTableReferences),
-      ProgramExerciseModel,
-      PrefetchHooks Function({bool sessionId})
+      $ProgramSetsTableTable,
+      ProgramSetModel,
+      $$ProgramSetsTableTableFilterComposer,
+      $$ProgramSetsTableTableOrderingComposer,
+      $$ProgramSetsTableTableAnnotationComposer,
+      $$ProgramSetsTableTableCreateCompanionBuilder,
+      $$ProgramSetsTableTableUpdateCompanionBuilder,
+      (ProgramSetModel, $$ProgramSetsTableTableReferences),
+      ProgramSetModel,
+      PrefetchHooks Function({bool exerciseId})
     >;
 typedef $$BodyWeightEntriesTableTableCreateCompanionBuilder =
     BodyWeightEntriesTableCompanion Function({
@@ -9322,12 +8949,12 @@ class $AppDatabaseManager {
       $$SetLogsTableTableTableManager(_db, _db.setLogsTable);
   $$ProgramsTableTableTableManager get programsTable =>
       $$ProgramsTableTableTableManager(_db, _db.programsTable);
-  $$ProgramBlocksTableTableTableManager get programBlocksTable =>
-      $$ProgramBlocksTableTableTableManager(_db, _db.programBlocksTable);
-  $$ProgramSessionsTableTableTableManager get programSessionsTable =>
-      $$ProgramSessionsTableTableTableManager(_db, _db.programSessionsTable);
+  $$ProgramDaysTableTableTableManager get programDaysTable =>
+      $$ProgramDaysTableTableTableManager(_db, _db.programDaysTable);
   $$ProgramExercisesTableTableTableManager get programExercisesTable =>
       $$ProgramExercisesTableTableTableManager(_db, _db.programExercisesTable);
+  $$ProgramSetsTableTableTableManager get programSetsTable =>
+      $$ProgramSetsTableTableTableManager(_db, _db.programSetsTable);
   $$BodyWeightEntriesTableTableTableManager get bodyWeightEntriesTable =>
       $$BodyWeightEntriesTableTableTableManager(
         _db,

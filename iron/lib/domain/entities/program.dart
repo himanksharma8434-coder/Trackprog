@@ -1,101 +1,111 @@
 import 'package:equatable/equatable.dart';
 import 'workout.dart';
 
-enum BlockType { accumulation, intensification, deload, custom }
+class ProgramSet extends Equatable {
+  final String id;
+  final int setNumber;
+  final int? targetReps;
+  final double? targetWeight;
+  final double? targetRpe;
+  final SetType setType;
+
+  const ProgramSet({
+    required this.id,
+    required this.setNumber,
+    this.targetReps,
+    this.targetWeight,
+    this.targetRpe,
+    this.setType = SetType.normal,
+  });
+
+  @override
+  List<Object?> get props => [id, setNumber, targetReps, targetWeight, targetRpe, setType];
+
+  ProgramSet copyWith({
+    String? id,
+    int? setNumber,
+    int? targetReps,
+    double? targetWeight,
+    double? targetRpe,
+    SetType? setType,
+  }) {
+    return ProgramSet(
+      id: id ?? this.id,
+      setNumber: setNumber ?? this.setNumber,
+      targetReps: targetReps ?? this.targetReps,
+      targetWeight: targetWeight ?? this.targetWeight,
+      targetRpe: targetRpe ?? this.targetRpe,
+      setType: setType ?? this.setType,
+    );
+  }
+}
 
 class ProgramExercise extends Equatable {
   final String id;
   final String exerciseId;
   final String exerciseName;
-  final int sets;
-  final int repMin;
-  final int repMax;
-  final int? rirTarget;
+  final List<ProgramSet> sets;
   final int restSeconds;
-  final List<SetType> allowedSetTypes;
+  final String? historicalHint;
 
   const ProgramExercise({
     required this.id,
     required this.exerciseId,
     required this.exerciseName,
     required this.sets,
-    required this.repMin,
-    required this.repMax,
-    this.rirTarget,
     required this.restSeconds,
-    this.allowedSetTypes = const [SetType.normal],
+    this.historicalHint,
   });
 
   @override
-  List<Object?> get props => [id, exerciseId, exerciseName, sets, repMin, repMax, rirTarget, restSeconds, allowedSetTypes];
-}
+  List<Object?> get props => [id, exerciseId, exerciseName, sets, restSeconds, historicalHint];
 
-class ProgramSession extends Equatable {
-  final String id;
-  final int dayOfWeek; // 1=Mon...7=Sun
-  final String name;
-  final List<ProgramExercise> exercises;
-  final int estimatedDurationMinutes;
-
-  const ProgramSession({
-    required this.id,
-    required this.dayOfWeek,
-    required this.name,
-    required this.exercises,
-    required this.estimatedDurationMinutes,
-  });
-
-  @override
-  List<Object?> get props => [id, dayOfWeek, name, exercises, estimatedDurationMinutes];
-
-  ProgramSession copyWith({
+  ProgramExercise copyWith({
     String? id,
-    int? dayOfWeek,
-    String? name,
-    List<ProgramExercise>? exercises,
-    int? estimatedDurationMinutes,
+    String? exerciseId,
+    String? exerciseName,
+    List<ProgramSet>? sets,
+    int? restSeconds,
+    String? historicalHint,
   }) {
-    return ProgramSession(
+    return ProgramExercise(
       id: id ?? this.id,
-      dayOfWeek: dayOfWeek ?? this.dayOfWeek,
-      name: name ?? this.name,
-      exercises: exercises ?? this.exercises,
-      estimatedDurationMinutes: estimatedDurationMinutes ?? this.estimatedDurationMinutes,
+      exerciseId: exerciseId ?? this.exerciseId,
+      exerciseName: exerciseName ?? this.exerciseName,
+      sets: sets ?? this.sets,
+      restSeconds: restSeconds ?? this.restSeconds,
+      historicalHint: historicalHint ?? this.historicalHint,
     );
   }
 }
 
-class ProgramBlock extends Equatable {
+class ProgramDay extends Equatable {
   final String id;
+  final int dayNumber; // 1, 2, 3...
   final String name;
-  final int weeks;
-  final List<ProgramSession> sessions;
-  final BlockType type;
+  final List<ProgramExercise> exercises;
 
-  const ProgramBlock({
+  const ProgramDay({
     required this.id,
+    required this.dayNumber,
     required this.name,
-    required this.weeks,
-    required this.sessions,
-    required this.type,
+    required this.exercises,
   });
 
   @override
-  List<Object?> get props => [id, name, weeks, sessions, type];
+  List<Object?> get props => [id, dayNumber, name, exercises];
 
-  ProgramBlock copyWith({
+  ProgramDay copyWith({
     String? id,
+    int? dayNumber,
     String? name,
-    int? weeks,
-    List<ProgramSession>? sessions,
-    BlockType? type,
+    List<ProgramExercise>? exercises,
   }) {
-    return ProgramBlock(
+    return ProgramDay(
       id: id ?? this.id,
+      dayNumber: dayNumber ?? this.dayNumber,
       name: name ?? this.name,
-      weeks: weeks ?? this.weeks,
-      sessions: sessions ?? this.sessions,
-      type: type ?? this.type,
+      exercises: exercises ?? this.exercises,
     );
   }
 }
@@ -104,8 +114,7 @@ class Program extends Equatable {
   final String id;
   final String name;
   final String? author;
-  final int totalWeeks;
-  final List<ProgramBlock> blocks;
+  final List<ProgramDay> days;
   final bool isCustom;
   final bool isImported;
   final DateTime createdAt;
@@ -114,22 +123,20 @@ class Program extends Equatable {
     required this.id,
     required this.name,
     this.author,
-    required this.totalWeeks,
-    required this.blocks,
+    required this.days,
     required this.isCustom,
     required this.isImported,
     required this.createdAt,
   });
 
   @override
-  List<Object?> get props => [id, name, author, totalWeeks, blocks, isCustom, isImported, createdAt];
+  List<Object?> get props => [id, name, author, days, isCustom, isImported, createdAt];
 
   Program copyWith({
     String? id,
     String? name,
     String? author,
-    int? totalWeeks,
-    List<ProgramBlock>? blocks,
+    List<ProgramDay>? days,
     bool? isCustom,
     bool? isImported,
     DateTime? createdAt,
@@ -138,8 +145,7 @@ class Program extends Equatable {
       id: id ?? this.id,
       name: name ?? this.name,
       author: author ?? this.author,
-      totalWeeks: totalWeeks ?? this.totalWeeks,
-      blocks: blocks ?? this.blocks,
+      days: days ?? this.days,
       isCustom: isCustom ?? this.isCustom,
       isImported: isImported ?? this.isImported,
       createdAt: createdAt ?? this.createdAt,

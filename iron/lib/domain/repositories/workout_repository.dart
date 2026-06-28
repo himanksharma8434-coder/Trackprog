@@ -5,4 +5,5 @@ abstract class WorkoutRepository {
   Future<List<WorkoutSession>> getWorkoutHistory();
   Future<WorkoutSession?> getWorkoutSessionById(String id);
   Future<void> deleteWorkoutSession(String id);
+  Future<ExerciseLog?> getLastExerciseLog(String exerciseId);
 }

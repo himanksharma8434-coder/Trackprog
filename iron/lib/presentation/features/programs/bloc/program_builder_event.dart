@@ -1,6 +1,5 @@
 import 'package:equatable/equatable.dart';
 import '../../../../domain/entities/program.dart';
-import '../../../../domain/entities/workout.dart';
 
 abstract class ProgramBuilderEvent extends Equatable {
   const ProgramBuilderEvent();
@@ -12,40 +11,47 @@ class StartProgramBuilder extends ProgramBuilderEvent {}
 
 class UpdateProgramDetails extends ProgramBuilderEvent {
   final String name;
-  final int weeks;
-  const UpdateProgramDetails(this.name, this.weeks);
+  const UpdateProgramDetails(this.name);
 
   @override
-  List<Object?> get props => [name, weeks];
+  List<Object?> get props => [name];
 }
 
-class AddBlock extends ProgramBuilderEvent {
+class AddDay extends ProgramBuilderEvent {
   final String name;
-  final BlockType type;
-  final int weeks;
-  const AddBlock(this.name, this.type, this.weeks);
+  const AddDay(this.name);
 
   @override
-  List<Object?> get props => [name, type, weeks];
+  List<Object?> get props => [name];
 }
 
-class AddSessionToBlock extends ProgramBuilderEvent {
-  final String blockId;
-  final String name;
-  final int dayOfWeek;
-  const AddSessionToBlock(this.blockId, this.name, this.dayOfWeek);
-
-  @override
-  List<Object?> get props => [blockId, name, dayOfWeek];
-}
-
-class AddExerciseToSession extends ProgramBuilderEvent {
-  final String sessionId;
+class AddExerciseToDay extends ProgramBuilderEvent {
+  final String dayId;
   final ProgramExercise exercise;
-  const AddExerciseToSession(this.sessionId, this.exercise);
+  const AddExerciseToDay(this.dayId, this.exercise);
 
   @override
-  List<Object?> get props => [sessionId, exercise];
+  List<Object?> get props => [dayId, exercise];
+}
+
+class AddSetToExercise extends ProgramBuilderEvent {
+  final String dayId;
+  final String exerciseId;
+  final ProgramSet programSet;
+  const AddSetToExercise(this.dayId, this.exerciseId, this.programSet);
+
+  @override
+  List<Object?> get props => [dayId, exerciseId, programSet];
+}
+
+class UpdateSet extends ProgramBuilderEvent {
+  final String dayId;
+  final String exerciseId;
+  final ProgramSet updatedSet;
+  const UpdateSet(this.dayId, this.exerciseId, this.updatedSet);
+
+  @override
+  List<Object?> get props => [dayId, exerciseId, updatedSet];
 }
 
 class SaveProgram extends ProgramBuilderEvent {}

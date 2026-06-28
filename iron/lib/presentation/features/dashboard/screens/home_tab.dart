@@ -1,9 +1,8 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
-import '../../../widgets/glass_widgets.dart';
+import '../../../widgets/precision_widgets.dart';
 
 class HomeTab extends StatelessWidget {
   const HomeTab({super.key});
@@ -11,218 +10,280 @@ class HomeTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [Color(0xFF0D0D15), Color(0xFF050508)],
-        ),
-      ),
+      color: AppColors.background,
       child: SafeArea(
         child: CustomScrollView(
           slivers: [
-            SliverToBoxAdapter(child: _buildHeader(context)),
-            SliverToBoxAdapter(child: _buildQuickStartCard(context)),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 28, 20, 16),
-                child: Text('YOUR STATS', style: AppTypography.labelS.copyWith(letterSpacing: 2.0)),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+              sliver: SliverList(
+                delegate: SliverChildListDelegate([
+                  _buildGreetingAndCTA(context),
+                  const SizedBox(height: 40),
+                  _buildMetricsGrid(context),
+                  const SizedBox(height: 40),
+                  _buildRecentSessions(context),
+                  const SizedBox(height: 32),
+                ]),
               ),
             ),
-            SliverToBoxAdapter(child: _buildStatCards(context)),
-            SliverToBoxAdapter(
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(20, 28, 20, 16),
-                child: Text('QUICK ACTIONS', style: AppTypography.labelS.copyWith(letterSpacing: 2.0)),
-              ),
-            ),
-            SliverToBoxAdapter(child: _buildQuickActions(context)),
-            const SliverPadding(padding: EdgeInsets.only(bottom: 32)),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeader(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildGreetingAndCTA(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Ready to crush it, Alex?', style: AppTypography.h1),
+        const SizedBox(height: 4),
+        RichText(
+          text: TextSpan(
+            style: AppTypography.bodyL.copyWith(color: AppColors.textSecondary),
             children: [
-              Text('Welcome back,', style: AppTypography.bodyM.copyWith(color: AppColors.textSecondary)),
-              const SizedBox(height: 4),
-              Text('Athlete', style: AppTypography.h1),
+              const TextSpan(text: 'Today is '),
+              TextSpan(text: 'Leg Day', style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.w600)),
+              const TextSpan(text: '. Let\'s build that foundation.'),
             ],
           ),
-          Container(
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              gradient: AppColors.primaryGradient,
-              boxShadow: [
-                BoxShadow(color: AppColors.primaryGlow, blurRadius: 12, spreadRadius: -2),
-              ],
-            ),
-            child: const Padding(
-              padding: EdgeInsets.all(12),
-              child: Icon(Icons.person_rounded, color: Colors.white, size: 24),
-            ),
-          ),
-        ],
-      ),
+        ),
+        const SizedBox(height: 24),
+        PrimaryButton(
+          label: 'Start Workout',
+          icon: Icons.play_arrow,
+          onPressed: () => context.push('/workout/active'),
+          isExpanded: true,
+        ),
+      ],
     );
   }
 
-  Widget _buildQuickStartCard(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
-      child: GlassCard(
-        padding: const EdgeInsets.all(24),
-        margin: EdgeInsets.zero,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _buildMetricsGrid(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: AppColors.primaryDim,
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: const Icon(Icons.bolt_rounded, color: AppColors.primary, size: 20),
-                ),
-                const SizedBox(width: 12),
-                Column(
+            Text('TODAY\'S PROGRESS', style: AppTypography.labelCaps),
+            Text('Last sync: Just now', style: AppTypography.numericData.copyWith(color: AppColors.primary)),
+          ],
+        ),
+        const SizedBox(height: 16),
+        Row(
+          children: [
+            Expanded(
+              child: _buildMetricCard(
+                title: 'CALORIES',
+                icon: Icons.local_fire_department,
+                value: '482',
+                unit: 'kcal',
+                progress: 0.6,
+                progressText: '60% of 800 kcal goal',
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: _buildMetricCard(
+                title: 'ACTIVE',
+                icon: Icons.timer,
+                value: '45',
+                unit: 'm',
+                progress: 0.75,
+                progressText: '75% of 60m goal',
+              ),
+            ),
+            const SizedBox(width: 8),
+            Expanded(
+              child: MetricCard(
+                padding: const EdgeInsets.all(12),
+                margin: EdgeInsets.zero,
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Next Session', style: AppTypography.h4),
-                    Text('Hypertrophy Block · Week 2 Day 1', style: AppTypography.bodyS),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text('AVG HR', style: AppTypography.labelCaps),
+                        const Icon(Icons.favorite, color: AppColors.primary, size: 16),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text('124', style: AppTypography.h1),
+                        const SizedBox(width: 2),
+                        Text('bpm', style: AppTypography.bodyS),
+                      ],
+                    ),
+                    const SizedBox(height: 12),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        _buildSparkBar(0.4),
+                        const SizedBox(width: 2),
+                        _buildSparkBar(0.6),
+                        const SizedBox(width: 2),
+                        _buildSparkBar(0.8),
+                        const SizedBox(width: 2),
+                        _buildSparkBar(0.9, isPrimary: true),
+                        const SizedBox(width: 2),
+                        _buildSparkBar(0.7),
+                        const SizedBox(width: 2),
+                        _buildSparkBar(0.5),
+                      ],
+                    ),
                   ],
                 ),
-              ],
-            ),
-            const SizedBox(height: 24),
-            GlowButton(
-              label: 'Start Workout',
-              icon: Icons.play_arrow_rounded,
-              onPressed: () => context.push('/workout/active'),
+              ),
             ),
           ],
         ),
+      ],
+    );
+  }
+
+  Widget _buildSparkBar(double heightFactor, {bool isPrimary = false}) {
+    return Container(
+      width: 4,
+      height: 24 * heightFactor,
+      decoration: BoxDecoration(
+        color: isPrimary ? AppColors.primary : AppColors.surfaceElevated,
+        borderRadius: BorderRadius.circular(1),
       ),
     );
   }
 
-  Widget _buildStatCards(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Row(
+  Widget _buildMetricCard({
+    required String title,
+    required IconData icon,
+    required String value,
+    required String unit,
+    required double progress,
+    required String progressText,
+  }) {
+    return MetricCard(
+      padding: const EdgeInsets.all(12),
+      margin: EdgeInsets.zero,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Expanded(
-            child: GlassCard(
-              margin: EdgeInsets.zero,
-              onTap: () => context.push('/body-weight'),
-              child: Column(
-                children: [
-                  ShaderMask(
-                    shaderCallback: (bounds) => AppColors.primaryGradient.createShader(bounds),
-                    child: const Icon(Icons.monitor_weight_rounded, color: Colors.white, size: 28),
-                  ),
-                  const SizedBox(height: 12),
-                  Text('82.5', style: AppTypography.numericDataLarge),
-                  Text('kg', style: AppTypography.bodyS),
-                ],
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(title, style: AppTypography.labelCaps),
+              Icon(icon, color: AppColors.primary, size: 16),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.baseline,
+            textBaseline: TextBaseline.alphabetic,
+            children: [
+              Text(value, style: AppTypography.h1),
+              const SizedBox(width: 2),
+              Text(unit, style: AppTypography.bodyS),
+            ],
+          ),
+          const SizedBox(height: 12),
+          Container(
+            height: 4,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: AppColors.border,
+              borderRadius: BorderRadius.circular(2),
+            ),
+            child: FractionallySizedBox(
+              alignment: Alignment.centerLeft,
+              widthFactor: progress,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: AppColors.primary,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
             ),
           ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: GlassCard(
-              margin: EdgeInsets.zero,
-              onTap: () => context.go('/dashboard/analytics'),
-              child: Column(
-                children: [
-                  ShaderMask(
-                    shaderCallback: (bounds) => AppColors.primaryGradient.createShader(bounds),
-                    child: const Icon(Icons.trending_up_rounded, color: Colors.white, size: 28),
-                  ),
-                  const SizedBox(height: 12),
-                  Text('12,400', style: AppTypography.numericDataLarge),
-                  Text('kg / week', style: AppTypography.bodyS),
-                ],
-              ),
-            ),
-          ),
+          const SizedBox(height: 4),
+          Text(progressText, style: AppTypography.numericData.copyWith(fontSize: 10, color: AppColors.textSecondary)),
         ],
       ),
     );
   }
 
-  Widget _buildQuickActions(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
+  Widget _buildRecentSessions(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('RECENT SESSIONS', style: AppTypography.labelCaps),
+        const SizedBox(height: 16),
+        _buildSessionRow(
+          title: 'Upper Body Power',
+          subtitle: 'Yesterday • 55 mins',
+          icon: Icons.fitness_center,
+          tags: ['Strength', '12k Volume'],
+          isActive: true,
+        ),
+        _buildSessionRow(
+          title: 'Zone 2 Cardio',
+          subtitle: 'Oct 24 • 45 mins',
+          icon: Icons.directions_run,
+          tags: ['Cardio', '4.2 mi'],
+          isActive: false,
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSessionRow({
+    required String title,
+    required String subtitle,
+    required IconData icon,
+    required List<String> tags,
+    bool isActive = false,
+  }) {
+    return MetricCard(
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      isActive: isActive,
+      child: Row(
         children: [
-          GlassCard(
-            margin: const EdgeInsets.only(bottom: 12),
-            onTap: () => context.push('/program-builder'),
-            child: Row(
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: AppColors.surfaceElevated,
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: Icon(icon, color: isActive ? AppColors.primary : AppColors.textSecondary, size: 20),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppColors.surfaceGlass,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(Icons.edit_note_rounded, color: AppColors.primary, size: 22),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Program Builder', style: AppTypography.h4),
-                      Text('Create a custom mesocycle', style: AppTypography.bodyS),
-                    ],
-                  ),
-                ),
-                const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
+                Text(title, style: AppTypography.h4),
+                const SizedBox(height: 2),
+                Text(subtitle, style: AppTypography.numericData.copyWith(color: AppColors.textSecondary)),
               ],
             ),
           ),
-          GlassCard(
-            margin: const EdgeInsets.only(bottom: 12),
-            onTap: () => context.push('/body-weight'),
-            child: Row(
-              children: [
-                Container(
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    color: AppColors.surfaceGlass,
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: const Icon(Icons.scale_rounded, color: AppColors.primary, size: 22),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text('Log Body Weight', style: AppTypography.h4),
-                      Text('Track your morning weigh-in', style: AppTypography.bodyS),
-                    ],
-                  ),
-                ),
-                const Icon(Icons.chevron_right_rounded, color: AppColors.textMuted),
-              ],
-            ),
+          const SizedBox(width: 8),
+          Row(
+            children: tags.map((tag) => Padding(
+              padding: const EdgeInsets.only(left: 8),
+              child: DataChip(label: tag, isSelected: isActive && tag == tags.first),
+            )).toList(),
           ),
         ],
       ),
     );
   }
 }
+
