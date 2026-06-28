@@ -1,0 +1,122 @@
+import 'package:equatable/equatable.dart';
+
+enum SetType { normal, warmup, dropset, myorep, failure, partial }
+
+class SetLog extends Equatable {
+  final String id;
+  final int setNumber;
+  final SetType type;
+  final double weightKg;
+  final int reps;
+  final int? rir;
+  final int? partialReps;
+  final bool? isLeft;
+  final bool? isRight;
+  final DateTime loggedAt;
+
+  const SetLog({
+    required this.id,
+    required this.setNumber,
+    required this.type,
+    required this.weightKg,
+    required this.reps,
+    this.rir,
+    this.partialReps,
+    this.isLeft,
+    this.isRight,
+    required this.loggedAt,
+  });
+
+  @override
+  List<Object?> get props => [id, setNumber, type, weightKg, reps, rir, partialReps, isLeft, isRight, loggedAt];
+}
+
+class ExerciseLog extends Equatable {
+  final String id;
+  final String exerciseId;
+  final String exerciseName;
+  final int orderInSession;
+  final List<SetLog> sets;
+
+  const ExerciseLog({
+    required this.id,
+    required this.exerciseId,
+    required this.exerciseName,
+    required this.orderInSession,
+    required this.sets,
+  });
+
+  @override
+  List<Object?> get props => [id, exerciseId, exerciseName, orderInSession, sets];
+
+  ExerciseLog copyWith({
+    String? id,
+    String? exerciseId,
+    String? exerciseName,
+    int? orderInSession,
+    List<SetLog>? sets,
+  }) {
+    return ExerciseLog(
+      id: id ?? this.id,
+      exerciseId: exerciseId ?? this.exerciseId,
+      exerciseName: exerciseName ?? this.exerciseName,
+      orderInSession: orderInSession ?? this.orderInSession,
+      sets: sets ?? this.sets,
+    );
+  }
+}
+
+class WorkoutSession extends Equatable {
+  final String id;
+  final String? programSessionId;
+  final String name;
+  final DateTime startedAt;
+  final DateTime? finishedAt;
+  final int durationSeconds;
+  final double totalVolumeKg;
+  final List<ExerciseLog> exerciseLogs;
+  final int? sessionRpe;
+  final String? note;
+
+  const WorkoutSession({
+    required this.id,
+    this.programSessionId,
+    required this.name,
+    required this.startedAt,
+    this.finishedAt,
+    this.durationSeconds = 0,
+    this.totalVolumeKg = 0.0,
+    required this.exerciseLogs,
+    this.sessionRpe,
+    this.note,
+  });
+
+  @override
+  List<Object?> get props => [id, programSessionId, name, startedAt, finishedAt, durationSeconds, totalVolumeKg, exerciseLogs, sessionRpe, note];
+
+  WorkoutSession copyWith({
+    String? id,
+    String? programSessionId,
+    String? name,
+    DateTime? startedAt,
+    DateTime? finishedAt,
+    int? durationSeconds,
+    double? totalVolumeKg,
+    List<ExerciseLog>? exerciseLogs,
+    int? sessionRpe,
+    String? note,
+  }) {
+    return WorkoutSession(
+      id: id ?? this.id,
+      programSessionId: programSessionId ?? this.programSessionId,
+      name: name ?? this.name,
+      startedAt: startedAt ?? this.startedAt,
+      finishedAt: finishedAt ?? this.finishedAt,
+      durationSeconds: durationSeconds ?? this.durationSeconds,
+      totalVolumeKg: totalVolumeKg ?? this.totalVolumeKg,
+      exerciseLogs: exerciseLogs ?? this.exerciseLogs,
+      sessionRpe: sessionRpe ?? this.sessionRpe,
+      note: note ?? this.note,
+    );
+  }
+}
