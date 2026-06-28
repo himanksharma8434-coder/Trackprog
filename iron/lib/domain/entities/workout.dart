@@ -29,6 +29,31 @@ class SetLog extends Equatable {
 
   @override
   List<Object?> get props => [id, setNumber, type, weightKg, reps, rir, partialReps, isLeft, isRight, loggedAt];
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'setNumber': setNumber,
+        'type': type.name,
+        'weightKg': weightKg,
+        'reps': reps,
+        'rir': rir,
+        'partialReps': partialReps,
+        'isLeft': isLeft,
+        'isRight': isRight,
+        'loggedAt': loggedAt.toIso8601String(),
+      };
+
+  factory SetLog.fromJson(Map<String, dynamic> json) => SetLog(
+        id: json['id'],
+        setNumber: json['setNumber'],
+        type: SetType.values.firstWhere((e) => e.name == json['type'], orElse: () => SetType.normal),
+        weightKg: json['weightKg'],
+        reps: json['reps'],
+        rir: json['rir'],
+        partialReps: json['partialReps'],
+        isLeft: json['isLeft'],
+        isRight: json['isRight'],
+        loggedAt: DateTime.parse(json['loggedAt']),
+      );
 }
 
 class ExerciseLog extends Equatable {
@@ -64,6 +89,22 @@ class ExerciseLog extends Equatable {
       sets: sets ?? this.sets,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'exerciseId': exerciseId,
+        'exerciseName': exerciseName,
+        'orderInSession': orderInSession,
+        'sets': sets.map((e) => e.toJson()).toList(),
+      };
+
+  factory ExerciseLog.fromJson(Map<String, dynamic> json) => ExerciseLog(
+        id: json['id'],
+        exerciseId: json['exerciseId'],
+        exerciseName: json['exerciseName'],
+        orderInSession: json['orderInSession'],
+        sets: (json['sets'] as List).map((e) => SetLog.fromJson(e)).toList(),
+      );
 }
 
 class WorkoutSession extends Equatable {
@@ -119,4 +160,30 @@ class WorkoutSession extends Equatable {
       note: note ?? this.note,
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'programDayId': programDayId,
+        'name': name,
+        'startedAt': startedAt.toIso8601String(),
+        'finishedAt': finishedAt?.toIso8601String(),
+        'durationSeconds': durationSeconds,
+        'totalVolumeKg': totalVolumeKg,
+        'exerciseLogs': exerciseLogs.map((e) => e.toJson()).toList(),
+        'sessionRpe': sessionRpe,
+        'note': note,
+      };
+
+  factory WorkoutSession.fromJson(Map<String, dynamic> json) => WorkoutSession(
+        id: json['id'],
+        programDayId: json['programDayId'],
+        name: json['name'],
+        startedAt: DateTime.parse(json['startedAt']),
+        finishedAt: json['finishedAt'] != null ? DateTime.parse(json['finishedAt']) : null,
+        durationSeconds: json['durationSeconds'] ?? 0,
+        totalVolumeKg: json['totalVolumeKg'] ?? 0.0,
+        exerciseLogs: (json['exerciseLogs'] as List).map((e) => ExerciseLog.fromJson(e)).toList(),
+        sessionRpe: json['sessionRpe'],
+        note: json['note'],
+      );
 }

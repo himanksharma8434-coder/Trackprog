@@ -30,15 +30,7 @@ import '../../domain/repositories/workout_repository.dart' as _i730;
 import '../../domain/usecases/exercise_usecases.dart' as _i913;
 import '../../domain/usecases/program_usecases.dart' as _i635;
 import '../../domain/usecases/workout_usecases.dart' as _i89;
-import '../../presentation/features/analytics/bloc/analytics_bloc.dart'
-    as _i785;
-import '../../presentation/features/body_metrics/bloc/body_metrics_bloc.dart'
-    as _i925;
 import '../../presentation/features/exercises/bloc/exercise_bloc.dart' as _i952;
-import '../../presentation/features/onboarding/bloc/onboarding_bloc.dart'
-    as _i244;
-import '../../presentation/features/programs/bloc/program_builder_bloc.dart'
-    as _i492;
 import '../../presentation/features/workout/bloc/active_workout_bloc.dart'
     as _i599;
 
@@ -50,7 +42,6 @@ extension GetItInjectableX on _i174.GetIt {
   }) {
     final gh = _i526.GetItHelper(this, environment, environmentFilter);
     final databaseModule = _$DatabaseModule();
-    gh.factory<_i925.BodyMetricsBloc>(() => _i925.BodyMetricsBloc());
     gh.singleton<_i549.AppDatabase>(() => databaseModule.db);
     gh.lazySingleton<_i1073.AuthRepository>(() => _i895.AuthRepositoryImpl());
     gh.lazySingleton<_i730.WorkoutRepository>(
@@ -83,17 +74,8 @@ extension GetItInjectableX on _i174.GetIt {
     gh.factory<_i635.BuildCustomProgramUseCase>(
       () => _i635.BuildCustomProgramUseCase(gh<_i317.ProgramRepository>()),
     );
-    gh.factory<_i492.ProgramBuilderBloc>(
-      () => _i492.ProgramBuilderBloc(
-        gh<_i635.BuildCustomProgramUseCase>(),
-        gh<_i730.WorkoutRepository>(),
-      ),
-    );
     gh.lazySingleton<_i299.ExerciseRepository>(
       () => _i715.ExerciseRepositoryImpl(gh<_i823.ExerciseDao>()),
-    );
-    gh.factory<_i244.OnboardingBloc>(
-      () => _i244.OnboardingBloc(gh<_i1073.AuthRepository>()),
     );
     gh.factory<_i913.GetExercisesUseCase>(
       () => _i913.GetExercisesUseCase(gh<_i299.ExerciseRepository>()),
@@ -109,9 +91,6 @@ extension GetItInjectableX on _i174.GetIt {
         gh<_i89.StartWorkoutSessionUseCase>(),
         gh<_i89.CompleteWorkoutUseCase>(),
       ),
-    );
-    gh.factory<_i785.AnalyticsBloc>(
-      () => _i785.AnalyticsBloc(gh<_i89.GetWorkoutHistoryUseCase>()),
     );
     gh.factory<_i952.ExerciseBloc>(
       () => _i952.ExerciseBloc(

@@ -14,7 +14,7 @@ void main() async {
   ]);
   
 
-  configureDependencies();
+  await configureDependencies();
   
   runApp(const IronApp());
 }

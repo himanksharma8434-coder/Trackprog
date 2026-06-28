@@ -1,115 +1,64 @@
 import 'package:injectable/injectable.dart';
 import '../../domain/entities/workout.dart';
 import '../../domain/repositories/workout_repository.dart';
-import '../local/database/app_database.dart';
-import 'package:drift/drift.dart';
+import '../local/storage/local_storage_service.dart';
 
 @LazySingleton(as: WorkoutRepository)
 class WorkoutRepositoryImpl implements WorkoutRepository {
-  final AppDatabase _db;
+  final LocalStorageService _storage;
+  static const _key = 'workout_sessions';
 
-  WorkoutRepositoryImpl(this._db);
+  WorkoutRepositoryImpl(this._storage);
 
   @override
   Future<void> saveWorkoutSession(WorkoutSession session) async {
-    await _db.into(_db.workoutSessionsTable).insert(
-      WorkoutSessionsTableCompanion.insert(
-        id: session.id,
-        programDayId: Value(session.programDayId),
-        name: session.name,
-        startedAt: session.startedAt,
-        finishedAt: Value(session.finishedAt),
-        durationSeconds: Value(session.durationSeconds),
-        totalVolumeKg: Value(session.totalVolumeKg),
-        sessionRpe: Value(session.sessionRpe),
-        note: Value(session.note),
-      ),
-      mode: InsertMode.insertOrReplace,
-    );
+    final sessions = await getWorkoutHistory();
+    final index = sessions.indexWhere((s) => s.id == session.id);
+    if (index >= 0) {
+      sessions[index] = session;
+    } else {
+      sessions.add(session);
+    }
+    await _storage.save(_key, sessions.map((s) => s.toJson()).toList());
+  }
 
-    for (var i = 0; i < session.exerciseLogs.length; i++) {
-      final log = session.exerciseLogs[i];
-      await _db.into(_db.exerciseLogsTable).insert(
-        ExerciseLogsTableCompanion.insert(
-          id: log.id,
-          workoutSessionId: session.id,
-          exerciseId: log.exerciseId,
-          exerciseName: log.exerciseName,
-          orderInSession: log.orderInSession,
-        ),
-        mode: InsertMode.insertOrReplace,
-      );
+  @override
+  Future<List<WorkoutSession>> getWorkoutHistory() async {
+    final data = _storage.read(_key);
+    if (data == null) return [];
+    return (data as List).map((e) => WorkoutSession.fromJson(e)).toList();
+  }
 
-      for (var s in log.sets) {
-        await _db.into(_db.setLogsTable).insert(
-          SetLogsTableCompanion.insert(
-            id: s.id,
-            exerciseLogId: log.id,
-            setNumber: s.setNumber,
-            type: s.type,
-            weightKg: s.weightKg,
-            reps: s.reps,
-            rir: Value(s.rir),
-            partialReps: Value(s.partialReps),
-            isLeft: Value(s.isLeft),
-            isRight: Value(s.isRight),
-            loggedAt: s.loggedAt,
-          ),
-          mode: InsertMode.insertOrReplace,
-        );
-      }
+  @override
+  Future<WorkoutSession?> getWorkoutSessionById(String id) async {
+    final sessions = await getWorkoutHistory();
+    try {
+      return sessions.firstWhere((s) => s.id == id);
+    } catch (_) {
+      return null;
     }
   }
 
   @override
-  Future<List<WorkoutSession>> getWorkoutHistory() async => [];
-
-  @override
-  Future<WorkoutSession?> getWorkoutSessionById(String id) async => null;
-
-  @override
-  Future<void> deleteWorkoutSession(String id) async {}
+  Future<void> deleteWorkoutSession(String id) async {
+    final sessions = await getWorkoutHistory();
+    sessions.removeWhere((s) => s.id == id);
+    await _storage.save(_key, sessions.map((s) => s.toJson()).toList());
+  }
 
   @override
   Future<ExerciseLog?> getLastExerciseLog(String exerciseId) async {
-    // Join ExerciseLogs and WorkoutSessions to get the most recent one
-    final query = _db.select(_db.exerciseLogsTable).join([
-      innerJoin(
-        _db.workoutSessionsTable,
-        _db.workoutSessionsTable.id.equalsExp(_db.exerciseLogsTable.workoutSessionId),
-      )
-    ])
-      ..where(_db.exerciseLogsTable.exerciseId.equals(exerciseId))
-      ..orderBy([OrderingTerm.desc(_db.workoutSessionsTable.startedAt)])
-      ..limit(1);
-
-    final result = await query.getSingleOrNull();
-    if (result == null) return null;
-
-    final logModel = result.readTable(_db.exerciseLogsTable);
+    final sessions = await getWorkoutHistory();
+    // Sort sessions descending by date
+    sessions.sort((a, b) => b.startedAt.compareTo(a.startedAt));
     
-    // Get sets
-    final setsResult = await (_db.select(_db.setLogsTable)..where((t) => t.exerciseLogId.equals(logModel.id))).get();
-    
-    final sets = setsResult.map((s) => SetLog(
-      id: s.id,
-      setNumber: s.setNumber,
-      type: s.type,
-      weightKg: s.weightKg,
-      reps: s.reps,
-      rir: s.rir,
-      partialReps: s.partialReps,
-      isLeft: s.isLeft,
-      isRight: s.isRight,
-      loggedAt: s.loggedAt,
-    )).toList();
-
-    return ExerciseLog(
-      id: logModel.id,
-      exerciseId: logModel.exerciseId,
-      exerciseName: logModel.exerciseName,
-      sets: sets,
-      orderInSession: logModel.orderInSession,
-    );
+    for (final session in sessions) {
+      for (final log in session.exerciseLogs) {
+        if (log.exerciseId == exerciseId) {
+          return log;
+        }
+      }
+    }
+    return null;
   }
 }

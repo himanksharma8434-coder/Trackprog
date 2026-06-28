@@ -7,7 +7,6 @@ import '../bloc/exercise_event.dart';
 import '../bloc/exercise_state.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
-import '../../../../domain/entities/exercise.dart';
 import '../../../widgets/precision_widgets.dart';
 
 class ExerciseLibraryScreen extends StatelessWidget {

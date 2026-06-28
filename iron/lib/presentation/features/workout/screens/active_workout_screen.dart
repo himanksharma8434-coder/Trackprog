@@ -10,8 +10,9 @@ import '../bloc/active_workout_state.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_typography.dart';
 import '../../../../domain/entities/workout.dart';
+import '../../../../domain/entities/exercise.dart';
 import '../../../widgets/precision_widgets.dart';
-
+import '../../exercises/screens/exercise_library_screen.dart';
 class ActiveWorkoutScreen extends StatelessWidget {
   const ActiveWorkoutScreen({super.key});
 
@@ -352,57 +353,16 @@ class ActiveWorkoutView extends StatelessWidget {
     );
   }
 
-  void _showAddExerciseDialog(BuildContext context, ActiveWorkoutBloc bloc) {
-    final controller = TextEditingController();
-    showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          backgroundColor: AppColors.surface,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4), side: const BorderSide(color: AppColors.border)),
-          title: Text('Add Exercise', style: AppTypography.h3),
-          content: TextField(
-            controller: controller,
-            style: AppTypography.bodyM,
-            autofocus: true,
-            decoration: InputDecoration(
-              hintText: 'e.g. Bench Press',
-              hintStyle: AppTypography.bodyM.copyWith(color: AppColors.textMuted),
-              filled: true,
-              fillColor: AppColors.background,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: const BorderSide(color: AppColors.border),
-              ),
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: const BorderSide(color: AppColors.border),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(4),
-                borderSide: const BorderSide(color: AppColors.primary),
-              ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text('Cancel', style: AppTypography.labelL.copyWith(color: AppColors.textMuted)),
-            ),
-            TextButton(
-              onPressed: () {
-                final text = controller.text.trim();
-                if (text.isNotEmpty) {
-                  bloc.add(AddExerciseToWorkout(const Uuid().v4(), text));
-                }
-                Navigator.pop(context);
-              },
-              child: Text('Add', style: AppTypography.labelL.copyWith(color: AppColors.primary)),
-            ),
-          ],
-        );
-      },
+  Future<void> _showAddExerciseDialog(BuildContext context, ActiveWorkoutBloc bloc) async {
+    final selected = await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => const ExerciseLibraryScreen(isPicker: true),
+      ),
     );
+    if (selected != null && selected is Exercise) {
+      bloc.add(AddExerciseToWorkout(selected.id, selected.name));
+    }
   }
 }
 
